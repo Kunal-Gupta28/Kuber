@@ -1,6 +1,15 @@
-import React from 'react'
+import React from "react";
 
-const LookingForDriver = ({confirmRideDetails}) => {
+const LookingForDriver = ({ pickup, destination,confirmRideDetails }) => {
+  const splitAddress = (address) => {
+    if (!address) return ["Unknown", ""];
+    const parts = address.split(", ");
+    return [parts[0], parts.slice(1).join(", ")];
+  };
+  
+  const [pickupMain, pickupDetails] = splitAddress(pickup);
+  const [destinationMain, destinationDetails] = splitAddress(destination);
+  
   return (
     <div className="w-screen">
     <h2 className="text-center text-2xl font-semibold mb-5 pt-5 border-b-2">
@@ -19,33 +28,31 @@ const LookingForDriver = ({confirmRideDetails}) => {
       </span>
     </div>
 
-    {/* pick-up address */}
-    <div className="flex border-t-2 border-grey py-3">
-      <span className="w-16 flex justify-center items-center">
-        <i className="ri-map-pin-line"></i>
-      </span>
-      <div>
-        {confirmRideDetails.address}{" "}
-        <h3 className="font-semibold text-xl pb-1">562/11-A</h3>
-        <h5 className="text-gray-500 text-md">
-          Kalkondrahalli, Bengaluru, karnataka
-        </h5>
+      {/* pick-up address */}
+      <div className="flex border-t-2 border-grey py-3">
+        <span className="w-16 flex justify-center items-center">
+          <i className="ri-map-pin-line"></i>
+        </span>
+        <div>
+          <h3 className="font-semibold text-xl pb-1">{pickupMain}</h3>
+          <h5 className="text-gray-500 text-md">
+          {pickupDetails}{" "}
+          </h5>
+        </div>
       </div>
-    </div>
 
-    {/* destination */}
-    <div className="flex">
-      <span className="w-16 flex justify-center items-center">
-        <i className="ri-square-fill"></i>
-      </span>
-      <div className="border-t-2 border-grey py-3">
-        <h3 className="font-semibold text-xl pb-1">third wabe congee</h3>
-        <h5 className="text-gray-500 text-md">
-          17th Cross Pd, Pes quality,1ast selcto, Hsst layout, benfaluru,
-          karnataka
-        </h5>
+      {/* destination */}
+      <div className="flex">
+        <span className="w-16 flex justify-center items-center">
+          <i className="ri-square-fill"></i>
+        </span>
+        <div className="border-t-2 border-grey py-3">
+          <h3 className="font-semibold text-xl pb-1">{destinationMain}</h3>
+          <h5 className="text-gray-500 text-md">
+           {destinationDetails}
+          </h5>
+        </div>
       </div>
-    </div>
 
     {/* bill info */}
     <div className="flex">
@@ -54,7 +61,7 @@ const LookingForDriver = ({confirmRideDetails}) => {
       </span>
       <div className="w-full border-t-2 border-grey py-3">
         <h3 className="font-semibold text-xl pb-1">
-          ₹{confirmRideDetails.price}
+          ₹{confirmRideDetails.fare}
         </h3>
         <h3 className="text-gray-500 text-md"> Cash </h3>
       </div>

@@ -39,7 +39,7 @@ function App() {
         />
         <Route path="/captains/login" element={<CaptainLogin />} />
         <Route path="/captains/register" element={<CaptainSignUp />} />
-        <Route path="/captains-home" element={<CaptainHome />} />
+        <Route path="/captains/home" element={<CaptainHome />} />
         <Route path="/captains-riding" element={<CaptainRiding />} />
       </Routes>
     </>

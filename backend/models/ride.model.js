@@ -1,62 +1,62 @@
 const mongoose = require('mongoose');
 
 const rideSchema = new mongoose.Schema({
-    user:{
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
     },
-    captainId:{
+    captain: {
         type: mongoose.Schema.Types.ObjectId,
-        ref:'Captain'
+        ref: 'Captain'
     },
-    pickup:{
-        type:String,
-        required:true
+    pickup: {
+        type: String,
+        required: true
     },
-    destination:{
-        type:String,
-        required:true
+    destination: {
+        type: String,
+        required: true
     },
-    fare:{
+    fare: {
         type: Number,
         required: true,
     },
-    status : {
+    status: {
         type: String,
-        enum:['pending','acepted','ongoing', 'complete', 'cancel'],
+        enum: ['pending', 'accepted', 'ongoing', 'complete', 'cancel'],
         default: 'pending',
     },
-    duration:{
-        type:Number,
+    duration: {
+        type: Number,
     },
-    time:{
-        type:Number,
+    time: {
+        type: Number,
     },
-    price:{
-        type:Number,
+    price: {
+        type: Number,
     },
-    otp:{
-        type:String,
+    otp: {
+        type: String,
         required: true,
-        selected: false
+        select: false
     },
-    paymentMethod:{
-        type:String,
-        enum:["By Cash",'By UPI','By card'],
+    paymentMethod: {
+        type: String,
+        enum: ["By Cash", "By UPI", "By Card"],
         default: 'By Cash',
     },
-    paymentId:{
-        type:String,
+    paymentId: {
+        type: String,
     },
-    orderId:{
-        type:String,
+    orderId: {
+        type: String,
     },
-    signature:{
-        type:String,
+    signature: {
+        type: String,
     },
-});
+}, { timestamps: true });
 
-const ride = new mongoose.model('Ride',rideSchema);
+const Ride = mongoose.model('Ride', rideSchema);
 
-module.exports = ride;
+module.exports = Ride;

@@ -4,21 +4,21 @@ const { body,query } = require("express-validator");
 const rideController = require("../controllers/ride.controller");
 const authMiddleware = require("../middlewares/auth.middlewares");
 
-router.get(
+router.post(
   "/create",
   authMiddleware.authUser,
   body("pickupPoint")
     .isString()
     .isLength({ min: 3 })
-    .withMessage("Invalid user id"),
+    .withMessage("Invalid pickup point"),
   body("destination")
     .isString()
     .isLength({ min: 3 })
-    .withMessage("Invalid user id"),
+    .withMessage("Invalid destination"),
   body("vehicleType")
     .isString()
-    .isIn(["auto", "eco cab", "premier", "motorcycle"])
-    .withMessage("Invalid user id"),
+    .isIn(["KUberAuto", "KUberGo", "premier", "MOTO"])
+    .withMessage("Invalid vehicleType"),
   rideController.createRide
 );
 
@@ -28,16 +28,12 @@ router.get(
   query("pickupPoint")
     .isString()
     .isLength({ min: 3 })
-    .withMessage("Invalid user id"),
+    .withMessage("Invalid pickup point"),
   query("destination")
     .isString()
     .isLength({ min: 3 })
-    .withMessage("Invalid user id"),
-  query("vehicleType")
-    .isString()
-    .isIn(["KUberAuto", "KUberGo", "Premier", "MOTO"])
-    .withMessage("Invalid user id"),
+    .withMessage("Invalid destination"),
   rideController.getFare
 ); 
 
-module.exports = router;   
+module.exports = router;         

@@ -59,3 +59,4 @@ module.exports.getAutoCompleteSuggestion = async (req, res, next) => {
       .json({ message: "Internal server error", error: error.message });
   }
 };
+ 

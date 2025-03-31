@@ -6,9 +6,14 @@ const Vehicle = ({
   destination,
   vehiclePanelOpen,
   setConfirmRidePanel,
-  setConfirmRideDetails,
+  setConfirmRideDetails
 }) => {
-  const [fares, setFares] = useState({});
+  const [fares, setFares] = useState([
+    { vehicleType: "KUberAuto", fare: "--" },
+    { vehicleType: "KUberGo", fare: "--" },
+    { vehicleType: "Premier", fare: "--" },
+    { vehicleType: "MOTO", fare: "--" },
+  ]);
 
   const vehicleOptions = [
     {
@@ -41,14 +46,14 @@ const Vehicle = ({
     },
   ];
 
-  // Fetch fares for all vehicle types in a single request
+  // Fetch fares for all vehicle types
   useEffect(() => {
-    const fetchFares = async () => {
+    const fetchAllFares = async () => {
       if (!pickup || !destination) return;
 
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/rides/get-fares`, // Updated endpoint
+          `${import.meta.env.VITE_BASE_URL}/rides/get-fare`,
           {
             params: { pickup, destination },
             headers: {
@@ -57,28 +62,25 @@ const Vehicle = ({
           }
         );
 
-        // Assuming API returns an array of fares [{ vehicleType: "KUberGo", fare: 200 }, ...]
-        const newFares = response.data.reduce((acc, { vehicleType, fare }) => {
-          acc[vehicleType] = typeof fare === "number" ? `₹${fare.toFixed(2)}` : "N/A";
-          return acc;
-        }, {});
-
-        setFares(newFares);
+        setFares(response.data);
       } catch (error) {
         console.error("Error fetching fares:", error);
       }
     };
 
-    fetchFares();
+    fetchAllFares();
   }, [vehiclePanelOpen]);
 
   return (
     <div className="h-[50vh] w-full">
-      {vehicleOptions.map((element) => (
+      {vehicleOptions.map((element, index) => (
         <div
           key={element.vehicleType}
           onClick={() => {
-            setConfirmRideDetails(element);
+            setConfirmRideDetails({
+              ...element,
+              fare: fares[index]?.fare || "--",
+            });
             setConfirmRidePanel(true);
           }}
           className="h-[21%] flex justify-between my-5 border-2 p-2 active:border-black border-white rounded-xl cursor-pointer"
@@ -92,7 +94,7 @@ const Vehicle = ({
           </div>
           <div className="w-[50%]">
             <h4 className="font-bold text-xl">
-              {element.vehicleType} {" "}
+              {element.vehicleType}{" "}
               <i className="ri-user-fill font-thin text-base">
                 <span className="font-medium">{element.capacity}</span>
               </i>
@@ -104,7 +106,7 @@ const Vehicle = ({
           </div>
           <div className="w-[20%]">
             <p className="font-semibold text-xl">
-              {fares[element.vehicleType] || "Loading..."}
+              ₹{fares[index].fare ? fares[index].fare : "--"}
             </p>
           </div>
         </div>

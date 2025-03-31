@@ -36,7 +36,7 @@ const UserLogin = () => {
   }
 
   useEffect(() => {
-    console.log("Updated userData:", userData);
+
   });
   return (
     <section className="p-5 flex flex-col justify-center">

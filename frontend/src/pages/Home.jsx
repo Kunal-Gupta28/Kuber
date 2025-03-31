@@ -14,7 +14,6 @@ const Home = () => {
   const [destination, setDestination] = useState("");
   const [suggestion, setSuggestion] = useState("");
   const [isPickupSelected, setIsPickupSelected] = useState(false);
-
   const [panelOpen, setPanelOpen] = useState(false);
   const panelOpenRef = useRef(null);
   const panelCloseRef = useRef(null);
@@ -307,39 +306,24 @@ const Home = () => {
             </div>
           </div>
 
-          {/* {vehicle.map((detail) => (
-            <Vehicle
-              key={detail.category}
-              pickup={pickup}
-              destination={destination}
-              image={detail.image}
-              category={detail.category}
-              capacity={detail.capacity}
-              minsAway={detail.minsAway}
-              time={detail.time}
-              description={detail.description}
-              price={detail.price}
-              confirmRidePanel={confirmRidePanel}
-              setConfirmRidePanel={setConfirmRidePanel}
-              setConfirmRideDetails={setConfirmRideDetails}
-            />
-          ))} */}
-                  <Vehicle
-                   pickup={pickup}
-                   destination={destination}
-              confirmRidePanel={confirmRidePanel}
-              vehiclePanelOpen={vehiclePanelOpen}
-              setConfirmRidePanel={setConfirmRidePanel}
-              setConfirmRideDetails={setConfirmRideDetails}
-            />
+          <Vehicle
+            pickup={pickup}
+            destination={destination}
+            confirmRidePanel={confirmRidePanel}
+            vehiclePanelOpen={vehiclePanelOpen}
+            setConfirmRidePanel={setConfirmRidePanel}
+            setConfirmRideDetails={setConfirmRideDetails}
+          />
         </div>
 
         {/* confirm ride */}
         <div
           ref={confirmRidePanelRef}
-          className="fixed w-full z-10 bottom-0 translate-y-full bg-white"
+          className="h-[70%] fixed w-full z-10 bottom-0 translate-y-full bg-white"
         >
           <ConfirmRide
+            pickup={pickup}
+            destination={destination}
             setConfirmRidePanel={setConfirmRidePanel}
             confirmRideDetails={confirmRideDetails}
             setVehicleFound={setVehicleFound}
@@ -351,7 +335,11 @@ const Home = () => {
           ref={vehicleFoundRef}
           className="h-[60%] fixed w-full z-10 bottom-0 translate-y-full bg-white"
         >
-          <LookingForDriver confirmRideDetails={confirmRideDetails} />
+          <LookingForDriver
+            pickup={pickup}
+            destination={destination}
+            confirmRideDetails={confirmRideDetails}
+          />
         </div>
 
         {/* Waiting for driver */}
