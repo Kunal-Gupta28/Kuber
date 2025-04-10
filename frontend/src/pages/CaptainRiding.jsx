@@ -39,7 +39,7 @@ const CaptainRiding = () => {
         destination: response.data.destination,
       });
     } catch (error) {
-      console.error("❌ Error fetching reverse geocode:", error);
+      console.error("Error fetching coordinates:", error);
     }
   };
 

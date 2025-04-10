@@ -23,7 +23,8 @@ const Riding = () => {
 
   // Listen for ride-ended only once
   useEffect(() => {
-    const handleRideEnded = () => {
+    const handleRideEnded = (ride) => {
+      const {captain,user} = ride
       navigate("/home");
     };
 

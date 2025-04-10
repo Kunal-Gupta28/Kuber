@@ -2,22 +2,20 @@ import React, { useEffect, useRef, useState } from "react";
 import {
   GoogleMap,
   useJsApiLoader,
-  DirectionsRenderer,
+  Polyline,
 } from "@react-google-maps/api";
 import "remixicon/fonts/remixicon.css";
 
-// Container style for map wrapper
+// Container style
 const containerStyle = {
   width: "100%",
   height: "100%",
   position: "relative",
 };
 
-// Load Google Maps libraries (in this case, just marker for custom marker support)
 const libraries = ["marker"];
 
-const MyMap = ({ coordinates,userLocation }) => {
-  // Convert backend coordinates to proper lat/lng objects
+const MyMap = ({ coordinates, userLocation }) => {
   const pickup = coordinates?.pickup
     ? { lat: coordinates.pickup.latitude, lng: coordinates.pickup.longitude }
     : null;
@@ -29,24 +27,18 @@ const MyMap = ({ coordinates,userLocation }) => {
       }
     : null;
 
-  // State to store user's current location
   const [currentPosition, setCurrentPosition] = useState(null);
+  const [routePath, setRoutePath] = useState(null);
 
-  // State to store calculated route directions
-  const [directions, setDirections] = useState(null);
-
-  // Refs for map and custom marker
   const mapRef = useRef(null);
   const markerRef = useRef(null);
 
-  // Load Google Maps JS API
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_API_KEY,
     libraries,
-    mapIds: [import.meta.env.VITE_MAP_ID], // for custom map styling
+    mapIds: [import.meta.env.VITE_MAP_ID],
   });
 
-  // Get and set user's current location
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -60,7 +52,6 @@ const MyMap = ({ coordinates,userLocation }) => {
     }
   }, []);
 
-  // Generate directions when pickup and destination are available
   useEffect(() => {
     if (
       pickup?.lat &&
@@ -79,7 +70,8 @@ const MyMap = ({ coordinates,userLocation }) => {
         },
         (result, status) => {
           if (status === "OK") {
-            setDirections(result);
+            const route = result.routes[0].overview_path;
+            setRoutePath(route);
           } else {
             console.error("Directions request failed:", status);
           }
@@ -88,16 +80,13 @@ const MyMap = ({ coordinates,userLocation }) => {
     }
   }, [pickup, destination]);
 
-  // Called when map is loaded
   const handleMapLoad = (map) => {
     mapRef.current = map;
 
-    // Check if marker library is available and user location is set
     if (!window.google?.maps?.marker || !currentPosition) return;
 
     const { AdvancedMarkerElement } = window.google.maps.marker;
 
-    // Custom marker with an icon
     const markerEl = document.createElement("div");
     markerEl.innerHTML = `<i class="ri-map-pin-user-fill"></i>`;
 
@@ -109,7 +98,6 @@ const MyMap = ({ coordinates,userLocation }) => {
       alignItems: "center",
     });
 
-    // Place custom marker at user's location
     markerRef.current = new AdvancedMarkerElement({
       map,
       position: currentPosition,
@@ -118,7 +106,6 @@ const MyMap = ({ coordinates,userLocation }) => {
     });
   };
 
-  // Recenter map to user’s location
   const recenterMap = () => {
     if (mapRef.current && currentPosition) {
       mapRef.current.setCenter(currentPosition);
@@ -126,13 +113,11 @@ const MyMap = ({ coordinates,userLocation }) => {
     }
   };
 
-  // Loading states
   if (!isLoaded) return <div>Loading Map API...</div>;
   if (!currentPosition) return <div>Getting your location...</div>;
 
   return (
     <div style={containerStyle}>
-      {/* Map component */}
       <GoogleMap
         mapContainerStyle={{ width: "100%", height: "100%" }}
         center={currentPosition}
@@ -143,8 +128,17 @@ const MyMap = ({ coordinates,userLocation }) => {
           disableDefaultUI: true,
         }}
       >
-        {/* Show route if available */}
-        {directions && <DirectionsRenderer directions={directions} />}
+        {/* Render the route in black using Polyline */}
+        {routePath && (
+          <Polyline
+            path={routePath}
+            options={{
+              strokeColor: "#000000",
+              strokeOpacity: 1.0,
+              strokeWeight: 5,
+            }}
+          />
+        )}
       </GoogleMap>
 
       {/* Recenter button */}
