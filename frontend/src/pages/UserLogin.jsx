@@ -1,13 +1,11 @@
 import { useState, useEffect, useContext } from "react";
 import { Link,useNavigate} from "react-router-dom";
 import axios from "axios";
-// import { UserDataContext } from "../context/UserContext";
 
 const UserLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userData, setUserData] = useState({}); 
-  // const [user,setUser] = useContext(UserDataContext);
   const navigate = useNavigate();
 
   // two way binding
@@ -21,7 +19,7 @@ const UserLogin = () => {
     const userData = {email: email, password: password};
 
     const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, userData);
-    console.log(response.status);
+
     if (response.status === 200){
       const data = response.data;
       setUserData(data.user);

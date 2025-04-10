@@ -1,79 +1,103 @@
-import {Link} from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import { SocketContext } from "../context/SocketContext";
+import LiveTracking from "./LiveTracking";
+
 const Riding = () => {
+  const location = useLocation();
+  const state = location.state || {};
+  const {
+    pickupMain,
+    pickupDetails,
+    destinationMain,
+    destinationDetails,
+    ride
+  } = state;
+  const coordinates =
+    state.coordinates || JSON.parse(localStorage.getItem("coordinates"));
+  
+
+  const fare = ride?.fare;
+  const { socket } = useContext(SocketContext);
+  const navigate = useNavigate();
+
+  // Listen for ride-ended only once
+  useEffect(() => {
+    const handleRideEnded = () => {
+      navigate("/home");
+    };
+
+    socket?.on("ride-ended", handleRideEnded);
+    return () => socket?.off("ride-ended", handleRideEnded);
+  }, [socket, navigate]);
+
   return (
-    <div className="h-screen">
-        <Link to="/home">
-        <span className="fixed top-2 right-5 text-3xl p-3 bg-white rounded-full "><i class="ri-home-4-line"></i></span>
-        </Link>
-        {/* destination path */}
-      <div className="h-1/2 overflow-hidden">
-        {" "}
-        <img
-
-          src="https://www.uberpeople.net/attachments/f0d80c4c-0028-4900-aeed-b67168c657b2-jpeg.667694/"
-        />
-      </div>
-
-      {/* payment page */}
-          {/* selected vehicle image  */}
-    <div className="my-2 flex justify-center relative ">
-      <span className="h-20 w-64 bg-[#eff3fe] rounded-full flex justify-center">
-        <span className="h-16 bg-[#d4e2fc] rounded-full w-44 flex justify-center">
-          <img
-            className="w-40 absolute top-[-8%]"
-            // src={confirmRideDetails.image}
-          />
+    <div className="h-screen w-full flex flex-col md:flex-row overflow-hidden">
+      {/* Home Icon */}
+      <Link to="/home">
+        <span className="fixed top-2 right-5 z-50 text-3xl p-3 bg-white rounded-full shadow-md">
+          <i className="ri-home-4-line"></i>
         </span>
-      </span>
-    </div>
+      </Link>
 
-    {/* pick-up address */}
-    <div className="flex border-t-2 border-grey py-3">
-      <span className="w-16 flex justify-center items-center">
-        <i className="ri-map-pin-line"></i>
-      </span>
-      <div>
-        {/* {confirmRideDetails.address}{" "} */}
-        <h3 className="font-semibold text-xl pb-1">562/11-A</h3>
-        <h5 className="text-gray-500 text-md">
-          Kalkondrahalli, Bengaluru, karnataka
-        </h5>
+      {/* Live Tracking - 70% */}
+      <div className="w-full md:w-[70%] h-[50vh] md:h-full">
+        <LiveTracking coordinates={coordinates}/>
       </div>
-    </div>
 
-    {/* destination */}
-    <div className="flex">
-      <span className="w-16 flex justify-center items-center">
-        <i className="ri-square-fill"></i>
-      </span>
-      <div className="border-t-2 border-grey py-3">
-        <h3 className="font-semibold text-xl pb-1">third wabe congee</h3>
-        <h5 className="text-gray-500 text-md">
-          17th Cross Pd, Pes quality,1ast selcto, Hsst layout, benfaluru,
-          karnataka
-        </h5>
+      {/* Ride Details - 30% */}
+      <div className="w-full md:w-[30%] h-[50vh] md:h-full overflow-y-auto bg-white px-4 py-6 space-y-4 shadow-inner">
+        {/* Vehicle image */}
+        <div className="flex justify-center relative">
+          <div className="h-20 w-64 bg-[#eff3fe] rounded-full flex justify-center">
+            <div className="h-16 w-44 bg-[#d4e2fc] rounded-full flex justify-center">
+              <img
+                className="w-40 absolute top-[-8%]"
+                src="/vehicle-placeholder.png"
+                alt="Vehicle"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Pickup Info */}
+        <div className="flex border-t pt-4">
+          <span className="w-10 flex justify-center items-start pt-1">
+            <i className="ri-map-pin-line text-green-600"></i>
+          </span>
+          <div>
+            <h3 className="font-semibold text-lg">{pickupMain}</h3>
+            <p className="text-gray-500 text-sm">{pickupDetails}</p>
+          </div>
+        </div>
+
+        {/* Destination Info */}
+        <div className="flex border-t pt-4">
+          <span className="w-10 flex justify-center items-start pt-1">
+            <i className="ri-square-fill text-red-500"></i>
+          </span>
+          <div>
+            <h3 className="font-semibold text-lg">{destinationMain}</h3>
+            <p className="text-gray-500 text-sm">{destinationDetails}</p>
+          </div>
+        </div>
+
+        {/* Fare Info */}
+        <div className="flex border-t pt-4">
+          <span className="w-10 flex justify-center items-start pt-1">
+            <i className="ri-bank-card-2-fill text-blue-600"></i>
+          </span>
+          <div className="w-full">
+            <h3 className="font-semibold text-lg">₹{fare}</h3>
+            <p className="text-gray-500 text-sm">Cash</p>
+          </div>
+        </div>
+
+        {/* Payment Button */}
+        <button className="w-full mt-6 py-3 bg-black hover:bg-gray-800 text-white rounded-xl font-bold text-lg">
+          Make a Payment
+        </button>
       </div>
-    </div>
-
-    {/* bill info */}
-    <div className="flex">
-      <span className="w-16 flex justify-center items-center">
-        <i className="ri-bank-card-2-fill"></i>
-      </span>
-      <div className="w-full border-t-2 border-grey py-3">
-        <h3 className="font-semibold text-xl pb-1">
-          {/* ₹{confirmRideDetails.price} */}
-        </h3>
-        <h3 className="text-gray-500 text-md"> Cash </h3>
-      </div>
-    </div>
-
-    {/* payment button */}
-    <button
-        className="w-52 mx-auto block my-5 py-2 bg-black rounded-xl text-white font-bold text-xl"
-      >
-        Make a payment
-      </button>
     </div>
   );
 };

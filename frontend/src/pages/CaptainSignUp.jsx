@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import {CaptainDataContext} from '../context/CaptainContext'
 
 const CaptainSignUp = () => {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const CaptainSignUp = () => {
   const [vehiclePlate, setVehiclePlate] = useState("");
   const [vehicleCapacity, setVehicleCapacity] = useState("");
   const [vehicleType, setVehicleType] = useState("");
+  const {setCaptain} = useContext(CaptainDataContext);
 
   // Error state variables
   const [errors, setErrors] = useState({
@@ -107,15 +109,15 @@ const CaptainSignUp = () => {
         vehicleType,
       },
     };
-    console.log(captainData);
-
+    
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/captains/register`,
         captainData
       );
-
+      
       if (response.status === 201) {
+        setCaptain(response.data.captain)
         localStorage.setItem("token", response.data.token);
         navigate("/captains/home");
       }
@@ -301,7 +303,7 @@ const CaptainSignUp = () => {
                 {/* This option should be the first one, allowing the user to choose */}
                 <option value="KUberAuto">KUberAuto</option>
                 <option value="KUberGo">KUberGo</option>
-                <option value="premier">Premier</option>
+                <option value="Premier">Premier</option>
                 <option value="MOTO">MOTO</option>
               </select>
               {errors.vehicleType && (

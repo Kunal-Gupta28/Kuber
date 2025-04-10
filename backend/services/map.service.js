@@ -1,4 +1,5 @@
 const axios = require("axios");
+const captainModel = require("../models/captain.model");
 
 // function to ge geocode ( Latitude and Longitude ) from address
 module.exports.getAddressCoordinates = async (address) => {
@@ -13,8 +14,10 @@ module.exports.getAddressCoordinates = async (address) => {
 
     if (data.status === "OK") {
       const result = data.results[0];
-      const latitude = result.geometry.location.lat;
-      const longitude = result.geometry.location.lng;
+      return {
+        latitude: result.geometry.location.lat,
+        longitude: result.geometry.location.lng,
+      };
     } else {
       console.log(
         "Geocode was not successful for the following reason:",
@@ -25,6 +28,32 @@ module.exports.getAddressCoordinates = async (address) => {
     console.error("Error occurred:", error);
   }
 };
+
+// Service to get address from coordinates using Google Maps Geocoding API
+module.exports.getReverseGeocode = async (userCoordinates) => {
+  const apiKey = process.env.GOOGLE_MAP_API_KEY;
+
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${encodeURIComponent(
+    userCoordinates
+  )}&key=${apiKey}`;
+  try {
+
+    const response = await axios.get(url);
+    const data = response.data;
+
+    if (data.status === "OK") {
+      const result = data.results[0];
+      return result.formatted_address;
+    } else {
+      throw new Error(`Geocoding failed: ${data.status}`);
+    }
+  } catch (error) {
+    console.error("Error occurred during reverse geocoding:", error);
+    throw error;
+  }
+};
+
+
 
 // fucntion to calculate distance and time between pickupPoint and destination
 module.exports.getDistanceTime = async (pickupPoint, destination) => {
@@ -64,7 +93,6 @@ module.exports.getDistanceTime = async (pickupPoint, destination) => {
   }
 };
 
-
 module.exports.getAutoCompleteSuggestion = async (input) => {
   if (!input) {
     throw new Error("query is required");
@@ -93,3 +121,21 @@ module.exports.getAutoCompleteSuggestion = async (input) => {
     return [];
   }
 };
+
+module.exports.getCaptainInRange = async (ltd, lng, radius) => {
+  try {
+    const captain = await captainModel.find({
+      location: {
+        $geoWithin: {
+          $centerSphere: [[ltd, lng], radius / 6371], // in Km
+        },
+      },
+    });
+
+    return captain;
+  } catch (error) {
+    console.error("Error fetching captains", error);
+
+    return [];
+  }
+}; 

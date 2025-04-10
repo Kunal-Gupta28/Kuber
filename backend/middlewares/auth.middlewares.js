@@ -47,9 +47,7 @@ module.exports.authCaptain = async (req, res, next) => {
         }
 
         // Check if the token is blacklisted
-        console.log("Checking blacklist for token:", token);
         const isBlackListed = await blackListedTokensModel.findOne({ token });
-        console.log("Blacklist query result:", isBlackListed);
 
         if (isBlackListed) {
             return res.status(401).json({ message: "Token is blacklisted" });
@@ -57,10 +55,9 @@ module.exports.authCaptain = async (req, res, next) => {
 
         // Verify token and decode payload
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        console.log("Decoded JWT payload:", decoded);
 
         const captain = await captainModel.findById(decoded._id);
-        console.log("Captain lookup result:", captain);
+
 
         if (!captain) {
             return res.status(401).json({ message: "Captain not found" });

@@ -1,4 +1,4 @@
-import bgImage from '../assets/images/Kuber.jpeg';
+import bgImage from '/images/Kuber.jpeg';
 import { Link } from 'react-router-dom';
 
 const Start = () => {

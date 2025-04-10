@@ -6,49 +6,46 @@ const Vehicle = ({
   destination,
   vehiclePanelOpen,
   setConfirmRidePanel,
-  setConfirmRideDetails
+  setConfirmRideDetails,
+  setVehiclePanelOpen
 }) => {
-  const [fares, setFares] = useState([
-    { vehicleType: "KUberAuto", fare: "--" },
-    { vehicleType: "KUberGo", fare: "--" },
-    { vehicleType: "Premier", fare: "--" },
-    { vehicleType: "MOTO", fare: "--" },
-  ]);
+  const [fares, setFares] = useState({});
+  const [selectedVehicle, setSelectedVehicle] = useState(null);
 
   const vehicleOptions = [
     {
-      image: "/src/assets/images/UberSelect-White.webp",
+      image: "/images/UberSelect-White.webp",
       vehicleType: "KUberGo",
       capacity: 4,
       minsAway: 2,
       description: "Affordable, compact rides",
     },
     {
-      image: "/src/assets/images/Uber_Moto_Orange_312x208_pixels_Mobile.webp",
+      image: "/images/UberMoto.webp",
       vehicleType: "MOTO",
       capacity: 1,
       minsAway: 3,
       description: "Affordable, motorcycle rides",
     },
     {
-      image: "/src/assets/images/UberComfort-Premium.webp",
+      image: "/images/UberComfort-Premium.webp",
       vehicleType: "Premier",
       capacity: 4,
       minsAway: 2,
       description: "Comfortable sedans, top-quality drivers",
     },
     {
-      image: "/src/assets/images/Uber_Auto_558x372_pixels_Desktop.webp",
+      image: "/images/UberAuto.webp",
       vehicleType: "KUberAuto",
       capacity: 3,
       minsAway: 5,
       description: "Affordable, auto rides",
     },
   ];
+  
 
-  // Fetch fares for all vehicle types
   useEffect(() => {
-    const fetchAllFares = async () => {
+    const fetchFares = async () => {
       if (!pickup || !destination) return;
 
       try {
@@ -62,55 +59,66 @@ const Vehicle = ({
           }
         );
 
-        setFares(response.data);
+        // Transform array to object for quick access
+        const fareObj = {};
+        response.data.forEach(({ vehicleType, fare }) => {
+          fareObj[vehicleType] = fare;
+        });
+        setFares(fareObj);
       } catch (error) {
         console.error("Error fetching fares:", error);
       }
     };
 
-    fetchAllFares();
-  }, [vehiclePanelOpen]);
+    fetchFares();
+  }, [pickup, destination, vehiclePanelOpen]);
 
   return (
     <div className="h-[50vh] w-full">
-      {vehicleOptions.map((element, index) => (
-        <div
-          key={element.vehicleType}
-          onClick={() => {
-            setConfirmRideDetails({
-              ...element,
-              fare: fares[index]?.fare || "--",
-            });
-            setConfirmRidePanel(true);
-          }}
-          className="h-[21%] flex justify-between my-5 border-2 p-2 active:border-black border-white rounded-xl cursor-pointer"
-        >
-          <div className="w-[25%]">
-            <img
-              className="w-full"
-              src={element.image}
-              alt={element.vehicleType}
-            />
+      {vehicleOptions.map((vehicle) => {
+        const isSelected = selectedVehicle === vehicle.vehicleType;
+
+        return (
+          <div
+            key={vehicle.vehicleType}
+            onClick={() => {
+              setConfirmRideDetails({
+                ...vehicle,
+                fare: fares[vehicle.vehicleType] || "--",
+              });
+              setSelectedVehicle(vehicle.vehicleType);
+              setVehiclePanelOpen(false);
+              setConfirmRidePanel(true);
+            }}
+            className={`h-[20%] flex justify-between items-center my-5 border-2 p-2 rounded-xl cursor-pointer transition duration-200 ${
+              isSelected ? "border-black bg-gray-100 shadow-sm" : "border-white"
+            }`}
+          >
+            <div className="w-[25%]">
+              <img
+                className="w-full h-auto object-contain"
+                src={vehicle.image}
+                alt={vehicle.vehicleType}
+              />
+            </div>
+            <div className="w-[50%]">
+              <h4 className="font-bold text-xl flex items-center gap-1">
+                {vehicle.vehicleType}
+                <i className="ri-user-fill text-base font-thin">
+                  <span className="font-medium ml-1">{vehicle.capacity}</span>
+                </i>
+              </h4>
+              <h5 className="font-medium">{vehicle.minsAway} mins away</h5>
+              <p className="text-gray-500 text-xs">{vehicle.description}</p>
+            </div>
+            <div className="w-[20%] text-right">
+              <p className="font-semibold text-xl">
+                ₹{fares[vehicle.vehicleType] ?? "--"}
+              </p>
+            </div>
           </div>
-          <div className="w-[50%]">
-            <h4 className="font-bold text-xl">
-              {element.vehicleType}{" "}
-              <i className="ri-user-fill font-thin text-base">
-                <span className="font-medium">{element.capacity}</span>
-              </i>
-            </h4>
-            <h5 className="font-medium">{element.minsAway} mins away</h5>
-            <p className="text-gray-500 text-medium text-xs">
-              {element.description}
-            </p>
-          </div>
-          <div className="w-[20%]">
-            <p className="font-semibold text-xl">
-              ₹{fares[index].fare ? fares[index].fare : "--"}
-            </p>
-          </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 };

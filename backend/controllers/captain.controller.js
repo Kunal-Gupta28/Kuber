@@ -38,43 +38,38 @@ module.exports.registerCaptain = async (req, res, next) => {
 
         res.status(201).json({ token, captain});
     } catch (error) {
-        console.error('Error during caption registration:', error);
+
         next(error);
     }
 };
  
-module.exports.loginCaptain = async(req,res,next) =>{
+module.exports.loginCaptain = async (req, res, next) => {
     const errors = validationResult(req);
-    
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
 
-    const {email,password} = req.body;
+    const { email, password } = req.body;
 
-    try {
-        const captain = await captainModel.findOne({email}).select('+password');
+    const captain = await captainModel.findOne({ email }).select('+password');
 
-        if (!captain) {
-            return res.status(401).json({message:'Invalid email or password'});
-        }
-
-        const isMatch = await  captain.comparePassword(password);
-
-        if (!isMatch) {
-            return res.status(401).json({message:'Invalid email or password'});
-        }
-
-        const token = captain.generateAuthToken();
-
-        res.cookie('token',token);
-
-        res.status(200).json({token,captain});
-    } catch (error) {
-        console.error('Error during captain login:', error);
-        next(error);
+    if (!captain) {
+        return res.status(401).json({ message: 'Invalid email or password' });
     }
-};
+
+    const isMatch = await captain.comparePassword(password);
+
+    if (!isMatch) {
+        return res.status(401).json({ message: 'Invalid email or password' });
+    }
+
+    const token = captain.generateAuthToken();
+
+    res.cookie('token', token);
+
+    res.status(200).json({ token, captain });
+}
+
 
 module.exports.getCaptainProfile = async (req, res, next) => {
     try {
@@ -83,7 +78,6 @@ module.exports.getCaptainProfile = async (req, res, next) => {
         }
         res.status(200).json(req.captain);
     } catch (error) {
-        console.error('Error fetching captain profile:', error);
         next(error);
     }
 };
@@ -99,7 +93,7 @@ module.exports.logoutCaptain = async (req, res, next) => {
         res.clearCookie('token', { httpOnly: true, secure: true }); // Ensure cookies are securely cleared
         res.status(200).json({ message: 'Logged out successfully' });
     } catch (error) {
-        console.error('Error during captain logout:', error);
+
         next(error);
     }
 };

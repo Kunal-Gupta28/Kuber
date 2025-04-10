@@ -1,7 +1,23 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate ,useLocation } from "react-router-dom";
+import axios from 'axios'
 
 const FinishRide = (props) => {
+  const location = useLocation();
+  const state = location.state || {};
+  const { pickupMain, pickupDetails, destinationMain, destinationDetails, ride } = state;
+  const fare = ride?.fare;
+  const navigate = useNavigate()
+  
+  async function endRide(){
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/rides/end-ride`,{
+      rideId:ride._id
+    },{headers:{Authorization:`bearer ${localStorage.getItem('token')}`}})
+
+    if(response.status === 200){
+      navigate('/captains/home')
+    }
+  }
   return (
     <div className=" w-screen">
       <div className="text-center">
@@ -32,9 +48,9 @@ const FinishRide = (props) => {
         </span>
         <div>
           {/* {confirmRideDetails.address}{" "} */}
-          <h3 className="font-semibold text-xl pb-1">562/11-A</h3>
+          <h3 className="font-semibold text-xl pb-1">{pickupMain}</h3>
           <h5 className="text-gray-500 text-md">
-            Kalkondrahalli, Bengaluru, karnataka
+            {pickupDetails}
           </h5>
         </div>
       </div>
@@ -45,10 +61,9 @@ const FinishRide = (props) => {
           <i className="ri-square-fill"></i>
         </span>
         <div className="border-t-2 border-grey py-3">
-          <h3 className="font-semibold text-xl pb-1">third wabe congee</h3>
+          <h3 className="font-semibold text-xl pb-1">{destinationMain}</h3>
           <h5 className="text-gray-500 text-md">
-            17th Cross Pd, Pes quality,1ast selcto, Hsst layout, benfaluru,
-            karnataka
+            {destinationDetails}
           </h5>
         </div>
       </div>
@@ -60,23 +75,19 @@ const FinishRide = (props) => {
         </span>
         <div className="w-full border-t-2 border-grey py-3">
           <h3 className="font-semibold text-xl pb-1">
-            {/* ₹{confirmRideDetails.price} */}
+            ₹{fare}
           </h3>
           <h3 className="text-gray-500 text-md"> Cash </h3>
         </div>
       </div>
 
         {/* confirm button */}
-        <Link
-          to="/captains-home"
-          onClick={() => {
-            props.setRidePopUpPanel(false);
-            props.setConfirmRidePopUpPanel(false);
-          }}
+        <button
+          onClick={endRide}
           className="w-48 mx-auto block mt-6 py-2 bg-green-600 rounded-xl text-white font-bold text-xl text-center"
         >
           Finish Ride
-        </Link>
+        </button>
     </div>
   );
 };

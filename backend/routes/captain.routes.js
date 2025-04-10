@@ -10,25 +10,28 @@ router.post(
     body("email").isEmail().withMessage("Invalid Email"),
     body("fullname.firstname")
       .isLength({ min: 3 })
-      .withMessage("First name must be at 3 characters long"),
+      .withMessage("First name must be at least 3 characters long"),
     body("password")
       .isLength({ min: 6 })
-      .withMessage("Password must be 6 characters long"),
+      .withMessage("Password must be at least 6 characters long"),
     body("vehicle.color")
       .isLength({ min: 3 })
-      .withMessage("color must be at least 3 characters long"),
+      .withMessage("Vehicle color must be at least 3 characters long"),
     body("vehicle.plate")
       .isLength({ min: 3 })
-      .withMessage("plate must be at least 3 characters long"),
+      .withMessage("Vehicle plate must be at least 3 characters long")
+      .matches(/^[A-Za-z0-9]+$/)
+      .withMessage("Vehicle plate can only contain letters and numbers"),
     body("vehicle.capacity")
-      .isLength({ min: 1 })
-      .withMessage("capacity must be at least 1"),
-      body("vehicle.vehicleType")
+      .isInt({ min: 1 })
+      .withMessage("Vehicle capacity must be a positive number"),
+    body("vehicle.vehicleType")
       .isIn(["KUberAuto", "KUberGo", "Premier", "MOTO"])
-      .withMessage("Invalid Vehicle Type")    
+      .withMessage("Invalid vehicle type"),
   ],
   captainController.registerCaptain
 );
+
 
 router.post(
   "/login",

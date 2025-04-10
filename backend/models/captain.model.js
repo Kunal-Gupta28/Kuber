@@ -57,16 +57,14 @@ const captainSchema = new mongoose.Schema({
       enum: ["KUberAuto", "KUberGo", "Premier", "MOTO"],
   }
 },
-//   location:{
-//     latitude: {
-//       type: Number,
-//       required: true,
-//     },
-//     longitude: {
-//       type: Number,
-//       required: true,
-//     },
-// }
+  location:{
+    ltd: {
+      type: Number,
+    },
+    lng: {
+      type: Number,
+    },
+}
 });
 
 captainSchema.methods.generateAuthToken = function () {
@@ -77,7 +75,7 @@ captainSchema.methods.generateAuthToken = function () {
   const token = jwt.sign(
     { _id: this._id.toString() },
     process.env.JWT_SECRET,
-    { expiresIn: "1d" } // Set token to expire in 1 day
+    { expiresIn: "1d" }
   );
 
   return token;

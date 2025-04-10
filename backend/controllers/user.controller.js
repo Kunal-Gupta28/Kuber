@@ -6,16 +6,12 @@ const blacklistTokenModel = require("../models/blacklistToken.model");
 module.exports.registerUser = async (req, res, next) => {
   const errors = validationResult(req);
 
-  console.log(errors)
 
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
 
   const { fullname, email, password } = req.body;
-  console.log( "Fullname :",fullname)
-  console.log("email :" , email)
-  console.log("password :" , password);
 
   const isUserAlreadyExists = await userModel.findOne({ email });
   if (isUserAlreadyExists) {
@@ -46,34 +42,28 @@ module.exports.registerUser = async (req, res, next) => {
 module.exports.loginUser = async (req, res, next) => {
   const errors = validationResult(req);
 
-  console.log(errors)
 
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
 
   const { email, password } = req.body;
-  console.log("email:", email);
-  console.log("password",password);
   
   try {
     const user = await userModel.findOne({ email }).select("+password");
 
     if (!user) {
       return res.status(401).json({ message: "Invalid username or password" });
-      console.log("email is missing");
     }
 
     const isPasswordValid = await user.comparePassword(password);
 
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid username or password" });
-      console.log("password is missing");
 
     }
 
     const token = user.generateAuthToken();
-    console.log("token:", token);
 
     res.status(200).json({ token, user });
   } catch (error) {
