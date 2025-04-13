@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { useRideContext } from "../context/RideContext";
 
 const LocationSearchPanel = ({
   suggestion = [],
   isPickupSelected,
-  setPickup,
-  setDestination,
   handleUseMyLocation,
   setPanelOpen,
   setSuggestion,
 }) => {
+  const {setPickup,setDestination} = useRideContext()
   const [recentSearches, setRecentSearches] = useState([]);
 
   useEffect(() => {

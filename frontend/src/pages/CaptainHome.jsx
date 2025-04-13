@@ -4,7 +4,7 @@ import { useGSAP } from "@gsap/react";
 import CaptainDetails from "../components/CaptainDetails";
 import RidePopUpPanel from "../components/RidePopUpPanel";
 import ConfirmRidePopUpPanel from "../components/ConfirmRidePopUpPanel";
-import { CaptainDataContext } from "../context/CaptainContext";
+import { useCaptainContext } from "../context/CaptainContext";
 import { SocketContext } from "../context/socketContext";
 import axios from "axios";
 import LiveTracking from "../components/LiveTracking";
@@ -15,19 +15,9 @@ const CaptainHome = () => {
 
   const [ridePopUpPanel, setRidePopUpPanel] = useState(false);
   const [confirmRidePopUpPanel, setConfirmRidePopUpPanel] = useState(false);
-  const [ride, setRide] = useState("");
 
   const { socket } = useContext(SocketContext);
-  const { captain } = useContext(CaptainDataContext);
-
-  const splitAddress = (address) => {
-    if (!address) return ["Unknown", ""];
-    const parts = address.split(", ");
-    return [parts[0], parts.slice(1).join(", ")];
-  };
-
-  const [pickupMain, pickupDetails] = splitAddress(ride.pickup);
-  const [destinationMain, destinationDetails] = splitAddress(ride.destination);
+  const { captain,ride,setRide } = useCaptainContext();
 
   async function confirmRide() {
     try {
@@ -72,7 +62,7 @@ const CaptainHome = () => {
     };
 
     const intervalId = setInterval(updateLocation, 10000);
-    updateLocation(); // Initial call
+    updateLocation();
 
     socket.on("new-ride", (data) => {
       setRide(data);
@@ -130,11 +120,6 @@ const CaptainHome = () => {
         className="fixed bottom-0 left-0 w-full z-30 bg-white h-[70%] translate-y-full"
       >
         <RidePopUpPanel
-          ride={ride}
-          pickupMain={pickupMain}
-          pickupDetails={pickupDetails}
-          destinationMain={destinationMain}
-          destinationDetails={destinationDetails}
           confirmRide={confirmRide}
           setRidePopUpPanel={setRidePopUpPanel}
           setConfirmRidePopUpPanel={setConfirmRidePopUpPanel}
@@ -147,11 +132,6 @@ const CaptainHome = () => {
         className=" h-[80%] w-full fixed bottom-0 left-0 z-30 bg-white translate-y-full"
       >
         <ConfirmRidePopUpPanel
-          ride={ride}
-          pickupMain={pickupMain}
-          pickupDetails={pickupDetails}
-          destinationMain={destinationMain}
-          destinationDetails={destinationDetails}
           setRidePopUpPanel={setRidePopUpPanel}
           setConfirmRidePopUpPanel={setConfirmRidePopUpPanel}
         />

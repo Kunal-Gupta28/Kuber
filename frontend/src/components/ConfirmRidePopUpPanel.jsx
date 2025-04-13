@@ -1,16 +1,20 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { useCaptainContext } from "../context/CaptainContext";
+import RideDetails from "../components/RideDetails";
 
 const ConfirmRidePopUpPanel = ({
-  ride,
-  pickupMain,
-  pickupDetails,
-  destinationMain,
-  destinationDetails,
   setRidePopUpPanel,
   setConfirmRidePopUpPanel,
 }) => {
+  const {
+    pickupMain,
+    pickupDetails,
+    destinationMain,
+    destinationDetails,
+    ride,
+  } = useCaptainContext();
   const [OTP, setOTP] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -76,38 +80,8 @@ const ConfirmRidePopUpPanel = ({
         </div>
       </div>
 
-      {/* Pick-up Address */}
-      <div className="flex border-t-2 border-grey py-3">
-        <span className="w-16 flex justify-center items-center">
-          <i className="ri-map-pin-line"></i>
-        </span>
-        <div>
-          <h3 className="font-semibold text-xl pb-1">{pickupMain}</h3>
-          <h5 className="text-gray-500 text-md">{pickupDetails}</h5>
-        </div>
-      </div>
-
-      {/* Destination */}
-      <div className="flex">
-        <span className="w-16 flex justify-center items-center">
-          <i className="ri-square-fill"></i>
-        </span>
-        <div className="border-t-2 border-grey py-3">
-          <h3 className="font-semibold text-xl pb-1">{destinationMain}</h3>
-          <h5 className="text-gray-500 text-md">{destinationDetails}</h5>
-        </div>
-      </div>
-
-      {/* Bill Info */}
-      <div className="flex">
-        <span className="w-16 flex justify-center items-center">
-          <i className="ri-bank-card-2-fill"></i>
-        </span>
-        <div className="w-full border-t-2 border-grey py-3">
-          <h3 className="font-semibold text-xl pb-1">₹{ride.fare}</h3>
-          <h3 className="text-gray-500 text-md">{ride.paymentMethod}</h3>
-        </div>
-      </div>
+      {/* ride details */}
+      <RideDetails />
 
       <form onSubmit={submitHandler}>
         {/* OTP Input */}
@@ -133,7 +107,7 @@ const ConfirmRidePopUpPanel = ({
             type="submit"
             className="w-48 mx-auto block mt-6 py-2 bg-green-600 rounded-xl text-white font-bold text-xl text-center"
           >
-            Confirm 
+            Confirm
           </button>
 
           {/* Cancel Button */}

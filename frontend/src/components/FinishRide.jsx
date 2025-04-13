@@ -1,21 +1,25 @@
 import React from "react";
-import { useNavigate ,useLocation } from "react-router-dom";
-import axios from 'axios'
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import RideDetails from "./RideDetails";
+import {useCaptainContext} from '../context/CaptainContext' 
 
 const FinishRide = (props) => {
-  const location = useLocation();
-  const state = location.state || {};
-  const { pickupMain, pickupDetails, destinationMain, destinationDetails, ride } = state;
-  const fare = ride?.fare;
-  const navigate = useNavigate()
-  
-  async function endRide(){
-    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/rides/end-ride`,{
-      rideId:ride._id
-    },{headers:{Authorization:`bearer ${localStorage.getItem('token')}`}})
+  const {ride} = useCaptainContext()
 
-    if(response.status === 200){
-      navigate('/captains/home')
+  const navigate = useNavigate();
+
+  async function endRide() {
+    const response = await axios.post(
+      `${import.meta.env.VITE_BASE_URL}/rides/end-ride`,
+      {
+        rideId: ride._id,
+      },
+      { headers: { Authorization: `bearer ${localStorage.getItem("token")}` } }
+    );
+
+    if (response.status === 200) {
+      navigate("/captains/home");
     }
   }
   return (
@@ -41,53 +45,15 @@ const FinishRide = (props) => {
         </div>
       </div>
 
-      {/* pick-up address */}
-      <div className="flex border-t-2 border-grey py-3">
-        <span className="w-16 flex justify-center items-center">
-          <i className="ri-map-pin-line"></i>
-        </span>
-        <div>
-          {/* {confirmRideDetails.address}{" "} */}
-          <h3 className="font-semibold text-xl pb-1">{pickupMain}</h3>
-          <h5 className="text-gray-500 text-md">
-            {pickupDetails}
-          </h5>
-        </div>
-      </div>
+      <RideDetails />
 
-      {/* destination */}
-      <div className="flex">
-        <span className="w-16 flex justify-center items-center">
-          <i className="ri-square-fill"></i>
-        </span>
-        <div className="border-t-2 border-grey py-3">
-          <h3 className="font-semibold text-xl pb-1">{destinationMain}</h3>
-          <h5 className="text-gray-500 text-md">
-            {destinationDetails}
-          </h5>
-        </div>
-      </div>
-
-      {/* bill info */}
-      <div className="flex">
-        <span className="w-16 flex justify-center items-center">
-          <i className="ri-bank-card-2-fill"></i>
-        </span>
-        <div className="w-full border-t-2 border-grey py-3">
-          <h3 className="font-semibold text-xl pb-1">
-            ₹{fare}
-          </h3>
-          <h3 className="text-gray-500 text-md"> Cash </h3>
-        </div>
-      </div>
-
-        {/* confirm button */}
-        <button
-          onClick={endRide}
-          className="w-48 mx-auto block mt-6 py-2 bg-green-600 rounded-xl text-white font-bold text-xl text-center"
-        >
-          Finish Ride
-        </button>
+      {/* confirm button */}
+      <button
+        onClick={endRide}
+        className="w-48 mx-auto block mt-6 py-2 bg-green-600 rounded-xl text-white font-bold text-xl text-center"
+      >
+        Finish Ride
+      </button>
     </div>
   );
 };

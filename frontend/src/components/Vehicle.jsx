@@ -1,17 +1,14 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-
+import { useRideContext } from "../context/RideContext";
 const Vehicle = ({
-  pickup,
-  destination,
   vehiclePanelOpen,
   setConfirmRidePanel,
-  setConfirmRideDetails,
-  setVehiclePanelOpen
+  setVehiclePanelOpen,
 }) => {
   const [fares, setFares] = useState({});
   const [selectedVehicle, setSelectedVehicle] = useState(null);
-
+  const { pickup,destination,setConfirmRideDetails} = useRideContext();
   const vehicleOptions = [
     {
       image: "/images/UberSelect-White.webp",
@@ -42,7 +39,6 @@ const Vehicle = ({
       description: "Affordable, auto rides",
     },
   ];
-  
 
   useEffect(() => {
     const fetchFares = async () => {

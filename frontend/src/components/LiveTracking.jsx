@@ -6,16 +6,16 @@ import {
 } from "@react-google-maps/api";
 import "remixicon/fonts/remixicon.css";
 
-// Container style
+// Map container style
 const containerStyle = {
   width: "100%",
   height: "100%",
   position: "relative",
 };
 
-const libraries = ["marker"];
+const libraries = ["marker", "places"];
 
-const MyMap = ({ coordinates, userLocation }) => {
+const MyMap = ({ coordinates }) => {
   const pickup = coordinates?.pickup
     ? { lat: coordinates.pickup.latitude, lng: coordinates.pickup.longitude }
     : null;
@@ -39,12 +39,13 @@ const MyMap = ({ coordinates, userLocation }) => {
     mapIds: [import.meta.env.VITE_MAP_ID],
   });
 
+  // Get user location on mount
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         ({ coords }) => {
-          const userLocation = { lat: coords.latitude, lng: coords.longitude };
-          setCurrentPosition(userLocation);
+          const userLoc = { lat: coords.latitude, lng: coords.longitude };
+          setCurrentPosition(userLoc);
         },
         (error) => console.error("Geolocation error:", error),
         { enableHighAccuracy: true }
@@ -52,13 +53,13 @@ const MyMap = ({ coordinates, userLocation }) => {
     }
   }, []);
 
+  // Fetch directions and set route path
   useEffect(() => {
     if (
-      pickup?.lat &&
-      pickup?.lng &&
-      destination?.lat &&
-      destination?.lng &&
-      window.google
+      isLoaded &&
+      pickup &&
+      destination &&
+      window.google?.maps?.DirectionsService
     ) {
       const directionsService = new window.google.maps.DirectionsService();
 
@@ -70,16 +71,16 @@ const MyMap = ({ coordinates, userLocation }) => {
         },
         (result, status) => {
           if (status === "OK") {
-            const route = result.routes[0].overview_path;
-            setRoutePath(route);
+            setRoutePath(result.routes[0].overview_path);
           } else {
             console.error("Directions request failed:", status);
           }
         }
       );
     }
-  }, [pickup, destination]);
+  }, [pickup, destination, isLoaded]);
 
+  // Map load handler
   const handleMapLoad = (map) => {
     mapRef.current = map;
 
@@ -106,6 +107,7 @@ const MyMap = ({ coordinates, userLocation }) => {
     });
   };
 
+  // Center map on current location
   const recenterMap = () => {
     if (mapRef.current && currentPosition) {
       mapRef.current.setCenter(currentPosition);
@@ -128,7 +130,6 @@ const MyMap = ({ coordinates, userLocation }) => {
           disableDefaultUI: true,
         }}
       >
-        {/* Render the route in black using Polyline */}
         {routePath && (
           <Polyline
             path={routePath}
@@ -141,7 +142,6 @@ const MyMap = ({ coordinates, userLocation }) => {
         )}
       </GoogleMap>
 
-      {/* Recenter button */}
       <button
         onClick={recenterMap}
         style={{

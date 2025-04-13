@@ -16,10 +16,11 @@ import WaitingForDriver from "../components/WaitingForDriver";
 // Contexts
 import { SocketContext } from "../context/socketContext";
 import { UserDataContext } from "../context/UserContext";
+import { useRideContext } from "../context/rideContext";
 
 const Home = () => {
-  const [pickup, setPickup] = useState("");
-  const [destination, setDestination] = useState("");
+  const { pickup, setPickup, destination, setDestination, setRide } =
+    useRideContext();
   const [suggestion, setSuggestion] = useState("");
   const [isPickupSelected, setIsPickupSelected] = useState(false);
   const [panelOpen, setPanelOpen] = useState(false);
@@ -30,12 +31,10 @@ const Home = () => {
   const vehiclePanelCloseRef = useRef(null);
   const [confirmRidePanel, setConfirmRidePanel] = useState(false);
   const confirmRidePanelRef = useRef(null);
-  const [confirmRideDetails, setConfirmRideDetails] = useState({});
   const vehicleFoundRef = useRef(null);
   const [vehicleFound, setVehicleFound] = useState(false);
   const waitingForDriverRef = useRef(null);
   const [waitingForDriver, setWaitingForDriver] = useState(false);
-  const [ride, setRide] = useState(null);
   const navigate = useNavigate();
   const { user } = useContext(UserDataContext);
   const { socket } = useContext(SocketContext);
@@ -71,51 +70,29 @@ const Home = () => {
     }
   };
 
-  const splitAddress = (address) => {
-    if (!address) return ["Unknown", ""];
-    const parts = address.split(", ");
-    return [parts[0], parts.slice(1).join(", ")];
-  };
-
-  const [pickupMain, pickupDetails] = splitAddress(pickup);
-  const [destinationMain, destinationDetails] = splitAddress(destination);
-
   useEffect(() => {
     socket.emit("join", { userType: "user", userId: user._id });
-  
+
     socket.on("ride-confirmed", (ride) => {
       setVehicleFound(false);
       setWaitingForDriver(true);
       setRide(ride);
     });
-  
+
     socket.on("ride-start", (ride) => {
-      const [pickupMain, pickupDetails] = splitAddress(ride.pickup);
-      const [destinationMain, destinationDetails] = splitAddress(
-        ride.destination
-      );
-  
       setWaitingForDriver(false);
       navigate("/users/riding", {
-        state: {
-          pickupMain,
-          pickupDetails,
-          destinationMain,
-          destinationDetails,
-          ride,
-          confirmRideDetails,
-        },
+        state: { ride },
       });
     });
-  
+
     // Clean up listeners
     return () => {
       socket.off("ride-confirmed");
       socket.off("ride-start");
     };
   }, [user]);
-  
- 
+
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
@@ -130,7 +107,6 @@ const Home = () => {
       );
 
       localStorage.setItem("coordinates", JSON.stringify(response.data));
-      
     } catch (error) {
       console.error(
         "Error fetching coordinates:",
@@ -196,7 +172,11 @@ const Home = () => {
           <div className="flex justify-between">
             <h4 className="text-2xl font-semibold">Find a trip</h4>
             <i
-              onClick={() => setPanelOpen(false)}
+              onClick={() => {
+                setPanelOpen(false);
+                setPickup("");
+                setDestination("");
+              }}
               ref={panelCloseRef}
               className="ri-arrow-down-wide-fill text-2xl opacity-0"
             ></i>
@@ -275,9 +255,12 @@ const Home = () => {
               </div>
               <button
                 className="w-28 mt-5 p-2 bg-[#eee] rounded-full font-semibold"
-                onClick={() => {if(pickup && destination){
-                  setVehiclePanelOpen(true); setPanelOpen(false);
-                }}}
+                onClick={() => {
+                  if (pickup && destination) {
+                    setVehiclePanelOpen(true);
+                    setPanelOpen(false);
+                  }
+                }}
               >
                 Find Trip
               </button>
@@ -289,8 +272,6 @@ const Home = () => {
           <LocationSearchPanel
             suggestion={suggestion}
             isPickupSelected={isPickupSelected}
-            setPickup={setPickup}
-            setDestination={setDestination}
             handleUseMyLocation={handleUseMyLocation}
             setPanelOpen={setPanelOpen}
             setSuggestion={setSuggestion}
@@ -305,8 +286,10 @@ const Home = () => {
             <h3 className="text-2xl font-semibold">Choose a Vehicle</h3>
             <i
               onClick={() => {
-                
                 setPanelOpen(true);
+                setVehiclePanelOpen(false);
+                setPickup("");
+                setDestination("");
               }}
               ref={vehiclePanelCloseRef}
               className="ri-arrow-down-wide-fill text-2xl opacity-0"
@@ -314,12 +297,9 @@ const Home = () => {
           </div>
 
           <Vehicle
-            pickup={pickup}
-            destination={destination}
             confirmRidePanel={confirmRidePanel}
             vehiclePanelOpen={vehiclePanelOpen}
             setConfirmRidePanel={setConfirmRidePanel}
-            setConfirmRideDetails={setConfirmRideDetails}
             setVehiclePanelOpen={setVehiclePanelOpen}
           />
         </div>
@@ -329,18 +309,9 @@ const Home = () => {
           className="h-[70%] fixed w-full z-10 bottom-0 translate-y-full bg-white"
         >
           <ConfirmRide
-            pickup={pickup}
-            destination={destination}
-            pickupMain={pickupMain}
-            pickupDetails={pickupDetails}
-            destinationMain={destinationMain}
-            destinationDetails={destinationDetails}
             setConfirmRidePanel={setConfirmRidePanel}
-            confirmRideDetails={confirmRideDetails}
             setVehicleFound={setVehicleFound}
             setPanelOpen={setPanelOpen}
-            setPickup={setPickup}
-            setDestination={setDestination}
           />
         </div>
 
@@ -349,16 +320,8 @@ const Home = () => {
           className="h-[60%] fixed w-full z-10 bottom-0 translate-y-full bg-white"
         >
           <LookingForDriver
-            pickup={pickup}
-            pickupMain={pickupMain}
-            pickupDetails={pickupDetails}
-            destinationMain={destinationMain}
-            destinationDetails={destinationDetails}
-            confirmRideDetails={confirmRideDetails}
             setVehicleFound={setVehicleFound}
             setPanelOpen={setPanelOpen}
-            setPickup={setPickup}
-            setDestination={setDestination}
           />
         </div>
 
@@ -366,13 +329,7 @@ const Home = () => {
           ref={waitingForDriverRef}
           className="h-[60%] fixed w-full z-10 bottom-0 translate-y-full bg-white"
         >
-          <WaitingForDriver
-            ride={ride}
-            pickupMain={pickupMain}
-            pickupDetails={pickupDetails}
-            confirmRideDetails={confirmRideDetails}
-            setWaitingForDriver={setWaitingForDriver}
-          />
+          <WaitingForDriver />
         </div>
       </div>
     </div>

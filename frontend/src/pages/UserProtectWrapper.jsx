@@ -27,7 +27,6 @@ const UserProtectWrapper = ({
             }
         })
             .catch(err => {
-                console.log(err)
                 localStorage.removeItem('token')
                 navigate('/users/login')
             })

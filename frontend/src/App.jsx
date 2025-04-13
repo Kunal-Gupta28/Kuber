@@ -36,7 +36,7 @@ function App() {
           element={
             <UserProtectorWrapper>
               <UserLogout />
-            </UserProtectorWrapper>
+            </UserProtectorWrapper> 
           }
         />
         <Route path="/captains/login" element={<CaptainLogin />} />

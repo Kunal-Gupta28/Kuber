@@ -1,12 +1,35 @@
 import React from "react";
+import { useRideContext } from "../context/RideContext";
 
-const WaitingForDriver = ({
-  ride,
-  pickupMain,
-  pickupDetails,
-  confirmRideDetails,
-  setWaitingForDriver,
-}) => {
+const WaitingForDriver = () => {
+  const {
+    ride,
+    pickupMain,
+    pickupDetails,
+    confirmRideDetails,
+  } = useRideContext();
+
+  if (!confirmRideDetails || !ride) {
+    return (
+      <div className="p-4 text-center text-gray-500">
+        Loading ride details...
+      </div>
+    );
+  }
+
+  const driverName = [
+    ride?.captain?.fullname?.firstname,
+    ride?.captain?.fullname?.lastname,
+  ]
+    .filter(Boolean)
+    .join(" ") || "Your Driver";
+
+  const vehiclePlate = ride?.captain?.vehicle?.plate || "Plate Number";
+  const vehicleModel =
+    `${ride?.captain?.vehicle?.color || ""} ${ride?.captain?.vehicle?.model || ""}`.trim() ||
+    "Vehicle Info";
+
+  const otp = ride?.otp || "----";
 
   return (
     <div>
@@ -24,16 +47,22 @@ const WaitingForDriver = ({
       <div>
         <div className="px-5 pt-4 flex justify-between items-center">
           {/* Driver and Vehicle Image */}
-          <div className="flex items-center">
-            <div className="h-20 w-20 rounded-full bg-red-300 overflow-hidden">
-              <img src={confirmRideDetails.driverImage || ""} alt="Driver" />
+          <div className="flex items-center gap-3">
+            <div className="h-20 w-20 rounded-full bg-gray-300 overflow-hidden flex items-center justify-center">
+              {/* Optional driver image placeholder */}
+              {/* <img src={ride?.driverImage || "/images/default-driver.png"} alt="Driver" className="h-full w-full object-cover" /> */}
+              <i className="ri-user-line text-3xl text-white" />
             </div>
-            <div className="h-20 w-20 rounded-full flex justify-center items-center">
+            <div className="h-20 w-20 rounded-full overflow-hidden flex justify-center items-center bg-gray-200">
               {confirmRideDetails.image ? (
                 <img
                   src={confirmRideDetails.image}
-                  className="h-16 w-16"
+                  className="h-16 w-16 object-contain"
                   alt="Vehicle"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = "/images/default-vehicle.png";
+                  }}
                 />
               ) : (
                 <div className="h-16 w-16 bg-gray-300 rounded-full"></div>
@@ -43,16 +72,16 @@ const WaitingForDriver = ({
 
           {/* Driver Info */}
           <div className="text-right font-medium">
-            <h2 className="text-gray-400">{ride?.captain?.fullname?.firstname} {ride?.captain?.fullname?.lastname}</h2>
-            <h1 className="text-xl font-semibold">{ride?.captain?.vehicle?.plate}</h1>
-            <h2 className="text-gray-400">White Suzuki S-Presso LXI</h2>
+            <h2 className="text-gray-400">{driverName}</h2>
+            <h1 className="text-xl font-semibold">{vehiclePlate}</h1>
+            <h2 className="text-gray-400">{vehicleModel}</h2>
             <h3 className="text-yellow-500 font-semibold">⭐ 4.3</h3>
           </div>
         </div>
 
         {/* OTP */}
-        <div className="p-4 text-center text-2xl my-3 py-5 border font-bold">
-           OTP : {ride?.otp}
+        <div className="p-4 text-center text-2xl my-3 py-5 border font-bold animate-pulse">
+          OTP : {otp}
         </div>
 
         {/* Action Buttons */}
