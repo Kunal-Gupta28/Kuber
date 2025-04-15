@@ -12,6 +12,7 @@ import Vehicle from "../components/Vehicle";
 import ConfirmRide from "../components/ConfirmRide";
 import LookingForDriver from "../components/LookingForDriver";
 import WaitingForDriver from "../components/WaitingForDriver";
+import UserLogout from "./UserLogout";
 
 // Contexts
 import { SocketContext } from "../context/socketContext";
@@ -23,6 +24,7 @@ const Home = () => {
     useRideContext();
   const [suggestion, setSuggestion] = useState("");
   const [isPickupSelected, setIsPickupSelected] = useState(false);
+  const topBarRef = useRef(null);
   const [panelOpen, setPanelOpen] = useState(false);
   const panelOpenRef = useRef(null);
   const panelCloseRef = useRef(null);
@@ -116,6 +118,15 @@ const Home = () => {
   };
 
   useGSAP(() => {
+    gsap.to(topBarRef.current, {
+      zIndex: panelOpen ? 0 : 10,
+      opacity: panelOpen ? 0 : 1,
+      duration: 0.5,
+      ease: "power2.inOut",
+    });
+  }, [panelOpen]);
+
+  useGSAP(() => {
     gsap.to(panelOpenRef.current, {
       height: panelOpen ? "70%" : "0%",
       duration: 0.5,
@@ -161,7 +172,13 @@ const Home = () => {
 
   return (
     <div className="h-screen relative overflow-hidden">
-      <p className="fixed p-2 text-xl font-semibold z-10">Kuber</p>
+      <div
+        ref={topBarRef}
+        className="w-full p-2 flex justify-between fixed top-0 z-10"
+      >
+        <p className="p-2 text-xl font-bold">Kuber</p>
+        <UserLogout />
+      </div>
 
       <div className="h-[70%] w-full">
         <LiveTracking userLocation={userLocation} />

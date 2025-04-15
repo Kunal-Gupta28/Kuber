@@ -8,6 +8,7 @@ import { useCaptainContext } from "../context/CaptainContext";
 import { SocketContext } from "../context/socketContext";
 import axios from "axios";
 import LiveTracking from "../components/LiveTracking";
+import CaptainLogout from "./CaptainLogout";
 
 const CaptainHome = () => {
   const ridePopUpPanelRef = useRef(null);
@@ -17,7 +18,7 @@ const CaptainHome = () => {
   const [confirmRidePopUpPanel, setConfirmRidePopUpPanel] = useState(false);
 
   const { socket } = useContext(SocketContext);
-  const { captain,ride,setRide } = useCaptainContext();
+  const { captain, ride, setRide } = useCaptainContext();
 
   async function confirmRide() {
     try {
@@ -75,6 +76,7 @@ const CaptainHome = () => {
     };
   }, [captain]);
 
+  // GSAP Animations
   useGSAP(() => {
     gsap.to(ridePopUpPanelRef.current, {
       y: ridePopUpPanel ? "2%" : "100%",
@@ -96,9 +98,7 @@ const CaptainHome = () => {
       {/* Top bar */}
       <div className="w-full flex justify-between items-center p-4 text-xl z-20 absolute top-0">
         <h2 className="font-bold">Kuber</h2>
-        <span className="bg-white p-2 rounded-full shadow-md">
-          <i className="ri-logout-box-r-line"></i>
-        </span>
+        <CaptainLogout />
       </div>
 
       {/* Main content: Map + CaptainDetails */}
@@ -129,7 +129,7 @@ const CaptainHome = () => {
       {/* Confirm Ride Panel */}
       <div
         ref={confirmRidePopUpPanelRef}
-        className=" h-[80%] w-full fixed bottom-0 left-0 z-30 bg-white translate-y-full"
+        className="h-[80%] w-full fixed bottom-0 left-0 z-30 bg-white translate-y-full"
       >
         <ConfirmRidePopUpPanel
           setRidePopUpPanel={setRidePopUpPanel}

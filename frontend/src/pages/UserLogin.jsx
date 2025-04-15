@@ -27,7 +27,6 @@ const UserLogin = () => {
       navigate('/home');
     }
 
-    console.log(userData);
     // clearing input fields
     setEmail("");
     setPassword("");

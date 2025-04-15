@@ -6,7 +6,6 @@ const RideDetails = () => {
   const rideCtx = useRideContext();
   const captainCtx = useCaptainContext();
 
-  // If captainCtx has a captain, we assume it's the captain view
   const isCaptain = !!captainCtx?.captain;
   const data = isCaptain ? captainCtx : rideCtx;
 
