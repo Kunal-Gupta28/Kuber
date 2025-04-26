@@ -35,36 +35,52 @@ const ConfirmRide = ({
   };
 
   return (
-    <div className="w-screen">
-      <h2 className="text-center text-2xl font-semibold mb-5 pt-5 border-b-2">
-        Looking for nearby drivers
-      </h2>
+    <div className="w-screen bg-white dark:bg-gray-900 text-black dark:text-white">
+      <div className="max-w-2xl mx-auto px-4 py-6">
+        {/* Header */}
+        <div className="text-center mb-6">
+          <h2 className="text-2xl font-bold mb-2">Confirm Your Ride</h2>
+          <p className="text-gray-600 dark:text-gray-400">
+            Review your trip details before confirming
+          </p>
+        </div>
 
-      <RideDetails
-        setConfirmRidePanel={setConfirmRidePanel}
-        setVehicleFound={setVehicleFound}
-        setPanelOpen={setPanelOpen}
-      />
+        {/* Ride Details */}
+        <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 mb-6 shadow-sm">
+          <RideDetails
+            setConfirmRidePanel={setConfirmRidePanel}
+            setVehicleFound={setVehicleFound}
+            setPanelOpen={setPanelOpen}
+          />
+        </div>
 
-      {/* Continue / Cancel Buttons */}
-      <div className="flex justify-evenly">
-        <button
-          onClick={handleRideConfirmation}
-          className="w-48 block my-5 py-2 bg-black hover:bg-gray-900 rounded-xl text-white font-bold text-xl transition duration-200"
-        >
-          Continue
-        </button>
-        <button
-          onClick={() => {
-            setConfirmRidePanel(false);
-            setPanelOpen(true);
-            setPickup("");
-            setDestination("");
-          }}
-          className="w-48 block my-5 py-2 bg-black hover:bg-gray-900 rounded-xl text-white font-bold text-xl transition duration-200"
-        >
-          Cancel
-        </button>
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <button
+            onClick={handleRideConfirmation}
+            className="flex-1 sm:flex-none px-8 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 
+                     text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-[1.02] 
+                     active:scale-[0.98] shadow-md hover:shadow-lg"
+          >
+            <i className="ri-check-line mr-2"></i>
+            Confirm Ride
+          </button>
+          <button
+            onClick={() => {
+              setConfirmRidePanel(false);
+              setPanelOpen(true);
+              setPickup("");
+              setDestination("");
+            }}
+            className="flex-1 sm:flex-none px-8 py-3 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 
+                     text-gray-800 dark:text-gray-200 font-semibold rounded-xl transition-all duration-300 
+                     transform hover:scale-[1.02] active:scale-[0.98]"
+          >
+            <i className="ri-close-line mr-2"></i>
+            Cancel
+          </button>
+        </div>
+
       </div>
     </div>
   );

@@ -1,24 +1,14 @@
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import {CaptainDataContext} from '../context/CaptainContext'
+import { CaptainDataContext } from "../context/CaptainContext";
+import DarkModeToggle from "../components/DarkModeToggle";
 
 const CaptainSignUp = () => {
   const navigate = useNavigate();
+  const { setCaptain } = useContext(CaptainDataContext);
 
-  // State variables for handling input values
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [vehicleColor, setVehicleColor] = useState("");
-  const [vehiclePlate, setVehiclePlate] = useState("");
-  const [vehicleCapacity, setVehicleCapacity] = useState("");
-  const [vehicleType, setVehicleType] = useState("");
-  const {setCaptain} = useContext(CaptainDataContext);
-
-  // Error state variables
-  const [errors, setErrors] = useState({
+  const [form, setForm] = useState({
     firstName: "",
     lastName: "",
     email: "",
@@ -29,316 +19,198 @@ const CaptainSignUp = () => {
     vehicleType: "",
   });
 
-  // Regular expression for alphanumeric vehicle plate validation
+  const [errors, setErrors] = useState({});
+  const MAX_PLATE_LENGTH = 8;
   const vehiclePlateRegex = /^[A-Za-z0-9]+$/;
-  const MAX_PLATE_LENGTH = 8; // Adjust this to the max length of vehicle plate numbers
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  // Form validation function
-  const validateForm = () => {
-    const newErrors = {};
-
-    // Validate first and last name
-    if (!firstName) {
-      newErrors.firstName = "First name is required.";
-    }
-    if (!lastName) {
-      newErrors.lastName = "Last name is required.";
-    }
-
-    // Validate email
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!email) {
-      newErrors.email = "Email is required.";
-    } else if (!emailRegex.test(email)) {
-      newErrors.email = "Please enter a valid email address.";
-    }
-
-    // Validate password (minimum 6 characters)
-    if (!password) {
-      newErrors.password = "Password is required.";
-    } else if (password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters long.";
-    }
-
-    // Validate vehicle color
-    if (!vehicleColor) {
-      newErrors.vehicleColor = "Vehicle color is required.";
-    }
-
-    // Validate vehicle plate
-    if (!vehiclePlate) {
-      newErrors.vehiclePlate = "Vehicle plate is required.";
-    } else if (!vehiclePlateRegex.test(vehiclePlate)) {
-      newErrors.vehiclePlate =
-        "Vehicle plate can only contain letters and numbers.";
-    } else if (vehiclePlate.length > MAX_PLATE_LENGTH) {
-      newErrors.vehiclePlate = `Vehicle plate cannot exceed ${MAX_PLATE_LENGTH} characters.`;
-    }
-
-    // Validate vehicle capacity
-    if (!vehicleCapacity) {
-      newErrors.vehicleCapacity = "Vehicle capacity is required.";
-    }
-
-    // Validate vehicle type
-    if (!vehicleType) {
-      newErrors.vehicleType = "Vehicle type is required.";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; // Return true if no errors
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // Form submission handler
-  const formHandler = async (e) => {
+  const validateForm = () => {
+    const newErrors = {};
+    if (!form.firstName) newErrors.firstName = "First name is required.";
+    if (!form.lastName) newErrors.lastName = "Last name is required.";
+    if (!form.email) newErrors.email = "Email is required.";
+    else if (!emailRegex.test(form.email)) newErrors.email = "Invalid email format.";
+    if (!form.password) newErrors.password = "Password is required.";
+    else if (form.password.length < 6) newErrors.password = "Minimum 6 characters.";
+    if (!form.vehicleColor) newErrors.vehicleColor = "Select vehicle color.";
+    if (!form.vehiclePlate) newErrors.vehiclePlate = "Plate number required.";
+    else if (!vehiclePlateRegex.test(form.vehiclePlate)) newErrors.vehiclePlate = "Only alphanumerics allowed.";
+    else if (form.vehiclePlate.length > MAX_PLATE_LENGTH) newErrors.vehiclePlate = `Max ${MAX_PLATE_LENGTH} chars.`;
+    if (!form.vehicleCapacity) newErrors.vehicleCapacity = "Select capacity.";
+    if (!form.vehicleType) newErrors.vehicleType = "Select vehicle type.";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
 
-    if (!validateForm()) {
-      return; // Don't submit if there are validation errors
-    }
-
-    // Create data to send to the backend
-    const captainData = {
-      fullname: { firstname: firstName, lastname: lastName },
-      email,
-      password,
+    const data = {
+      fullname: {
+        firstname: form.firstName,
+        lastname: form.lastName,
+      },
+      email: form.email,
+      password: form.password,
       vehicle: {
-        color: vehicleColor,
-        plate: vehiclePlate,
-        capacity: vehicleCapacity,
-        vehicleType,
+        color: form.vehicleColor,
+        plate: form.vehiclePlate,
+        capacity: form.vehicleCapacity,
+        vehicleType: form.vehicleType,
       },
     };
-    
+
     try {
-      const response = await axios.post(
+      const res = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/captains/register`,
-        captainData
+        data
       );
-      
-      if (response.status === 201) {
-        setCaptain(response.data.captain)
-        localStorage.setItem("token", response.data.token);
+      if (res.status === 201) {
+        setCaptain(res.data.captain);
+        localStorage.setItem("token", res.data.token);
         navigate("/captains/home");
       }
     } catch (error) {
-      console.error("Error registering captain:", error);
+      console.error("Signup failed:", error);
     }
   };
 
   return (
-    <section className="p-5 flex flex-col justify-center">
-      <header>
-        <h1 className="font-bold text-2xl">Kuber</h1>
-      </header>
-
-      <form onSubmit={formHandler} className="w-full max-w-sm mt-8">
-        <fieldset className="p-4">
-          <div className="mb-4">
-            <label className="block text-xl font-medium mb-2">
-              What&apos;s your name
-            </label>
-            <input
-              className={`bg-gray-200 p-3 w-[48%] me-3 rounded-md ${
-                errors.firstName ? "border-2 border-red-500" : ""
-              }`}
-              type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              required
-              placeholder="First Name"
-            />
-            {errors.firstName && (
-              <p className="text-red-500 text-sm flex items-center">
-                <span className="mr-1 text-lg">!</span>
-                {errors.firstName}
-              </p>
-            )}
-
-            <input
-              className={`bg-gray-200 p-3 w-[48%] rounded-md ${
-                errors.lastName ? "border-2 border-red-500" : ""
-              }`}
-              type="text"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              placeholder="Last Name"
-            />
-            {errors.lastName && (
-              <p className="text-red-500 text-sm flex items-center">
-                <span className="mr-1 text-lg">!</span>
-                {errors.lastName}
-              </p>
-            )}
+    <section className="h-[100dvh] bg-white dark:bg-black text-black dark:text-white p-5 flex flex-col items-center justify-center">
+      <DarkModeToggle />
+      <div className="w-full max-w-md bg-gray-100 dark:bg-gray-800 p-6 rounded-2xl shadow-lg">
+        <h1 className="text-2xl font-bold mb-6 text-center">Kuber Captain Sign Up</h1>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="flex gap-4">
+            {["firstName", "lastName"].map((field) => (
+              <div key={field} className="w-1/2">
+                <input
+                  name={field}
+                  placeholder={field === "firstName" ? "First Name" : "Last Name"}
+                  value={form[field]}
+                  onChange={handleChange}
+                  className="w-full p-3 bg-gray-200 dark:bg-gray-700 rounded-md focus:ring-2 focus:outline-none focus:ring-blue-400"
+                />
+                {errors[field] && (
+                  <p className="text-red-500 text-sm mt-1">{errors[field]}</p>
+                )}
+              </div>
+            ))}
           </div>
 
-          <div className="mb-4">
-            <label className="block text-xl font-medium mb-2">
-              Enter email
-            </label>
-            <input
-              className={`bg-gray-200 p-3 w-full rounded-md ${
-                errors.email ? "border-2 border-red-500" : ""
-              }`}
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              placeholder="email@gmail.com"
-            />
-            {errors.email && (
-              <p className="text-red-500 text-sm flex items-center">
-                <span className="mr-1 text-lg">!</span>
-                {errors.email}
-              </p>
-            )}
-          </div>
+          <input
+            name="email"
+            type="email"
+            placeholder="Email Address"
+            value={form.email}
+            onChange={handleChange}
+            className="w-full p-3 bg-gray-200 dark:bg-gray-700 rounded-md focus:ring-2 focus:outline-none focus:ring-blue-400"
+          />
+          {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
 
-          <div className="my-6">
-            <label className="block text-xl font-medium mb-2">
-              Enter password
-            </label>
-            <input
-              className={`bg-gray-200 p-3 w-full rounded-md ${
-                errors.password ? "border-2 border-red-500" : ""
-              }`}
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              placeholder="Password"
-            />
-            {errors.password && (
-              <p className="text-red-500 text-sm flex items-center">
-                <span className="mr-1 text-lg">!</span>
-                {errors.password}
-              </p>
-            )}
-          </div>
+          <input
+            name="password"
+            type="password"
+            placeholder="Password"
+            value={form.password}
+            onChange={handleChange}
+            className="w-full p-3 bg-gray-200 dark:bg-gray-700 rounded-md focus:ring-2 focus:outline-none focus:ring-blue-400"
+          />
+          {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
 
-          <div>
-            <label className="text-xl font-semibold">Vehicle Information</label>
-            <div className="my-3 flex justify-between">
+          <div className="flex gap-4">
+            <div className="w-1/2">
               <select
                 name="vehicleColor"
-                value={vehicleColor}
-                onChange={(e) => setVehicleColor(e.target.value)}
-                className={`bg-gray-200 p-3 w-[48%] rounded-md ${
-                  errors.vehicleColor ? "border-2 border-red-500" : ""
-                }`}
+                value={form.vehicleColor}
+                onChange={handleChange}
+                className="w-full p-3 bg-gray-200 dark:bg-gray-700 rounded-md"
               >
-                <option value="" disabled>
-                  Select Color
-                </option>
-                <option value="Red">Red</option>
-                <option value="Blue">Blue</option>
-                <option value="Black">Black</option>
-                <option value="White">White</option>
-                <option value="Green">Green</option>
-                <option value="Yellow">Yellow</option>
-                <option value="Silver">Silver</option>
-                <option value="Gray">Gray</option>
+                <option value="">Select Color</option>
+                {["Red", "Blue", "Black", "White", "Gray", "Silver", "Green"].map((color) => (
+                  <option key={color}>{color}</option>
+                ))}
               </select>
               {errors.vehicleColor && (
-                <p className="text-red-500 text-sm flex items-center">
-                  <span className="mr-1 text-lg">!</span>
-                  {errors.vehicleColor}
-                </p>
-              )}
-
-              <input
-                type="text"
-                className={`bg-gray-200 p-3 w-[48%] rounded-md ${
-                  errors.vehiclePlate ? "border-2 border-red-500" : ""
-                }`}
-                placeholder="Vehicle Plate"
-                onChange={(e) => setVehiclePlate(e.target.value)}
-                value={vehiclePlate}
-                maxLength={MAX_PLATE_LENGTH} // Limit input length to the max plate length
-              />
-              {errors.vehiclePlate && (
-                <p className="text-red-500 text-sm flex items-center">
-                  <span className="mr-1 text-lg">!</span>
-                  {errors.vehiclePlate}
-                </p>
+                <p className="text-red-500 text-sm mt-1">{errors.vehicleColor}</p>
               )}
             </div>
+            <div className="w-1/2">
+              <input
+                name="vehiclePlate"
+                placeholder="Vehicle Plate"
+                value={form.vehiclePlate}
+                onChange={handleChange}
+                maxLength={MAX_PLATE_LENGTH}
+                className="w-full p-3 bg-gray-200 dark:bg-gray-700 rounded-md"
+              />
+              {errors.vehiclePlate && (
+                <p className="text-red-500 text-sm mt-1">{errors.vehiclePlate}</p>
+              )}
+            </div>
+          </div>
 
-            <div className="my-3 flex justify-between">
+          <div className="flex gap-4">
+            <div className="w-1/2">
               <select
                 name="vehicleCapacity"
-                value={vehicleCapacity}
-                onChange={(e) => setVehicleCapacity(e.target.value)}
-                className={`bg-gray-200 p-3 w-[48%] rounded-md ${
-                  errors.vehicleCapacity ? "border-2 border-red-500" : ""
-                }`}
+                value={form.vehicleCapacity}
+                onChange={handleChange}
+                className="w-full p-3 bg-gray-200 dark:bg-gray-700 rounded-md"
               >
-                <option value="" disabled>
-                  Select Capacity
-                </option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
+                <option value="">Select Capacity</option>
+                {[2, 3, 4, 5, 6].map((cap) => (
+                  <option key={cap}>{cap}</option>
+                ))}
               </select>
               {errors.vehicleCapacity && (
-                <p className="text-red-500 text-sm flex items-center">
-                  <span className="mr-1 text-lg">!</span>
-                  {errors.vehicleCapacity}
-                </p>
+                <p className="text-red-500 text-sm mt-1">{errors.vehicleCapacity}</p>
               )}
-
+            </div>
+            <div className="w-1/2">
               <select
                 name="vehicleType"
-                value={vehicleType}
-                onChange={(e) => setVehicleType(e.target.value)}
-                className={`bg-gray-200 w-[48%] px-5 rounded-md ${
-                  errors.vehicleType ? "border-2 border-red-500" : ""
-                }`}
+                value={form.vehicleType}
+                onChange={handleChange}
+                className="w-full p-3 bg-gray-200 dark:bg-gray-700 rounded-md"
               >
-                <option value="" disabled>
-                  Select Vehicle Type
-                </option>{" "}
-                {/* This option should be the first one, allowing the user to choose */}
-                <option value="KUberAuto">KUberAuto</option>
-                <option value="KUberGo">KUberGo</option>
-                <option value="Premier">Premier</option>
-                <option value="MOTO">MOTO</option>
+                <option value="">Select Type</option>
+                {["KUberAuto", "KUberGo", "Premier", "MOTO"].map((type) => (
+                  <option key={type}>{type}</option>
+                ))}
               </select>
               {errors.vehicleType && (
-                <p className="text-red-500 text-sm flex items-center">
-                  <span className="mr-1 text-lg">!</span>
-                  {errors.vehicleType}
-                </p>
+                <p className="text-red-500 text-sm mt-1">{errors.vehicleType}</p>
               )}
             </div>
           </div>
 
           <button
-            className="w-full py-2 mt-5 bg-black text-white text-xl font-bold rounded-md"
             type="submit"
+            className="w-full py-3 bg-black dark:bg-white text-white dark:text-black text-lg font-bold rounded-md hover:opacity-90 transition-all"
           >
             Create Captain Account
           </button>
-        </fieldset>
-      </form>
+        </form>
 
-      <div className="text-center">
-        <p>
-          Already have an account?
-          <Link to="/captains/login" className="text-blue-500 font-bold">
-            {" "}
+        <p className="text-center mt-4">
+          Already have an account?{" "}
+          <Link to="/captains/login" className="text-blue-500 font-medium">
             Login here
           </Link>
         </p>
-      </div>
 
-      <p className="mt-[30%] text-xs">
-        By proceeding, you consent to receive calls, WhatsApp, or SMS messages,
-        including automated ones, from Kuber and its affiliates to the provided
-        number.
-      </p>
+        <p className="text-xs text-center mt-6 text-gray-600 dark:text-gray-400">
+          By proceeding, you consent to receive calls, WhatsApp, or SMS messages
+          from Kuber and its affiliates.
+        </p>
+      </div>
     </section>
   );
 };

@@ -11,8 +11,8 @@ const WaitingForDriver = () => {
 
   if (!confirmRideDetails || !ride) {
     return (
-      <div className="p-4 text-center text-gray-500">
-        Loading ride details...
+      <div className="h-[40vh] w-full bg-white dark:bg-gray-900 text-black dark:text-white flex items-center justify-center">
+        <p className="text-gray-500 dark:text-gray-400">Loading ride details...</p>
       </div>
     );
   }
@@ -32,89 +32,100 @@ const WaitingForDriver = () => {
   const otp = ride?.otp || "----";
 
   return (
-    <div>
-      {/* Header */}
-      <div className="flex justify-between items-center p-3 border-b-2">
-        <span className="font-medium">Meet at the pickup point</span>
-        <span className="bg-black text-white text-center px-3 font-thin">
-          <span>2</span>
-          <br />
-          min
-        </span>
-      </div>
+    <div className="h-full w-full bg-white dark:bg-gray-900 text-black dark:text-white overflow-hidden">
+      <div className="h-full flex flex-col">
+        {/* Header */}
+        <div className="flex justify-between items-center p-3 sm:p-4 border-b-2 border-gray-200 dark:border-gray-700">
+          <span className="text-sm sm:text-base font-medium text-gray-800 dark:text-white">
+            Meet at the pickup point
+          </span>
+          <span className="bg-black dark:bg-gray-800 text-white text-center px-3 py-1 rounded-lg font-medium text-sm sm:text-base">
+            <span>2</span>
+            <br />
+            min
+          </span>
+        </div>
 
-      {/* Driver and Vehicle Info */}
-      <div>
-        <div className="px-5 pt-4 flex justify-between items-center">
-          {/* Driver and Vehicle Image */}
-          <div className="flex items-center gap-3">
-            <div className="h-20 w-20 rounded-full bg-gray-300 overflow-hidden flex items-center justify-center">
-              {/* Optional driver image placeholder */}
-              {/* <img src={ride?.driverImage || "/images/default-driver.png"} alt="Driver" className="h-full w-full object-cover" /> */}
-              <i className="ri-user-line text-3xl text-white" />
+        {/* Driver and Vehicle Info */}
+        <div className=" flex-1 p-6 sm:p-6">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+            {/* Driver and Vehicle Images */}
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="h-16 w-16 sm:h-20 sm:w-20 rounded-full bg-gray-300 dark:bg-gray-700 overflow-hidden flex items-center justify-center">
+                <i className="ri-user-line text-2xl sm:text-3xl text-white" />
+              </div>
+              <div className="h-16 w-16 sm:h-20 sm:w-20 rounded-full overflow-hidden flex justify-center items-center bg-gray-200 dark:bg-gray-600">
+                {confirmRideDetails.image ? (
+                  <img
+                    src={confirmRideDetails.image}
+                    className="h-12 w-12 sm:h-16 sm:w-16 object-contain"
+                    alt="Vehicle"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "/images/default-vehicle.png";
+                    }}
+                  />
+                ) : (
+                  <div className="h-12 w-12 sm:h-16 sm:w-16 bg-gray-300 dark:bg-gray-500 rounded-full"></div>
+                )}
+              </div>
             </div>
-            <div className="h-20 w-20 rounded-full overflow-hidden flex justify-center items-center bg-gray-200">
-              {confirmRideDetails.image ? (
-                <img
-                  src={confirmRideDetails.image}
-                  className="h-16 w-16 object-contain"
-                  alt="Vehicle"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = "/images/default-vehicle.png";
-                  }}
-                />
-              ) : (
-                <div className="h-16 w-16 bg-gray-300 rounded-full"></div>
-              )}
+
+            {/* Driver Info */}
+            <div className="flex-1 text-right">
+              <h2 className="text-sm sm:text-base text-gray-400 dark:text-gray-300">{driverName}</h2>
+              <h1 className="text-lg sm:text-xl font-semibold text-gray-800 dark:text-white">{vehiclePlate}</h1>
+              <h2 className="text-sm sm:text-base text-gray-400 dark:text-gray-300">{vehicleModel}</h2>
+              <h3 className="text-yellow-500 dark:text-yellow-400 font-semibold text-sm sm:text-base">⭐ 4.3</h3>
             </div>
           </div>
 
-          {/* Driver Info */}
-          <div className="text-right font-medium">
-            <h2 className="text-gray-400">{driverName}</h2>
-            <h1 className="text-xl font-semibold">{vehiclePlate}</h1>
-            <h2 className="text-gray-400">{vehicleModel}</h2>
-            <h3 className="text-yellow-500 font-semibold">⭐ 4.3</h3>
+          {/* OTP */}
+          <div className="p-4 sm:p-5 text-center text-xl sm:text-2xl my-3 sm:my-4 py-4 sm:py-5 
+                   border border-gray-200 dark:border-gray-700 rounded-xl font-bold animate-pulse
+                   bg-gray-50 dark:bg-gray-800">
+            OTP : {otp}
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex justify-around p-4 sm:p-6">
+            <div className="flex flex-col items-center gap-2">
+              <span className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-400 dark:bg-gray-600 rounded-full 
+                            flex items-center justify-center transition-transform hover:scale-110">
+                <i className="ri-shield-line text-white text-lg sm:text-xl"></i>
+              </span>
+              <h5 className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">Safety</h5>
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <span className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-400 dark:bg-gray-600 rounded-full 
+                            flex items-center justify-center transition-transform hover:scale-110">
+                <i className="ri-share-line text-white text-lg sm:text-xl"></i>
+              </span>
+              <h5 className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">Share Trip</h5>
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <span className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-400 dark:bg-gray-600 rounded-full 
+                            flex items-center justify-center transition-transform hover:scale-110">
+                <i className="ri-phone-line text-white text-lg sm:text-xl"></i>
+              </span>
+              <h5 className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">Call Captain</h5>
+            </div>
           </div>
         </div>
 
-        {/* OTP */}
-        <div className="p-4 text-center text-2xl my-3 py-5 border font-bold animate-pulse">
-          OTP : {otp}
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex justify-around p-4">
-          <div className="flex flex-col items-center">
-            <span className="w-12 h-12 bg-gray-400 rounded-full flex items-center justify-center">
-              <i className="ri-shield-line text-white text-xl"></i>
-            </span>
-            <h5 className="text-sm mt-2">Safety</h5>
+        {/* Pick-up Address */}
+        <div className="h-[20%] flex border-t-2 border-gray-300 dark:border-gray-700 py-3 px-4 sm:px-6 items-center">
+          <span className="w-10 sm:w-12 flex justify-center items-center">
+            <i className="ri-map-pin-line text-lg sm:text-xl text-gray-600 dark:text-gray-300"></i>
+          </span>
+          <div>
+            <h3 className="text-base sm:text-xl font-semibold text-gray-800 dark:text-white pb-1">
+              {pickupMain}
+            </h3>
+            <h5 className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+              {pickupDetails}
+            </h5>
           </div>
-          <div className="flex flex-col items-center">
-            <span className="w-12 h-12 bg-gray-400 rounded-full flex items-center justify-center">
-              <i className="ri-share-line text-white text-xl"></i>
-            </span>
-            <h5 className="text-sm mt-2">Share My Trip</h5>
-          </div>
-          <div className="flex flex-col items-center">
-            <span className="w-12 h-12 bg-gray-400 rounded-full flex items-center justify-center">
-              <i className="ri-phone-line text-white text-xl"></i>
-            </span>
-            <h5 className="text-sm mt-2">Call Captain</h5>
-          </div>
-        </div>
-      </div>
-
-      {/* Pick-up Address */}
-      <div className="flex border-t-2 border-gray-300 py-3 px-4 items-center">
-        <span className="w-12 flex justify-center items-center">
-          <i className="ri-map-pin-line text-xl"></i>
-        </span>
-        <div>
-          <h3 className="font-semibold text-xl pb-1">{pickupMain}</h3>
-          <h5 className="text-gray-500 text-md">{pickupDetails}</h5>
         </div>
       </div>
     </div>

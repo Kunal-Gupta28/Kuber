@@ -1,4 +1,3 @@
-import React from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -31,7 +30,7 @@ const UserLogout = () => {
   return (
     <button
       onClick={handleLogout}
-      className="me-3 bg-white h-12 w-12 p-2 text-2xl rounded-full flex justify-center items-center cursor-pointer"
+      className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-black"
     >
       <i className="ri-logout-box-r-line"></i>
     </button>

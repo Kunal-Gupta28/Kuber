@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useRideContext } from "../context/RideContext";
+
 const Vehicle = ({
   vehiclePanelOpen,
   setConfirmRidePanel,
@@ -8,7 +9,8 @@ const Vehicle = ({
 }) => {
   const [fares, setFares] = useState({});
   const [selectedVehicle, setSelectedVehicle] = useState(null);
-  const { pickup,destination,setConfirmRideDetails} = useRideContext();
+  const { pickup, destination, setConfirmRideDetails } = useRideContext();
+
   const vehicleOptions = [
     {
       image: "/images/UberSelect-White.webp",
@@ -55,7 +57,6 @@ const Vehicle = ({
           }
         );
 
-        // Transform array to object for quick access
         const fareObj = {};
         response.data.forEach(({ vehicleType, fare }) => {
           fareObj[vehicleType] = fare;
@@ -70,51 +71,77 @@ const Vehicle = ({
   }, [pickup, destination, vehiclePanelOpen]);
 
   return (
-    <div className="h-[50vh] w-full">
-      {vehicleOptions.map((vehicle) => {
-        const isSelected = selectedVehicle === vehicle.vehicleType;
+    <div className="h-[50vh] w-full bg-white dark:bg-gray-900 text-black dark:text-white overflow-y-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
+        {vehicleOptions.map((vehicle) => {
+          const isSelected = selectedVehicle === vehicle.vehicleType;
+          const fare = fares[vehicle.vehicleType] ?? "--";
 
-        return (
-          <div
-            key={vehicle.vehicleType}
-            onClick={() => {
-              setConfirmRideDetails({
-                ...vehicle,
-                fare: fares[vehicle.vehicleType] || "--",
-              });
-              setSelectedVehicle(vehicle.vehicleType);
-              setVehiclePanelOpen(false);
-              setConfirmRidePanel(true);
-            }}
-            className={`h-[20%] flex justify-between items-center my-5 border-2 p-2 rounded-xl cursor-pointer transition duration-200 ${
-              isSelected ? "border-black bg-gray-100 shadow-sm" : "border-white"
-            }`}
-          >
-            <div className="w-[25%]">
-              <img
-                className="w-full h-auto object-contain"
-                src={vehicle.image}
-                alt={vehicle.vehicleType}
-              />
+          return (
+            <div
+              key={vehicle.vehicleType}
+              onClick={() => {
+                setConfirmRideDetails({
+                  ...vehicle,
+                  fare,
+                });
+                setSelectedVehicle(vehicle.vehicleType);
+                setVehiclePanelOpen(false);
+                setConfirmRidePanel(true);
+              }}
+              className={`
+                relative flex flex-col md:flex-row items-center p-6 rounded-2xl cursor-pointer
+                transition-all duration-300 ease-in-out
+                ${isSelected 
+                  ? "bg-blue-50 dark:bg-blue-900/20 shadow-lg border-2 border-blue-500 dark:border-blue-400" 
+                  : "bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700/50 border border-gray-200 dark:border-gray-700"
+                }
+              `}
+            >
+              {/* Vehicle Image */}
+              <div className="w-full md:w-1/3 mb-6 md:mb-0 flex justify-center">
+                <img
+                  className="w-28 h-28 object-contain"
+                  src={vehicle.image}
+                  alt={vehicle.vehicleType}
+                />
+              </div>
+
+              {/* Vehicle Details */}
+              <div className="w-full md:w-1/2 px-4">
+                <div className="flex items-center gap-3 mb-3">
+                  <h4 className="font-bold text-xl">{vehicle.vehicleType}</h4>
+                  <div className="flex items-center text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full">
+                    <i className="ri-user-fill text-base"></i>
+                    <span className="ml-1 text-sm">{vehicle.capacity}</span>
+                  </div>
+                </div>
+                <p className="text-gray-600 dark:text-gray-300 text-sm mb-2">
+                  <i className="ri-time-line mr-1"></i>
+                  {vehicle.minsAway} mins away
+                </p>
+                <p className="text-gray-500 dark:text-gray-400 text-sm">
+                  {vehicle.description}
+                </p>
+              </div>
+
+              {/* Fare */}
+              <div className="w-full md:w-1/6 text-right mt-4 md:mt-0">
+                <p className="font-bold text-xl text-blue-600 dark:text-blue-400">
+                  ₹{fare}
+                </p>
+              </div>
+
+              {/* Selection Indicator */}
+              {isSelected && (
+                <div className="absolute top-2 right-2 text-blue-500 dark:text-blue-400">
+                  <i className="ri-checkbox-circle-fill text-2xl"></i>
+                </div>
+              )}
             </div>
-            <div className="w-[50%]">
-              <h4 className="font-bold text-xl flex items-center gap-1">
-                {vehicle.vehicleType}
-                <i className="ri-user-fill text-base font-thin">
-                  <span className="font-medium ml-1">{vehicle.capacity}</span>
-                </i>
-              </h4>
-              <h5 className="font-medium">{vehicle.minsAway} mins away</h5>
-              <p className="text-gray-500 text-xs">{vehicle.description}</p>
-            </div>
-            <div className="w-[20%] text-right">
-              <p className="font-semibold text-xl">
-                ₹{fares[vehicle.vehicleType] ?? "--"}
-              </p>
-            </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 };

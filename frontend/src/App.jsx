@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import { ThemeProvider } from "./context/ThemeContext";
 import Start from "./pages/Start";
 import Home from "./pages/Home";
 import UserLogin from "./pages/UserLogin";
@@ -12,10 +13,11 @@ import Riding from "./components/Riding";
 import CaptainHome from "./pages/CaptainHome";
 import CaptainRiding from "./pages/CaptainRiding";
 import CaptainLogout from "./pages/CaptainLogout";
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   return (
-    <>
+    <ThemeProvider>
       <Routes>
         <Route path="/" element={<Start />} />
         <Route
@@ -59,7 +61,29 @@ function App() {
           }
         />
       </Routes>
-    </>
+      <Toaster 
+        position="top-right"
+        toastOptions={{
+          duration: 10000,
+          style: {
+            background: '#333',
+            color: '#fff',
+          },
+          success: {
+            duration: 10000,
+            theme: {
+              primary: '#4aed88',
+            },
+          },
+          error: {
+            duration: 10000,
+            theme: {
+              primary: '#ff4b4b',
+            },
+          },
+        }}
+      />
+    </ThemeProvider>
   );
 }
 

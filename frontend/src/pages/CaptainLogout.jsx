@@ -32,9 +32,9 @@ const CaptainLogout = () => {
   return (
     <button
       onClick={handleLogout}
-      className="me-3 bg-white h-12 w-12 p-2 text-2xl rounded-full flex justify-center items-center cursor-pointer"
+      className="w-full flex items-center space-x-2 px-2 py-1 text-xl text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md transition-colors duration-200"
     >
-      <i className="ri-logout-box-r-line"></i>
+      <i className="ri-logout-box-line pe-4"></i>  Logout
     </button>
   );
 };

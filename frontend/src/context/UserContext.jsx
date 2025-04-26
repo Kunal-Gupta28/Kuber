@@ -1,6 +1,5 @@
-import { useState, createContext, useContext } from 'react';
+import { createContext, useState, useContext } from "react";
 
-// Create the context and export it
 export const UserDataContext = createContext();
 
 const UserContext = ({ children }) => {
@@ -19,7 +18,6 @@ const UserContext = ({ children }) => {
   );
 };
 
-// Custom hook to use UserDataContext
 export const useUserContext = () => useContext(UserDataContext);
 
 export default UserContext;

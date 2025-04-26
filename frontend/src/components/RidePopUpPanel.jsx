@@ -1,69 +1,85 @@
-import React, { useContext, useState } from "react";
 import { useCaptainContext } from "../context/CaptainContext";
 import RideDetails from "./RideDetails";
+import { motion } from "framer-motion";
 
 const RidePopUpPanel = ({
   setRidePopUpPanel,
   setConfirmRidePopUpPanel,
   confirmRide,
 }) => {
-  const {
-    pickupMain,
-    pickupDetails,
-    destinationMain,
-    destinationDetails,
-    ride,
-  } = useCaptainContext();
+  const { ride } = useCaptainContext();
 
   if (!ride) return null;
 
   return (
-    <div className=" w-screen bg-white p-5 rounded-lg shadow-lg">
-      <h2 className="text-center text-2xl font-semibold pt-2">
-        New ride available
-      </h2>
+    <motion.div
+      initial={{ y: "100%" }}
+      animate={{ y: 0 }}
+      exit={{ y: "100%" }}
+      transition={{ type: "spring", damping: 25, stiffness: 120 }}
+      className="w-full bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-t-3xl shadow-xl text-black dark:text-white"
+    >
+      {/* Header */}
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white">
+          New Ride Request
+        </h2>
+        <button
+          onClick={() => setRidePopUpPanel(false)}
+          className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+        >
+          <i className="ri-close-line text-2xl"></i>
+        </button>
+      </div>
 
-      {/* Ride Details */}
-      <div className="my-4">
-        <div className="flex justify-between items-center px-5 py-3 rounded-xl bg-gray-200">
-          <div className="h-20 w-20 rounded-full bg-red-200 overflow-hidden">
-            <img
-              // src={ride?.user?.profilePicture || "/default-avatar.png"}
-              alt="User"
-              className="w-full h-full object-cover"
-            />
+      {/* User Info */}
+      <div className="mb-6">
+        <div className="flex items-center gap-4 p-4 rounded-xl bg-gray-50 dark:bg-gray-700">
+          <div className="relative">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gray-200 dark:bg-gray-600 overflow-hidden">
+              <img
+                src={ride?.user?.profilePicture || "/default-avatar.png"}
+                alt="User"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-green-500 border-2 border-white dark:border-gray-800"></div>
           </div>
-
-          <h3 className="text-2xl font-bold -ms-10">
-            {/* {ride?.user?.fullname?.firstname} {ride?.user?.fullname?.lastname} */}
-          </h3>
-
-          <h3 className="text-2xl font-bold ms-4">2.2km</h3>
+          <div className="flex-1">
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-800 dark:text-white">
+              {ride?.user?.fullname?.firstname} {ride?.user?.fullname?.lastname}
+            </h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400">2.2km away</p>
+          </div>
         </div>
       </div>
 
-      <RideDetails />
+      {/* Ride Details */}
+      <div className="mb-6">
+        <RideDetails userType="captain" ride={ride} />
+      </div>
 
-      {/* Accept & Ignore Buttons */}
-      <div className="flex justify-evenly items-center mt-2">
+      {/* Action Buttons */}
+      <div className="flex flex-col sm:flex-row gap-4">
         <button
           onClick={() => {
             setConfirmRidePopUpPanel(true);
             confirmRide();
           }}
-          className="w-48 py-2 bg-green-600 rounded-xl text-white font-bold text-xl mb-2"
+          className="flex-1 py-3 px-6 bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800 rounded-xl text-white font-semibold text-lg transition-colors flex items-center justify-center gap-2"
         >
-          Accept
+          <i className="ri-check-line"></i>
+          Accept Ride
         </button>
-
         <button
           onClick={() => setRidePopUpPanel(false)}
-          className="w-48 py-2 bg-gray-400 rounded-xl text-white font-bold text-xl"
+          className="flex-1 py-3 px-6 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-xl text-gray-800 dark:text-white font-semibold text-lg transition-colors flex items-center justify-center gap-2"
         >
-          Ignore
+          <i className="ri-close-line"></i>
+          Decline
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

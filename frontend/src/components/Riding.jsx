@@ -1,6 +1,6 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useRef } from "react";
-import { SocketContext } from "../context/SocketContext";
+import { SocketContext } from "../context/socketContext";
 import LiveTracking from "./LiveTracking";
 import RideDetails from "./RideDetails";
 import Payment from "./Payment";
@@ -32,7 +32,7 @@ const Riding = () => {
   const showRideDetails = () => {
     gsap.to(rideDetailsRef.current, {
       y: 0,
-      duration: 1,
+      duration: 0.5,
       ease: "power3.out",
     });
   };
@@ -40,49 +40,72 @@ const Riding = () => {
   const hideRideDetails = () => {
     gsap.to(rideDetailsRef.current, {
       y: "100%",
-      duration: 1,
+      duration: 0.5,
       ease: "power3.in",
     });
   };
 
   return (
-    <main className="h-screen w-full flex flex-col md:flex-row overflow-hidden">
-      <Link to="/home">
-        <span className="fixed top-2 right-5 z-50 text-3xl p-3 bg-white rounded-full shadow-md" title="Go Home">
-          <i className="ri-home-4-line"></i>
-        </span>
-      </Link>
+    <main className="h-screen w-full flex flex-col overflow-hidden bg-white dark:bg-gray-900 text-black dark:text-white relative">
+      {/* Header */}
+      <div className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center p-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm shadow-sm">
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white bg-gradient-to-r from-yellow-400 to-yellow-500 dark:from-yellow-500 dark:to-yellow-600 rounded-xl p-2 px-4 transition-all duration-300 hover:scale-105 hover:shadow-lg">
+          Kuber
+        </h1>
+      </div>
 
-      <section className="h-4/5 overflow-hidden">
+      {/* Map Section */}
+      <section className="h-[75vh] sm:h-[80vh] mt-16">
         <LiveTracking coordinates={coordinates} />
       </section>
 
-      <div className="h-1/5 w-full bg-yellow-400 p-5 fixed bottom-0 flex justify-evenly items-center z-40">
-        <h3 className="h-16 w-48 bg-green-600 rounded-xl text-xl font-semibold text-white flex justify-center items-center">
-          4 Km away
-        </h3>
-        <button
-          onClick={showRideDetails}
-          className="h-16 w-48 bg-green-600 rounded-xl text-xl font-semibold text-white"
-        >
-          Make Payment
-        </button>
+      {/* Control Panel */}
+      <div className="h-[25vh] sm:h-[20vh] w-full bg-gradient-to-b from-yellow-400 to-yellow-500 dark:from-yellow-500 dark:to-yellow-600 p-4 sm:p-5 fixed bottom-0 flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 z-40 shadow-inner rounded-t-3xl border-t border-yellow-300 dark:border-yellow-600">
+        <div className="w-full sm:w-auto flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+          <div className="h-14 sm:h-16 w-full sm:w-48 bg-gradient-to-r from-green-600 to-green-700 dark:from-green-700 dark:to-green-800 rounded-xl text-lg sm:text-xl font-semibold text-white flex justify-center items-center shadow-lg hover:shadow-xl transition-all duration-300">
+            <span className="flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              4 Km away
+            </span>
+          </div>
+          <button
+            onClick={showRideDetails}
+            className="h-14 sm:h-16 w-full sm:w-48 bg-gradient-to-r from-green-600 to-green-700 dark:from-green-700 dark:to-green-800 rounded-xl text-lg sm:text-xl font-semibold text-white shadow-lg hover:bg-green-700 dark:hover:bg-green-800 transition-all duration-300 hover:shadow-xl active:scale-95"
+          >
+            Make Payment
+          </button>
+        </div>
       </div>
 
+      {/* Ride Details Panel */}
       <section
         ref={rideDetailsRef}
-        className="pt-5 w-full fixed bottom-0 translate-y-full bg-white z-50 shadow-xl rounded-t-3xl"
+        className="w-full fixed bottom-0 translate-y-full bg-white dark:bg-gray-800 z-50 shadow-xl rounded-t-3xl transition-transform duration-500"
         style={{ transform: "translateY(100%)" }}
       >
-        <RideDetails ride={ride} />
-        <div className="flex justify-evenly mt-4">
-          <Payment amount={500} />
-          <button
-            onClick={hideRideDetails}
-            className="mb-6 w-48 p-3 bg-black hover:bg-gray-800 text-white rounded-xl font-bold text-lg"
-          >
-            Back
-          </button>
+        <div className="p-6 sm:p-8">
+          <RideDetails ride={ride} />
+
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-6">
+            <Payment />
+            <button
+              onClick={hideRideDetails}
+              className="w-48 p-3 bg-gradient-to-r from-gray-900 to-black dark:from-gray-800 dark:to-gray-900 hover:from-gray-800 hover:to-gray-900 dark:hover:from-gray-700 dark:hover:to-gray-800 text-white rounded-xl font-bold text-lg transition-all duration-300 hover:shadow-xl active:scale-95"
+            >
+              Back
+            </button>
+          </div>
         </div>
       </section>
     </main>

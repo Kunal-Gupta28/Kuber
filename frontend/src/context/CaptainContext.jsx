@@ -5,7 +5,7 @@ export const CaptainDataContext = createContext();
 const CaptainContext = ({ children }) => {
   const [captain, setCaptain] = useState(null);
   const [ride, setRide] = useState(null);
-  const [fare, setFare] = useState(null); // Init separately
+  const [fare, setFare] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
