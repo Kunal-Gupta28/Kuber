@@ -8,8 +8,8 @@ module.exports.createOrder = async (req, res) => {
     return res.status(400).json({ error: errors.array() });
   }
 
-  const { fare } = req.body;
-
+  const { amount } = req.body;
+const fare = amount
   try {
     const order = await paymentService.createOrder({ fare });
     return res.status(200).json({
@@ -33,13 +33,13 @@ module.exports.verifyPayment = async (req, res) => {
     return res.status(400).json({ error: errors.array() });
   }
 
-  const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+  const { orderId, paymentId, signature } = req.body;
 
   try {
     const isValid = await paymentService.verifyPayment({
-      razorpay_order_id,
-      razorpay_payment_id,
-      razorpay_signature
+      razorpay_order_id:orderId,
+      razorpay_payment_id:paymentId,
+      razorpay_signature:signature
     });
 
     if (isValid) {

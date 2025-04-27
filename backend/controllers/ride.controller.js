@@ -69,13 +69,12 @@ module.exports.createRide = async (req, res) => {
 
 module.exports.confirmRide = async (req, res) => {
   const error = validationResult(req);
-  
+
   if (!error.isEmpty()) {
     return res.status(400).json({ error: error.array() });
   }
 
   const { rideId } = req.body;
-
   try {
     const ride = await rideService.confirmRide({ rideId, captain: req.captain });
 
@@ -120,27 +119,24 @@ module.exports.startRide = async (req,res)=>{
   }
 } 
 
-module.exports.endRide = async (req,res)=>{
-  const error = validationResult(req)
-
-  if(!error.isEmpty()){
-    return res.status(400).json({error:error.array()})
-  };
-
-  const {rideId} = req.body;
-
-  try {
-    const ride = await rideService.endRide({rideId,captain:req.captain});
-
-    sendMessageToSocketId(ride.user.socketId,{
-      event:'ride-ended',
-      data:ride
-    })
-
-    return res.status(200).json(ride)
-  } catch (error) {
-    return res.status(500).json({error:error.array()})
+module.exports.endRide = async (req, res) => {
+  const error = validationResult(req);
+  if (!error.isEmpty()) {
+    return res.status(400).json({ error: error.array() });
   }
 
+  const { rideId } = req.body;
 
-}
+  try {
+    const ride = await rideService.endRide({ rideId, captain: req.captain });
+
+    sendMessageToSocketId(ride.user.socketId, {
+      event: 'ride-ended',
+      data: ride,
+    });
+
+    return res.status(200).json({ success: true, ride });
+  } catch (error) {
+    return res.status(500).json({ error: error.message || "Something went wrong" });
+  }
+};

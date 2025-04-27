@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import bgImage from '/images/Kuber.jpeg';
+import bgImage from '/images/Kuber.png';
 import DarkModeToggle from '../components/DarkModeToggle';
 
 const Start = () => {
@@ -28,12 +28,12 @@ const Start = () => {
       <div className="flex-1 relative">
         <div className="absolute inset-0 bg-black bg-opacity-50 z-0" />
         <div
-          className="h-full w-full bg-cover bg-center md:bg-center-bottom bg-no-repeat z-10 relative flex flex-col justify-end p-6"
+          className="h-full w-full bg-cover bg-center bg-no-repeat z-10 relative flex flex-col justify-end p-6"
           style={{ backgroundImage: `url(${bgImage})` }}
         >
           <div className="text-white">
-            <i className="ri-taxi-line text-4xl md:text-6xl mb-2"></i>
-            <h1 className="text-3xl md:text-5xl font-bold">Kuber</h1>
+            <i className="ri-taxi-line text-4xl md:text-6xl xl:text-8xl mb-2"></i>
+            <h1 className="text-3xl md:text-5xl 2xl:text-6xl font-bold">Kuber</h1>
             <p className="text-base md:text-lg mt-2">Your ride, your way. Reliable. Fast. Local.</p>
           </div>
         </div>

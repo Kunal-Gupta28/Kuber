@@ -10,7 +10,7 @@ const CaptainLogin = () => {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
-  const [ setDarkMode] = useState(() =>
+  const [setDarkMode] = useState(() =>
     document.documentElement.classList.contains("dark")
   );
   const { setCaptain } = useContext(CaptainDataContext);
@@ -89,16 +89,16 @@ const CaptainLogin = () => {
   }, []);
 
   return (
-    <section className="h-[100dvh] flex flex-col justify-center items-center px-4 py-10 bg-white dark:bg-black text-black dark:text-white transition-colors duration-500">
+    <section className="h-[100dvh] flex flex-col justify-center items-center px-4 py-8 bg-white dark:bg-black text-black dark:text-white transition-colors duration-500">
       <div className="absolute top-5 right-5">
         <DarkModeToggle />
       </div>
 
-      <div className="w-full max-w-md bg-gray-50 dark:bg-gray-900 rounded-2xl p-8 shadow-xl">
+      <div className="w-full max-w-md bg-gray-50 dark:bg-gray-900 shadow-[0_15px_15px_rgba(0,0,0,0.4)] dark:shadow-[0_15px_15px_rgba(255,255,255,0.4)] rounded-2xl p-8">
         <header className="text-center mb-8">
           <h1 className="text-4xl font-extrabold tracking-wide">Kuber</h1>
           <p className="mt-2 text-gray-500 dark:text-gray-400">
-            Welcome! Please login
+            Welcome! Please login to your Captain account
           </p>
         </header>
 
@@ -118,7 +118,7 @@ const CaptainLogin = () => {
                 errors.email
                   ? "border-red-500"
                   : "border-gray-300 dark:border-gray-700"
-              } bg-white dark:bg-gray-800 text-black dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none`}
+              } bg-white dark:bg-gray-800 text-black dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-[0_10px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_5px_rgba(255,255,255,0.3)]`}
             />
             {errors.email && (
               <p className="mt-1 text-sm text-red-500">{errors.email}</p>
@@ -143,7 +143,7 @@ const CaptainLogin = () => {
                 errors.password
                   ? "border-red-500"
                   : "border-gray-300 dark:border-gray-700"
-              } bg-white dark:bg-gray-800 text-black dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none`}
+              } bg-white dark:bg-gray-800 text-black dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-[0_10px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_5px_rgba(255,255,255,0.3)]`}
             />
             {errors.password && (
               <p className="mt-1 text-sm text-red-500">{errors.password}</p>
@@ -159,7 +159,7 @@ const CaptainLogin = () => {
             disabled={loading}
             className={`w-full py-3 font-bold rounded-lg transition duration-300 ${
               loading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"
-            } text-white`}
+            } text-white shadow-[0_5px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_20px_rgba(255,255,255,0.3)] `}
           >
             {loading ? "Logging In..." : "Log In"}
           </button>
@@ -178,10 +178,16 @@ const CaptainLogin = () => {
 
       <Link
         to="/users/login"
-        className="mt-6 w-full max-w-md py-3 bg-green-600 text-white text-center font-bold text-lg rounded-lg hover:bg-green-700 transition duration-300"
+        className="mt-12 w-full max-w-md py-3 bg-green-600 text-white text-center font-bold text-lg rounded-lg hover:bg-green-700 transition duration-300 shadow-[0_5px_15px_rgba(0,0,0,0.4)] dark:shadow-[0_5px_15px_rgba(255,255,255,0.4)]"
       >
         Sign in as User
       </Link>
+
+      <p className="text-xs text-center mt-8 max-w-sm text-gray-500 dark:text-gray-400">
+        By proceeding, you consent to receive calls, WhatsApp, or SMS messages,
+        including via automated means, from Kuber and its affiliates to the
+        number provided.
+      </p>
     </section>
   );
 };

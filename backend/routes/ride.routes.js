@@ -55,4 +55,3 @@ router.post('/end-ride',authMiddleware.authCaptain,
 )
 
 module.exports = router; 
- 

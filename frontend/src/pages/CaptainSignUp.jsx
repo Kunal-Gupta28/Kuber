@@ -82,11 +82,12 @@ const CaptainSignUp = () => {
   };
 
   return (
-    <section className="h-[100dvh] bg-white dark:bg-black text-black dark:text-white p-5 flex flex-col items-center justify-center">
+    <section className="h-[100dvh] bg-gray-50 dark:bg-gray-900 text-black dark:text-white p-5 flex flex-col items-center justify-center">
       <DarkModeToggle />
-      <div className="w-full max-w-md bg-gray-100 dark:bg-gray-800 p-6 rounded-2xl shadow-lg">
-        <h1 className="text-2xl font-bold mb-6 text-center">Kuber Captain Sign Up</h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
+
+      <div className="w-full max-w-md bg-white dark:bg-gray-800 p-8 rounded-xl shadow-[0_15px_15px_rgba(0,0,0,0.4)] dark:shadow-[0_15px_15px_rgba(255,255,255,0.4)]">
+        <h1 className="text-3xl font-extrabold mb-6 text-center">Kuber Captain Sign Up</h1>
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div className="flex gap-4">
             {["firstName", "lastName"].map((field) => (
               <div key={field} className="w-1/2">
@@ -95,7 +96,7 @@ const CaptainSignUp = () => {
                   placeholder={field === "firstName" ? "First Name" : "Last Name"}
                   value={form[field]}
                   onChange={handleChange}
-                  className="w-full p-3 bg-gray-200 dark:bg-gray-700 rounded-md focus:ring-2 focus:outline-none focus:ring-blue-400"
+                  className="w-full p-4 bg-gray-100 dark:bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-[0_10px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_5px_rgba(255,255,255,0.3)]"
                 />
                 {errors[field] && (
                   <p className="text-red-500 text-sm mt-1">{errors[field]}</p>
@@ -110,7 +111,7 @@ const CaptainSignUp = () => {
             placeholder="Email Address"
             value={form.email}
             onChange={handleChange}
-            className="w-full p-3 bg-gray-200 dark:bg-gray-700 rounded-md focus:ring-2 focus:outline-none focus:ring-blue-400"
+            className="w-full p-4 bg-gray-100 dark:bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-[0_10px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_5px_rgba(255,255,255,0.3)]"
           />
           {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
 
@@ -120,7 +121,7 @@ const CaptainSignUp = () => {
             placeholder="Password"
             value={form.password}
             onChange={handleChange}
-            className="w-full p-3 bg-gray-200 dark:bg-gray-700 rounded-md focus:ring-2 focus:outline-none focus:ring-blue-400"
+            className="w-full p-4 bg-gray-100 dark:bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-[0_10px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_5px_rgba(255,255,255,0.3)]"
           />
           {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
 
@@ -130,7 +131,7 @@ const CaptainSignUp = () => {
                 name="vehicleColor"
                 value={form.vehicleColor}
                 onChange={handleChange}
-                className="w-full p-3 bg-gray-200 dark:bg-gray-700 rounded-md"
+                className="w-full p-4 bg-gray-100 dark:bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-[0_10px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_5px_rgba(255,255,255,0.3)]"
               >
                 <option value="">Select Color</option>
                 {["Red", "Blue", "Black", "White", "Gray", "Silver", "Green"].map((color) => (
@@ -148,7 +149,7 @@ const CaptainSignUp = () => {
                 value={form.vehiclePlate}
                 onChange={handleChange}
                 maxLength={MAX_PLATE_LENGTH}
-                className="w-full p-3 bg-gray-200 dark:bg-gray-700 rounded-md"
+                className="w-full p-4 bg-gray-100 dark:bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-[0_10px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_5px_rgba(255,255,255,0.3)]"
               />
               {errors.vehiclePlate && (
                 <p className="text-red-500 text-sm mt-1">{errors.vehiclePlate}</p>
@@ -162,7 +163,7 @@ const CaptainSignUp = () => {
                 name="vehicleCapacity"
                 value={form.vehicleCapacity}
                 onChange={handleChange}
-                className="w-full p-3 bg-gray-200 dark:bg-gray-700 rounded-md"
+                className="w-full p-4 bg-gray-100 dark:bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-[0_10px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_5px_rgba(255,255,255,0.3)]"
               >
                 <option value="">Select Capacity</option>
                 {[2, 3, 4, 5, 6].map((cap) => (
@@ -178,7 +179,7 @@ const CaptainSignUp = () => {
                 name="vehicleType"
                 value={form.vehicleType}
                 onChange={handleChange}
-                className="w-full p-3 bg-gray-200 dark:bg-gray-700 rounded-md"
+                className="w-full p-4 bg-gray-100 dark:bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-[0_10px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_5px_rgba(255,255,255,0.3)]"
               >
                 <option value="">Select Type</option>
                 {["KUberAuto", "KUberGo", "Premier", "MOTO"].map((type) => (
@@ -193,22 +194,17 @@ const CaptainSignUp = () => {
 
           <button
             type="submit"
-            className="w-full py-3 bg-black dark:bg-white text-white dark:text-black text-lg font-bold rounded-md hover:opacity-90 transition-all"
+            className="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-[0_5px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_20px_rgba(255,255,255,0.3)]"
           >
             Create Captain Account
           </button>
         </form>
 
-        <p className="text-center mt-4">
+        <p className="text-center mt-4 text-sm">
           Already have an account?{" "}
-          <Link to="/captains/login" className="text-blue-500 font-medium">
-            Login here
+          <Link to="/captains/login" className="text-blue-500 hover:underline">
+            Log In
           </Link>
-        </p>
-
-        <p className="text-xs text-center mt-6 text-gray-600 dark:text-gray-400">
-          By proceeding, you consent to receive calls, WhatsApp, or SMS messages
-          from Kuber and its affiliates.
         </p>
       </div>
     </section>

@@ -16,10 +16,14 @@ const UserSignUp = () => {
   const validate = () => {
     const newErrors = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
     if (!email.trim()) newErrors.email = "Email is required.";
     else if (!emailRegex.test(email)) newErrors.email = "Invalid email address.";
+
     if (!password) newErrors.password = "Password is required.";
-    else if (password.length < 6) newErrors.password = "Password must be at least 6 characters.";
+    else if (password.length < 6)
+      newErrors.password = "Password must be at least 6 characters.";
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -57,12 +61,12 @@ const UserSignUp = () => {
   };
 
   return (
-    <section className="h-[100dvh] flex flex-col justify-center items-center px-4 py-10 bg-white dark:bg-black text-black dark:text-white transition-colors duration-500">
+    <section className="h-[100dvh] flex flex-col justify-center items-center px-4 py-10 bg-white dark:bg-black text-black dark:text-white transition-colors duration-500 relative">
       <div className="absolute top-5 right-5">
         <DarkModeToggle />
       </div>
 
-      <div className="w-full max-w-md bg-gray-50 dark:bg-gray-900 rounded-2xl p-8 shadow-xl">
+      <div className="w-full max-w-md bg-gray-50 dark:bg-gray-900 rounded-2xl p-8 ) transition-all duration-500 shadow-[0_15px_15px_rgba(0,0,0,0.4)] dark:shadow-[0_15px_15px_rgba(255,255,255,0.4)]">
         <header className="text-center mb-8">
           <h1 className="text-4xl font-extrabold tracking-wide">Kuber</h1>
           <p className="mt-2 text-gray-500 dark:text-gray-400">
@@ -78,14 +82,14 @@ const UserSignUp = () => {
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               required
-              className="w-1/2 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-1/2 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-[0_10px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_5px_rgba(255,255,255,0.3)]"
             />
             <input
               type="text"
               placeholder="Last Name"
               value={lastname}
               onChange={(e) => setLastname(e.target.value)}
-              className="w-1/2 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-1/2 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-[0_10px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_5px_rgba(255,255,255,0.3)]"
             />
           </div>
 
@@ -99,7 +103,7 @@ const UserSignUp = () => {
                 errors.email
                   ? "border-red-500"
                   : "border-gray-300 dark:border-gray-700"
-              } bg-white dark:bg-gray-800 text-black dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none`}
+              } bg-white dark:bg-gray-800 text-black dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-[0_10px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_5px_rgba(255,255,255,0.3)]`}
               required
             />
             {errors.email && (
@@ -117,7 +121,7 @@ const UserSignUp = () => {
                 errors.password
                   ? "border-red-500"
                   : "border-gray-300 dark:border-gray-700"
-              } bg-white dark:bg-gray-800 text-black dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none`}
+              } bg-white dark:bg-gray-800 text-black dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-[0_10px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_5px_rgba(255,255,255,0.3)]`}
               required
             />
             {errors.password && (
@@ -127,7 +131,7 @@ const UserSignUp = () => {
 
           <button
             type="submit"
-            className="w-full py-3 font-bold rounded-lg transition duration-300 bg-blue-600 hover:bg-blue-700 text-white"
+            className="w-full py-3 font-bold rounded-lg transition duration-300 bg-blue-600 hover:bg-blue-700 text-white  shadow-[0_5px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_20px_rgba(255,255,255,0.3)]"
           >
             Sign Up
           </button>
@@ -146,7 +150,7 @@ const UserSignUp = () => {
 
       <Link
         to="/captains/register"
-        className="mt-6 w-full max-w-md py-3 bg-green-600 text-white text-center font-bold text-lg rounded-lg hover:bg-green-700 transition duration-300"
+        className="mt-12 w-full max-w-md py-3 bg-green-600 text-white text-center font-bold text-lg rounded-lg hover:bg-green-700 transition duration-300 shadow-[0_10px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_5px_rgba(255,255,255,0.3)]"
       >
         Register as Captain
       </Link>

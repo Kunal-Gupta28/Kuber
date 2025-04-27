@@ -7,7 +7,7 @@ module.exports.createOrder = async ({ fare }) => {
   }
 
   const options = {
-    amount: fare * 100,
+    amount: fare,
     currency: "INR",
     receipt: `receipt_${Date.now()}`
   };
@@ -27,13 +27,10 @@ module.exports.verifyPayment = ({ razorpay_order_id, razorpay_payment_id, razorp
   }
 
   const sign = crypto
-    .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+    .createHmac("sha256", process.env.RAZORPAY_Secret_KEY)
     .update(`${razorpay_order_id}|${razorpay_payment_id}`)
     .digest("hex");
 
-  if (sign === razorpay_signature) {
-    return true;
-  } else {
-    throw new Error("Invalid payment signature");
-  }
+  return sign === razorpay_signature;
 };
+
