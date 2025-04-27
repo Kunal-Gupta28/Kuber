@@ -210,43 +210,11 @@ const Home = () => {
   }, [isMenuOpen]);
 
   return (
-    <div className="relative h-screen w-full bg-white dark:bg-gray-900 text-black dark:text-white overflow-hidden">
+    <div className="relative h-[100dvh] w-full bg-white dark:bg-gray-900 text-black dark:text-white overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-blue-500/10 to-transparent dark:from-blue-900/20" />
       
       {!panelOpen && <NavBar user={user} />}
 
-      <div className="absolute top-20 left-0 w-full p-4">
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-4">
-          <form onSubmit={submitHandler} className="space-y-4">
-            <div className="flex items-center space-x-3 p-3 rounded-xl bg-gray-100 dark:bg-gray-700 transition-colors duration-200">
-              <i className="ri-map-pin-line text-blue-500 dark:text-blue-400 text-xl"></i>
-              <input
-                type="text"
-                value={pickup}
-                onChange={(e) => setPickup(e.target.value)}
-                placeholder="Enter pickup location"
-                className="flex-1 bg-transparent outline-none text-black dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
-              />
-            </div>
-            <div className="flex items-center space-x-3 p-3 rounded-xl bg-gray-100 dark:bg-gray-700 transition-colors duration-200">
-              <i className="ri-flag-line text-red-500 dark:text-red-400 text-xl"></i>
-              <input
-                type="text"
-                value={destination}
-                onChange={(e) => setDestination(e.target.value)}
-                placeholder="Enter destination"
-                className="flex-1 bg-transparent outline-none text-black dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full bg-black dark:bg-gray-800 hover:bg-gray-800 dark:hover:bg-gray-700 text-white py-3 rounded-xl transition-all duration-200 font-semibold text-lg"
-            >
-              Find Ride
-            </button>
-          </form>
-        </div>
-      </div>
 
 {/* map */}
       <div className="h-[70%] w-full bg-gray-100 dark:bg-gray-800">
