@@ -126,7 +126,7 @@ const Home = () => {
       const parentRect = pickupInputRef.current.offsetParent.getBoundingClientRect();
 
       gsap.set(lineRef.current, {
-        top: rect.top - parentRect.top + rect.height / 2.5,
+        top: rect.top - parentRect.top + rect.height / 2.1,
         left: rect.left - parentRect.left + 25,
         transform: "translateY(10%)",
       });
@@ -147,7 +147,7 @@ const Home = () => {
   useGSAP(() => {
     if (panelOpenRef.current && panelCloseRef.current) {
       gsap.to(panelOpenRef.current, {
-        height: panelOpen ? "70%" : "0%",
+        height: panelOpen ? "68dvh" : "0dvh",
         duration: 0.5,
       });
       gsap.to(panelCloseRef.current, {
@@ -156,6 +156,7 @@ const Home = () => {
       });
     }
   }, [panelOpen]);
+  
 
   useGSAP(() => {
     if (vehiclePanelOpenRef.current && vehiclePanelCloseRef.current) {
@@ -210,20 +211,24 @@ const Home = () => {
   }, [isMenuOpen]);
 
   return (
-    <div className="relative h-[100dvh] w-full bg-white dark:bg-gray-900 text-black dark:text-white overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-blue-500/10 to-transparent dark:from-blue-900/20" />
+    <div className="h-[100dvh] w-full bg-white dark:bg-gray-900 text-black dark:text-white overflow-clip">
       
+      {/* nav bar */}
       {!panelOpen && <NavBar user={user} />}
 
 
-{/* map */}
-      <div className="h-[70%] w-full bg-gray-100 dark:bg-gray-800">
+      {/* map */}
+      <div className="h-[68%] w-full bg-gray-100 dark:bg-gray-800">
         <LiveTracking userLocation={userLocation} />
       </div>
 
-      <div className="h-screen w-full flex flex-col justify-end absolute top-0">
-        <div className="h-[30%] bg-white dark:bg-gray-800 relative w-full p-6 rounded-t-3xl shadow-lg">
-          <div className="flex justify-between items-center mb-6">
+      {/* panels container */}
+      <div className="h-[32%] w-full flex flex-col justify-end relative">
+
+          {/* find a trip panel and suggests */}
+        <div className="bg-white dark:bg-gray-800 w-full px-6 py-4 rounded-t-3xl shadow-lg absolute">
+        
+          <div className="flex justify-between items-center">
             <h4 className="text-2xl font-semibold text-black dark:text-white">Find a trip</h4>
             <i
               onClick={() => {
@@ -237,12 +242,14 @@ const Home = () => {
           </div>
 
           <form onSubmit={submitHandler}>
+          {/* vertical line */}
             <div
               ref={lineRef}
               id="line"
-              className="line absolute bg-gray-900 dark:bg-gray-100 h-20 w-1 rounded-full z-20"
+              className="line absolute bg-gray-900 dark:bg-gray-100 h-20 w-1 rounded-full z-12"
             ></div>
 
+            {/* pickup input field */}
             <div ref={pickupInputRef}>
               <input
                 className="bg-gray-100 dark:bg-gray-700 px-12 py-4 text-base rounded-xl w-full mt-5 relative focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 text-black dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 transition-all duration-200"
@@ -275,8 +282,9 @@ const Home = () => {
               />
             </div>
 
+            {/* destination input field */}
             <input
-              className="bg-gray-100 dark:bg-gray-700 px-12 py-3 text-base rounded-lg w-full mt-3 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 text-black dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+              className="bg-gray-100 dark:bg-gray-700 px-12 py-4 text-base rounded-lg w-full mt-3 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 text-black dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
               type="text"
               onClick={() => {
                 setPanelOpen(true);
@@ -322,9 +330,9 @@ const Home = () => {
               </button>
             </div>
           </form>
-        </div>
 
-        <div ref={panelOpenRef} className="h-[0%] w-full bg-white dark:bg-gray-800">
+                 {/* Location search panel*/}
+        <div ref={panelOpenRef} className="h-[0dvh] w-full bg-white dark:bg-gray-800">
           <LocationSearchPanel
             suggestion={suggestion}
             isPickupSelected={isPickupSelected}
@@ -333,7 +341,10 @@ const Home = () => {
             setSuggestion={setSuggestion}
           />
         </div>
+        
+        </div>
 
+        {/* vehicle panel */}
         <div
           ref={vehiclePanelOpenRef}
           className="px-5 w-full absolute bottom-0 translate-y-[100%] bg-white dark:bg-gray-800 rounded-t-3xl shadow-lg"
@@ -360,9 +371,10 @@ const Home = () => {
           />
         </div>
 
+        {/* confirm your ride panel */}
         <div
           ref={confirmRidePanelRef}
-          className="h-[100%] fixed w-full z-10 bottom-0 translate-y-full bg-white dark:bg-gray-800 rounded-t-3xl shadow-lg"
+          className="w-full z-10 fixed bottom-0 translate-y-full bg-white dark:bg-gray-800 rounded-t-3xl shadow-lg"
         >
           <ConfirmRide
             setConfirmRidePanel={setConfirmRidePanel}
@@ -371,9 +383,10 @@ const Home = () => {
           />
         </div>
 
+        {/* looking for driver */}
         <div
           ref={vehicleFoundRef}
-          className="h-[65%] fixed w-full z-10 bottom-0 translate-y-full bg-white dark:bg-gray-800 rounded-t-3xl shadow-lg"
+          className="w-full z-10 fixed translate-y-full bg-white dark:bg-gray-800 rounded-t-3xl shadow-lg"
         >
           <LookingForDriver
             setVehicleFound={setVehicleFound}
@@ -381,9 +394,10 @@ const Home = () => {
           />
         </div>
 
+        {/* waiting for driver */}
         <div
           ref={waitingForDriverRef}
-          className="h-[60%] fixed w-full z-10 bottom-0 translate-y-full bg-white dark:bg-gray-800 rounded-t-3xl shadow-lg"
+          className="w-full z-10 fixed translate-y-full bg-white dark:bg-gray-800 rounded-t-3xl shadow-lg"
         >
           <WaitingForDriver />
         </div>

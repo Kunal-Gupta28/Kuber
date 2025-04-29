@@ -11,7 +11,7 @@ const WaitingForDriver = () => {
 
   if (!confirmRideDetails || !ride) {
     return (
-      <div className="h-[40vh] w-full bg-white dark:bg-gray-900 text-black dark:text-white flex items-center justify-center">
+      <div className="w-full bg-white dark:bg-gray-900 text-black dark:text-white flex items-center justify-center">
         <p className="text-gray-500 dark:text-gray-400">Loading ride details...</p>
       </div>
     );
@@ -114,7 +114,7 @@ const WaitingForDriver = () => {
         </div>
 
         {/* Pick-up Address */}
-        <div className="h-[20%] flex border-t-2 border-gray-300 dark:border-gray-700 py-3 px-4 sm:px-6 items-center">
+        <div className="flex border-t-2 border-gray-300 dark:border-gray-700 py-3 px-4 sm:px-6 items-center">
           <span className="w-10 sm:w-12 flex justify-center items-center">
             <i className="ri-map-pin-line text-lg sm:text-xl text-gray-600 dark:text-gray-300"></i>
           </span>

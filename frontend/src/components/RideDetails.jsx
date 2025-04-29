@@ -31,7 +31,7 @@ const RideDetails = ({ userType, ride }) => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-7">
   {/* Vehicle Details (Hide for captain) */}
   {userType !== "captain" && (
     <div className="flex items-center gap-4 p-4 bg-white dark:bg-gray-700 rounded-xl shadow-sm">
@@ -89,12 +89,12 @@ const RideDetails = ({ userType, ride }) => {
   </div>
 
   {/* Trip Summary */}
-  <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-xl">
-    <div className="flex justify-between items-center mb-2">
+  <div className="px-4 py-0 xl:py-4  bg-gray-50 dark:bg-gray-800 rounded-xl">
+    <div className="flex justify-between items-center mb-0 xl:mb-2">
       <span className="text-gray-600 dark:text-gray-300">Distance</span>
       <span className="font-medium">~5.2 km</span>
     </div>
-    <div className="flex justify-between items-center mb-2">
+    <div className="flex justify-between items-center mb-0 xl:mb-2">
       <span className="text-gray-600 dark:text-gray-300">Duration</span>
       <span className="font-medium">~15 mins</span>
     </div>

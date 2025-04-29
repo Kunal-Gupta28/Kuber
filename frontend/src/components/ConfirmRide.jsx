@@ -1,4 +1,3 @@
-import React from "react";
 import axios from "axios";
 import RideDetails from "./RideDetails";
 import { useRideContext } from "../context/RideContext";
@@ -55,7 +54,7 @@ const ConfirmRide = ({
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="flex  gap-4 xl:gap-28 justify-center">
           <button
             onClick={handleRideConfirmation}
             className="flex-1 sm:flex-none px-8 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 
