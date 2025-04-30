@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import {CaptainDataContext} from '../context/CaptainContext'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import Loader from '../components/Loader'
 
 const CaptainProtectWrapper = ({
     children
@@ -41,7 +42,7 @@ const CaptainProtectWrapper = ({
 
     if (isLoading) {
         return (
-            <div>Loading...</div>
+            <div><Loader/></div>
         )
     }
 

@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { UserDataContext } from '../context/UserContext'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import Loader from '../components/Loader'
 
 const UserProtectWrapper = ({
     children
@@ -34,7 +35,7 @@ const UserProtectWrapper = ({
 
     if (isLoading) {
         return (
-            <div>Loading...</div>
+            <div className='h-[100dvh] w-full flex justify-center items-center'><Loader/></div>
         )
     }
 

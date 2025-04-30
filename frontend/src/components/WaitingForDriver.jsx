@@ -48,7 +48,7 @@ const WaitingForDriver = () => {
 
         {/* Driver and Vehicle Info */}
         <div className=" flex-1 p-6 sm:p-6">
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+          <div className="flex xl:flex-col flex-row gap-4 sm:gap-6 py-3">
             {/* Driver and Vehicle Images */}
             <div className="flex items-center gap-3 sm:gap-4">
               <div className="h-16 w-16 sm:h-20 sm:w-20 rounded-full bg-gray-300 dark:bg-gray-700 overflow-hidden flex items-center justify-center">
@@ -114,7 +114,7 @@ const WaitingForDriver = () => {
         </div>
 
         {/* Pick-up Address */}
-        <div className="flex border-t-2 border-gray-300 dark:border-gray-700 py-3 px-4 sm:px-6 items-center">
+        <div className="flex border-t-2 border-gray-300 dark:border-gray-700 py-3 px-4 sm:px-6  pb-5 items-center">
           <span className="w-10 sm:w-12 flex justify-center items-center">
             <i className="ri-map-pin-line text-lg sm:text-xl text-gray-600 dark:text-gray-300"></i>
           </span>

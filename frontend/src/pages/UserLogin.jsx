@@ -78,7 +78,7 @@ const UserLogin = () => {
     <section className="h-[100dvh] flex flex-col justify-center items-center px-4 py-10 bg-white dark:bg-black text-black dark:text-white transition-colors duration-500 relative">
       <div className="absolute top-5 right-5">
         <button onClick={toggleTheme} className="p-2 rounded-full bg-gray-300 dark:bg-gray-700">
-          {isDarkMode ? "🌙" : "☀️"} {/* Toggle icon based on dark mode */}
+          {isDarkMode ? "🌙" : "☀️"}
         </button>
       </div>
 

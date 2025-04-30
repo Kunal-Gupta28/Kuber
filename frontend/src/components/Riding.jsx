@@ -46,7 +46,7 @@ const Riding = () => {
   };
 
   return (
-    <main className="h-screen w-full flex flex-col overflow-hidden bg-white dark:bg-gray-900 text-black dark:text-white relative">
+    <main className="h-[100dvh] w-full flex flex-col overflow-hidden bg-white dark:bg-gray-900 text-black dark:text-white relative">
       {/* Header */}
       <div className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center p-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm shadow-sm">
         <h1 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white bg-gradient-to-r from-yellow-400 to-yellow-500 dark:from-yellow-500 dark:to-yellow-600 rounded-xl p-2 px-4 transition-all duration-300 hover:scale-105 hover:shadow-lg">
@@ -55,12 +55,12 @@ const Riding = () => {
       </div>
 
       {/* Map Section */}
-      <section className="h-[75vh] sm:h-[80vh] mt-16">
-        <LiveTracking coordinates={coordinates} />
+      <section className="xl:h-[75%] h-[85%]">
+        <LiveTracking coordinates={coordinates}/>
       </section>
 
       {/* Control Panel */}
-      <div className="h-[25vh] sm:h-[20vh] w-full bg-gradient-to-b from-yellow-400 to-yellow-500 dark:from-yellow-500 dark:to-yellow-600 p-4 sm:p-5 fixed bottom-0 flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 z-40 shadow-inner rounded-t-3xl border-t border-yellow-300 dark:border-yellow-600">
+      <div className="xl:h-[25%] h-[20%] w-full bg-gradient-to-b from-yellow-400 to-yellow-500 dark:from-yellow-500 dark:to-yellow-600 p-4 sm:p-5 fixed bottom-0 flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 z-40 shadow-inner rounded-t-3xl border-t border-yellow-300 dark:border-yellow-600">
         <div className="w-full sm:w-auto flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
           <div className="h-14 sm:h-16 w-full sm:w-48 bg-gradient-to-r from-green-600 to-green-700 dark:from-green-700 dark:to-green-800 rounded-xl text-lg sm:text-xl font-semibold text-white flex justify-center items-center shadow-lg hover:shadow-xl transition-all duration-300">
             <span className="flex items-center gap-2">

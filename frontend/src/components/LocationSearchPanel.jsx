@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRideContext } from "../context/RideContext";
+import Loader from "./Loader";
 
 const LocationSearchPanel = ({
   suggestion = [],
@@ -10,6 +11,7 @@ const LocationSearchPanel = ({
 }) => {
   const {setPickup,setDestination} = useRideContext()
   const [recentSearches, setRecentSearches] = useState([]);
+  const [isLocating, setIsLocating] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem("recentSearches");
@@ -35,20 +37,40 @@ const LocationSearchPanel = ({
     setSuggestion([]);
   };
 
+  const handleUseMyLocationClick = async () => {
+    try {
+      setIsLocating(true);
+      await handleUseMyLocation();
+      setSuggestion([]);
+    } catch (error) {
+      console.error("Error getting location:", error);
+    } finally {
+      setIsLocating(false);
+    }
+  };
+
   return (
     <div className="bg-white dark:bg-gray-900 text-black dark:text-white">
       {/* Use My Current Location */}
       {isPickupSelected && (
         <div className="mx-5 py-6">
           <button
-            onClick={() => {
-              handleUseMyLocation();
-              setSuggestion([]);
-            }}
-            className="w-full text-sm bg-black dark:bg-blue-600 hover:bg-gray-800 dark:hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-xl transition-colors"
+            onClick={handleUseMyLocationClick}
+            disabled={isLocating}
+            className={`w-full text-sm ${
+              isLocating 
+                ? "bg-gray-400 dark:bg-gray-600" 
+                : "bg-black dark:bg-blue-600 hover:bg-gray-800 dark:hover:bg-blue-700"
+            } text-white font-semibold py-2 px-4 rounded-xl transition-colors`}
           >
-            Use My Current Location
+            {isLocating ? "Getting Location..." : "Use My Current Location"}
           </button>
+        </div>
+      )}
+
+      {isLocating && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <Loader/>
         </div>
       )}
 

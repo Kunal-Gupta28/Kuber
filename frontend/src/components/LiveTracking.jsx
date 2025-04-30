@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
+import Loader from "./Loader";
+
 import {
   GoogleMap,
   useJsApiLoader,
@@ -15,17 +17,24 @@ const containerStyle = {
 
 const libraries = ["marker", "places"];
 
-const MyMap = ({ coordinates }) => {
-  const pickup = coordinates?.pickup
+const MyMap = (props) => {
+  const { pickup: pickup_1, destination: destination_1, coordinates } = props;
+
+  const pickup_2 = coordinates?.pickup
     ? { lat: coordinates.pickup.latitude, lng: coordinates.pickup.longitude }
     : null;
 
-  const destination = coordinates?.destination
+  const destination_2 = coordinates?.destination
     ? {
         lat: coordinates.destination.latitude,
         lng: coordinates.destination.longitude,
       }
     : null;
+
+  const pickup = pickup_1 || pickup_2;
+  const destination = destination_1 || destination_2;
+
+
 
   const [currentPosition, setCurrentPosition] = useState(null);
   const [routePath, setRoutePath] = useState(null);
@@ -47,9 +56,7 @@ const MyMap = ({ coordinates }) => {
           const userLoc = { lat: coords.latitude, lng: coords.longitude };
           setCurrentPosition(userLoc);
         },
-        (error) => console.error("Geolocation error:", error),
-        { enableHighAccuracy: true }
-      );
+        (error) => console.error("Geolocation error:", error));
     }
   }, []);
 
@@ -115,8 +122,8 @@ const MyMap = ({ coordinates }) => {
     }
   };
 
-  if (!isLoaded) return <div>Loading Map API...</div>;
-  if (!currentPosition) return <div>Getting your location...</div>;
+  if (!isLoaded) return <div className="h-full w-full flex justify-center items-center"><Loader message="Loading Map API... "/></div>;
+  if (!currentPosition) return <div className="h-full w-full flex justify-center items-center"><Loader message="Getting your location... "/></div>;
 
   return (
     <div style={containerStyle}>
@@ -143,24 +150,12 @@ const MyMap = ({ coordinates }) => {
       </GoogleMap>
 
       <button
-        onClick={recenterMap}
-        style={{
-          position: "absolute",
-          bottom: "20px",
-          right: "20px",
-          backgroundColor: "white",
-          border: "none",
-          borderRadius: "50%",
-          padding: "12px",
-          boxShadow: "0 2px 6px rgba(0,0,0,0.3)",
-          cursor: "pointer",
-        }}
-      >
-        <i
-          className="ri-focus-3-line"
-          style={{ fontSize: "20px", color: "black" }}
-        ></i>
-      </button>
+  onClick={recenterMap}
+  className="h-[50px] w-[50px] absolute bottom-[60px] xl:bottom-[80px] xl:right-[40px] right-[20px] bg-white border-none rounded-full p-3 shadow-md cursor-pointer"
+>
+  <i className="ri-focus-3-line text-[20px] text-black"></i>
+</button>
+
     </div>
   );
 };

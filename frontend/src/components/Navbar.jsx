@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useTheme } from "../context/ThemeContext";
@@ -7,16 +7,35 @@ import { useNavigate } from "react-router-dom";
 const NavBar = ({ user, isCaptain = false }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
+  const menuTl = useRef(null);
   const navigate = useNavigate();
   const { isDarkMode, toggleTheme } = useTheme();
 
   useGSAP(() => {
-    gsap.to(menuRef.current, {
-      opacity: isMenuOpen ? 1 : 0,
-      y: isMenuOpen ? 0 : -100,
-      duration: 0.3,
-      ease: "power2.out",
-    });
+    menuTl.current = gsap.timeline({ paused: true })
+      .fromTo(
+        menuRef.current,
+        {
+          opacity: 0,
+          scale: 0.95,
+          y: -10,
+          pointerEvents: "none",
+        },
+        {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          pointerEvents: "auto",
+          duration: 0.3,
+          ease: "power2.out",
+        }
+      );
+  }, []);
+
+  useEffect(() => {
+    if (menuTl.current) {
+      isMenuOpen ? menuTl.current.play() : menuTl.current.reverse();
+    }
   }, [isMenuOpen]);
 
   const handleLogout = () => {
@@ -35,13 +54,19 @@ const NavBar = ({ user, isCaptain = false }) => {
           <i className="ri-menu-line text-2xl font-bold text-gray-900"></i>
         </button>
 
-        {/* Dropdown Menu */}
+                  {/* Close Button */}
+                  <div className="flex justify-end px-4 py-2 absolute top-0 right-0">
+            <button onClick={() => setIsMenuOpen(false)}>
+              <i className="ri-close-line text-xl text-gray-500 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white"></i>
+            </button>
+          </div>
+
         <div
           ref={menuRef}
-          className={`absolute right-0 mt-3 w-52 origin-top-right rounded-xl shadow-xl bg-white dark:bg-gray-800 transform transition-all duration-300 z-30 ${
-            isMenuOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0 pointer-events-none'
-          }`}
+          className="absolute right-0 top-[1%] w-52 origin-top-right rounded-xl shadow-xl bg-white dark:bg-gray-800 z-30"
         >
+
+
           <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
             <div className="flex items-center space-x-3">
               <div className="w-9 h-9 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
@@ -52,10 +77,13 @@ const NavBar = ({ user, isCaptain = false }) => {
               </span>
             </div>
           </div>
-          
+
           <div className="px-4 py-2">
             <button
-              onClick={toggleTheme}
+              onClick={() => {
+                toggleTheme();
+                setIsMenuOpen(false);
+              }}
               className="w-full flex items-center gap-2 px-2 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md"
             >
               <i className={`ri-${isDarkMode ? 'sun' : 'moon'}-line`}></i>
@@ -81,4 +109,4 @@ const NavBar = ({ user, isCaptain = false }) => {
   );
 };
 
-export default NavBar; 
+export default NavBar;
