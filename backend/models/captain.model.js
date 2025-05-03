@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { image } = require("../config/cloudinary");
 
 const captainSchema = new mongoose.Schema({
   fullname: {
@@ -13,6 +14,9 @@ const captainSchema = new mongoose.Schema({
         type: String,
         minlength: [3, "Surname must be at least 3 characters long"],
     },
+  },
+  image: {
+    type: String,
   },
   email: {
     type: String,

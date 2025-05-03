@@ -3,14 +3,17 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useTheme } from "../context/ThemeContext";
 import { useNavigate } from "react-router-dom";
+import { useUserContext } from "../context/UserContext";
+import { useCaptainContext } from "../context/CaptainContext";
 
-const NavBar = ({ user, isCaptain = false }) => {
+const NavBar = ({userType}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
   const menuTl = useRef(null);
   const navigate = useNavigate();
   const { isDarkMode, toggleTheme } = useTheme();
-
+  const { user } = useUserContext();
+  const { captain } = useCaptainContext();
   useGSAP(() => {
     menuTl.current = gsap.timeline({ paused: true })
       .fromTo(
@@ -38,69 +41,99 @@ const NavBar = ({ user, isCaptain = false }) => {
     }
   }, [isMenuOpen]);
 
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target) && 
+          !event.target.closest('button')) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const handleLogout = () => {
     localStorage.removeItem("token");
-    navigate(isCaptain ? "/captains/login" : "/users/login");
+    navigate(userType==="user" ? "/users/login" : "/captains/login");
+  };
+
+  const handleProfileClick = () => {
+    setIsMenuOpen(false);
+    navigate(userType==="user" ? "/users/profile" : "/captains/profile");
   };
 
   return (
-    <nav className="w-full px-4 py-2 flex justify-between items-center text-xl z-20 absolute top-0">
-      <h2 className="font-bold text-gray-900 text-2xl">Kuber</h2>
+    <nav className="w-full px-6 py-3 flex justify-between items-center text-xl z-50 fixed top-0 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
+      <div className="flex items-center space-x-2">
+        <h2 className="font-bold text-gray-900 dark:text-white text-2xl">Kuber</h2>
+      </div>
+      
       <div className="relative">
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200"
+          className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 hover:scale-105"
+          aria-label="Toggle menu"
         >
-          <i className="ri-menu-line text-2xl font-bold text-gray-900"></i>
+          <i className={`ri-${isMenuOpen ? 'close' : 'menu'}-line text-2xl font-bold text-gray-900 dark:text-white`}></i>
         </button>
-
-                  {/* Close Button */}
-                  <div className="flex justify-end px-4 py-2 absolute top-0 right-0">
-            <button onClick={() => setIsMenuOpen(false)}>
-              <i className="ri-close-line text-xl text-gray-500 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white"></i>
-            </button>
-          </div>
 
         <div
           ref={menuRef}
-          className="absolute right-0 top-[1%] w-52 origin-top-right rounded-xl shadow-xl bg-white dark:bg-gray-800 z-30"
+          className={`absolute right-0 mt-3 w-72 origin-top-right rounded-xl shadow-xl bg-white dark:bg-gray-800 z-50 transform transition-all duration-200 ${
+            isMenuOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'
+          }`}
         >
-
-
-          <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
-            <div className="flex items-center space-x-3">
-              <div className="w-9 h-9 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                <i className="ri-user-line text-gray-600 dark:text-gray-400"></i>
+          <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+            <button
+              onClick={handleProfileClick}
+              className="w-full flex items-center gap-3 p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all duration-200"
+            >
+              <div className="w-12 h-12 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center overflow-hidden ring-2 ring-blue-500 dark:ring-blue-400">
+                {(user?.profilePicture || captain?.profilePicture) ? (
+                  <img
+                    src={user?.profilePicture || captain?.profilePicture}
+                    alt="Profile"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <i className="ri-user-line text-2xl text-gray-600 dark:text-gray-400"></i>
+                )}
               </div>
-              <span className="text-sm font-semibold text-gray-900 dark:text-white">
-                {user?.name || (isCaptain ? 'Captain' : 'User')}
-              </span>
-            </div>
+              <div className="flex flex-col items-start">
+                <span className="font-semibold text-lg text-gray-900 dark:text-white">
+                  {user?.fullname?.firstname + " " + user?.fullname?.lastname || 
+                   captain?.fullname?.firstname + " " + captain?.fullname?.lastname}
+                </span>
+                <span className="text-sm text-gray-500 dark:text-gray-400">
+                  {user ? 'View Profile' : 'View Captain Profile'}
+                </span>
+              </div>
+            </button>
           </div>
 
-          <div className="px-4 py-2">
+          <div className="p-2">
             <button
               onClick={() => {
                 toggleTheme();
                 setIsMenuOpen(false);
               }}
-              className="w-full flex items-center gap-2 px-2 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md"
+              className="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all duration-200"
             >
-              <i className={`ri-${isDarkMode ? 'sun' : 'moon'}-line`}></i>
-              <span>{isDarkMode ? 'Light Mode' : 'Dark Mode'}</span>
+              <i className={`ri-${isDarkMode ? 'sun' : 'moon'}-line text-xl`}></i>
+              <span>{isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}</span>
             </button>
-          </div>
 
-          <div className="px-4 py-2">
             <button
               onClick={() => {
                 setIsMenuOpen(false);
                 handleLogout();
               }}
-              className="w-full flex items-center gap-2 px-2 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-md"
+              className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-all duration-200 mt-1"
             >
-              <i className="ri-logout-box-r-line"></i>
-              <span>Logout</span>
+              <i className="ri-logout-box-r-line text-xl"></i>
+              <span>Sign Out</span>
             </button>
           </div>
         </div>

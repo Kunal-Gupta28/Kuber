@@ -67,7 +67,7 @@ const ConfirmRidePopUpPanel = ({
       animate={{ y: 0 }}
       exit={{ y: "100%" }}
       transition={{ type: "spring", damping: 25, stiffness: 120 }}
-      className="w-full bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-t-3xl shadow-xl text-black dark:text-white"
+      className="w-full h-full  bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-t-3xl shadow-xl text-black dark:text-white"
     >
       {/* Header */}
       <div className="flex justify-between items-center mb-6">

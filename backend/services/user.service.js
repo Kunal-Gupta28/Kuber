@@ -20,3 +20,15 @@ module.exports.createUser = async ({firstname, lastname, email, password}) => {
     throw new Error(`Error creating user: ${error.message}`);
   }
 };
+
+module.exports.updateProfileImage = async (userId,file) => {
+  if (!file || !userId) {
+    throw new Error("File and userId are required");
+  }
+  try {
+    const updatedUser = await userModel.findByIdAndUpdate(userId, { image: file.path }, { new: true, select: "-password" });
+    return updatedUser;
+  } catch (error) {
+    throw new Error(`Error updating user profile: ${error.message}`);
+  }
+}

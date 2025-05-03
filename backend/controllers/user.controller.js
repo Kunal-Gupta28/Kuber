@@ -75,9 +75,47 @@ module.exports.getUserProfile = async (req, res, next) => {
   res.status(200).json(req.user);
 };
 
+module.exports.updateProfile = async (req, res, next) => {
+  const { name, profilePicture } = req.body;
+  const userId = req.user._id;
+  try {
+    const updatedUser = await userService.updateProfile({name, profilePicture , userId});
+    res.status(200).json({message: "Profile updated successfully", user: updatedUser});
+  } catch (error) {
+    console.error("Error updating user profile:", error);
+    next(error);
+  }
+};
+
 module.exports.logoutUser = async (req, res, next) => {
   res.clearCookie("token");
   const token = req.cookies.token || req.headers.authorization.split(" ")[1];
   await blacklistTokenModel.create({ token });
   res.status(200).json({ message: "Logged out successfully" });
+};
+
+exports.uploadImage = async (req, res) => {
+  const userId = req.user._id;
+  const file = req.file;
+  if (!file || !userId) {
+    return res.status(400).json({ message: 'No file uploaded' });
+  }
+
+  try {
+    const updateProfileImage = await userService.updateProfileImage(userId, file);
+
+    if (!updateProfileImage) {
+      return res.status(400).json({ message: 'Failed to update profile image' });
+    }
+
+    res.status(200).json({
+      message: 'Image uploaded successfully',
+      url: file.path,
+      public_id: file.filename,
+    });
+    
+  } catch (error) {
+    console.error('Upload error:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
 };

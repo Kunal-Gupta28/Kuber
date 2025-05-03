@@ -74,4 +74,4 @@ router.get(
   mapController.getAutoCompleteSuggestion
 );
 
-module.exports = router;
+module.exports = router;    

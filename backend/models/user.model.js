@@ -13,6 +13,9 @@ const userSchema = new mongoose.Schema({
       type: String,
     },
   },
+  image:{
+    type:String,
+  },
   email: {
     type: String,
     required: true,

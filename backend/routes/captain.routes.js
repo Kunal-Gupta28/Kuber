@@ -3,7 +3,9 @@ const router = express.Router();
 const { body } = require("express-validator");
 const captainController = require("../controllers/captain.controller");
 const authMiddleware = require("../middlewares/auth.middlewares");
+const upload = require("../middlewares/multer.middleware");
 
+// register a new captain
 router.post(
   "/register",
   [
@@ -32,7 +34,7 @@ router.post(
   captainController.registerCaptain
 );
 
-
+// login a captain
 router.post(
   "/login",
   [
@@ -44,12 +46,24 @@ router.post(
   captainController.loginCaptain
 );
 
+// get captain profile
 router.get(
   "/profile",
   authMiddleware.authCaptain,
   captainController.getCaptainProfile
 );
 
+// Upload profile image
+router.post('/upload-profile-image', authMiddleware.authCaptain, upload.single('image'), captainController.uploadImage);
+
+// update captain profile
+router.get(
+  "/update-profile",
+  authMiddleware.authCaptain,
+  captainController.updatateProfile
+);
+
+// logout a captain
 router.get(
   "/logout",
   authMiddleware.authCaptain,

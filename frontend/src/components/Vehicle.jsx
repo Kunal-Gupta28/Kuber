@@ -9,7 +9,7 @@ const Vehicle = ({
 }) => {
   const [fares, setFares] = useState({});
   const [selectedVehicle, setSelectedVehicle] = useState(null);
-  const { pickup, destination, setConfirmRideDetails } = useRideContext();
+  const { pickup, destination, setConfirmRideDetails ,setDistance ,setDuration } = useRideContext();
 
   const vehicleOptions = [
     {
@@ -58,10 +58,12 @@ const Vehicle = ({
         );
 
         const fareObj = {};
-        response.data.forEach(({ vehicleType, fare }) => {
+        response.data.fares.forEach(({ vehicleType, fare }) => {
           fareObj[vehicleType] = fare;
         });
         setFares(fareObj);
+        setDistance(response.data.distanceTime.distance);
+        setDuration(response.data.distanceTime.duration);
       } catch (error) {
         console.error("Error fetching fares:", error);
       }
@@ -71,7 +73,7 @@ const Vehicle = ({
   }, [pickup, destination, vehiclePanelOpen]);
 
   return (
-    <div className="h-[50vh] w-full bg-white dark:bg-gray-900 text-black dark:text-white overflow-y-auto">
+    <div className="h-[50dvh] 2xl:h-[25%] w-full my-4 bg-white dark:bg-gray-900 text-black dark:text-white overflow-y-auto rounded-t-3xl xl:rounded-3xl">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
         {vehicleOptions.map((vehicle) => {
           const isSelected = selectedVehicle === vehicle.vehicleType;

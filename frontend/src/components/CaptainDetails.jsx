@@ -11,7 +11,7 @@ const CaptainDetails = ({ captain }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 h-full">
+    <div className="bg-white dark:bg-gray-800 rounded-t-3xl shadow-lg px-6 py-4 h-full">
       {/* Profile Header */}
       <div className="flex items-center space-x-4 mb-6">
         <img

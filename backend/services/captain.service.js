@@ -27,3 +27,15 @@ module.exports.createCaptain = async ({firstname, lastname, email, password, col
     throw new Error(`Error creating captain: ${error.message}`);
   }
 };
+
+module.exports.updateProfileImage = async (captainId,file) => {
+  if (!file || !captainId) {
+    throw new Error("File and captainId are required");
+  }
+  try {
+    const updatedCaptain = await captainModel.findByIdAndUpdate(captainId, { image: file.path }, { new: true, select: "-password" });
+    return updatedCaptain;
+  } catch (error) {
+    throw new Error(`Error updating captain profile: ${error.message}`);
+  }
+}

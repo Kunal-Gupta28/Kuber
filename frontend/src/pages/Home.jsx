@@ -232,19 +232,17 @@ const Home = () => {
   return (
     <div className="h-[100dvh] w-full bg-white dark:bg-gray-900 text-black dark:text-white overflow-clip">
       
-      
-      
       {/* nav bar */}
-      {!panelOpen && <NavBar user={user} />}
+      {!panelOpen && <NavBar userType="user"/>}
 
 
       {/* map */}
-      <div className="h-[68%] w-full bg-gray-100 dark:bg-gray-800">
+      <div className="h-[71%]  xl:h-[76%] w-full bg-gray-100 dark:bg-gray-800">
         <LiveTracking pickup={pickup} destination={destination} />
       </div>
 
       {/* panels container */}
-      <div className="h-[32%] w-full flex flex-col justify-end relative">
+      <div className="h-[29%] xl:h-[24%] w-full flex flex-col justify-end relative">
 
           {/* find a trip panel and suggests */}
         <div className="bg-white dark:bg-gray-800 w-full py-4 rounded-t-3xl shadow-lg absolute">
@@ -372,7 +370,7 @@ const Home = () => {
           ref={vehiclePanelOpenRef}
           className="px-5 w-full absolute bottom-0 translate-y-[100%] bg-white dark:bg-gray-800 rounded-t-3xl shadow-lg z-10"
         >
-          <div className="flex justify-between mt-5">
+          <div className="flex justify-between mt-4">
             <h3 className="text-2xl font-semibold text-black dark:text-white">Choose a Vehicle</h3>
             <i
               onClick={() => {
@@ -409,7 +407,7 @@ const Home = () => {
         {/* looking for driver */}
         <div
           ref={vehicleFoundRef}
-          className="h-[72.5dvh] xl:h-[62.5dvh] w-full z-10 fixed translate-y-full bg-white dark:bg-gray-800 rounded-t-3xl shadow-lg"
+          className="h-[72.5dvh] xl:h-[54dvh] w-full z-10 fixed translate-y-full bg-white dark:bg-gray-800 rounded-t-3xl shadow-lg"
         >
           <LookingForDriver
             setVehicleFound={setVehicleFound}

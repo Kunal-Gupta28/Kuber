@@ -1,6 +1,5 @@
 // src/context/rideContext.js
 import { createContext, useContext, useState, useEffect } from "react";
-
 // Create the context
 export const RideContext = createContext();
 
@@ -22,6 +21,9 @@ export const RideContextProvider = ({ children }) => {
   const [pickupDetails, setPickupDetails] = useState("");
   const [destinationMain, setDestinationMain] = useState("");
   const [destinationDetails, setDestinationDetails] = useState("");
+
+  const [distance, setDistance] = useState("");
+  const [duration, setDuration] = useState("");
   
   const [ride, setRide] = useState(null);
   
@@ -52,7 +54,11 @@ export const RideContextProvider = ({ children }) => {
         destinationDetails,
         confirmRideDetails,
         setConfirmRideDetails,
-        fare
+        fare,
+        distance, 
+        setDistance,
+        duration,
+        setDuration,
       }}
     >
       {children}

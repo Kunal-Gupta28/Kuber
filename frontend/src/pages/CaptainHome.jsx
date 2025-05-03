@@ -28,7 +28,6 @@ const CaptainHome = () => {
 
   const navigate = useNavigate();
   const [setActiveRide] = useState(null);
-  const [showDetails, setShowDetails] = useState(false);
 
   useEffect(() => {
     if (!captain) return;
@@ -111,7 +110,7 @@ const CaptainHome = () => {
   useGSAP(() => {
     if (confirmRidePopUpPanelRef.current) {
       gsap.to(confirmRidePopUpPanelRef.current, {
-        y: confirmRidePopUpPanel ? "2%" : "100%",
+        y: confirmRidePopUpPanel ? "0%" : "100%",
         duration: 0.5,
         ease: "power2.out",
       });
@@ -131,19 +130,19 @@ const CaptainHome = () => {
   
 
   return (
-    <div className="h-screen w-screen overflow-hidden flex flex-col bg-gray-100 dark:bg-gray-900 relative">
+    <div className="h-[100dvh] w-screen overflow-hidden flex flex-col bg-gray-100 dark:bg-gray-900 relative">
       {/* Top Navigation */}
-      <NavBar user={captain} isCaptain={true} />
+      <NavBar userType="captain" isCaptain={true} />
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col h-full">
         {/* Live Map Section */}
-        <div className="h-[70%] bg-gray-200 dark:bg-gray-800">
+        <div className="h-[72%] bg-gray-200 dark:bg-gray-800">
           <LiveTracking />
         </div>
 
         {/* Captain Info */}
-        <div className="h-[30%] overflow-hidden bg-white dark:bg-gray-800 shadow-inner">
+        <div className="h-[28%] overflow-hidden bg-white dark:bg-gray-800 shadow-inner">
           <CaptainDetails captain={captain} />
         </div>
       </div>
@@ -151,7 +150,7 @@ const CaptainHome = () => {
       {/* Incoming Ride Panel */}
       <div
         ref={ridePopUpPanelRef}
-        className="fixed bottom-0 left-0 w-full z-30 bg-white dark:bg-gray-800 h-[85%] translate-y-full rounded-t-2xl shadow-xl transition-all duration-300"
+        className="fixed bottom-0 left-0 w-full z-30 bg-white dark:bg-gray-800 translate-y-full rounded-t-2xl shadow-xl transition-all duration-300"
       >
         <RidePopUpPanel
           confirmRide={confirmRide}
@@ -163,33 +162,14 @@ const CaptainHome = () => {
       {/* Confirm Ride Panel */}
       <div
         ref={confirmRidePopUpPanelRef}
-        className="h-[90%] w-full fixed bottom-0 left-0 z-30 bg-white dark:bg-gray-800 translate-y-full rounded-t-2xl shadow-xl transition-all duration-300"
+        className="h-full w-full fixed bottom-0 left-0 z-30 bg-white dark:bg-gray-800 translate-y-full rounded-t-2xl shadow-xl transition-all duration-300"
       >
         <ConfirmRidePopUpPanel
           setRidePopUpPanel={setRidePopUpPanel}
           setConfirmRidePopUpPanel={setConfirmRidePopUpPanel}
         />
       </div>
-
-      {/* Profile Details Panel */}
-      {showDetails && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-md w-full p-6">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold text-gray-800 dark:text-white">
-                Profile Details
-              </h2>
-              <button
-                onClick={() => setShowDetails(false)}
-                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-              >
-                <i className="ri-close-line text-2xl"></i>
-              </button>
-            </div>
-            <CaptainDetails />
-          </div>
-        </div>
-      )}
+      
     </div>
   );
 };

@@ -13,34 +13,36 @@ import Riding from "./components/Riding";
 import CaptainHome from "./pages/CaptainHome";
 import CaptainRiding from "./pages/CaptainRiding";
 import CaptainLogout from "./pages/CaptainLogout";
-import { Toaster } from 'react-hot-toast';
+import { Toaster } from "react-hot-toast";
+import UserProfile from "./components/UserProfile";
+import CaptainProfile from "./components/CaptainProfile";
 
 function App() {
   return (
     <ThemeProvider>
       <Routes>
         <Route path="/" element={<Start />} />
+        <Route path="/users/register" element={<UserSignUp />} />
+        <Route path="/users/login" element={<UserLogin />} />
         <Route
           path="/home"
           element={
             <UserProtectorWrapper>
-              {" "}
-              <Home />{" "}
+              <Home />
             </UserProtectorWrapper>
           }
         />
-        <Route path="/users/login" element={<UserLogin />} />
+        <Route path="/users/profile" element={<UserProfile />} />
         <Route path="/users/riding" element={<Riding />} />
-        <Route path="/users/register" element={<UserSignUp />} />
-
         <Route
-          path="users/logout"
+          path="/users/logout"
           element={
             <UserProtectorWrapper>
               <UserLogout />
-            </UserProtectorWrapper> 
+            </UserProtectorWrapper>
           }
         />
+
         <Route path="/captains/login" element={<CaptainLogin />} />
         <Route path="/captains/register" element={<CaptainSignUp />} />
         <Route
@@ -51,6 +53,7 @@ function App() {
             </CaptainProtectWrapper>
           }
         />
+        <Route path="/captains/profile" element={<CaptainProfile />} />
         <Route path="/captains/riding" element={<CaptainRiding />} />
         <Route
           path="/captain/logout"
@@ -61,24 +64,25 @@ function App() {
           }
         />
       </Routes>
-      <Toaster 
+
+      <Toaster
         position="top-right"
         toastOptions={{
           duration: 10000,
           style: {
-            background: '#333',
-            color: '#fff',
+            background: "#333",
+            color: "#fff",
           },
           success: {
             duration: 10000,
             theme: {
-              primary: '#4aed88',
+              primary: "#4aed88",
             },
           },
           error: {
             duration: 10000,
             theme: {
-              primary: '#ff4b4b',
+              primary: "#ff4b4b",
             },
           },
         }}

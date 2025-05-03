@@ -64,6 +64,7 @@ const RidePopUpPanel = ({
         <button
           onClick={() => {
             setConfirmRidePopUpPanel(true);
+            setRidePopUpPanel(false);
             confirmRide();
           }}
           className="flex-1 py-3 px-6 bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800 rounded-xl text-white font-semibold text-lg transition-colors flex items-center justify-center gap-2"
@@ -73,7 +74,7 @@ const RidePopUpPanel = ({
         </button>
         <button
           onClick={() => setRidePopUpPanel(false)}
-          className="flex-1 py-3 px-6 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-xl text-gray-800 dark:text-white font-semibold text-lg transition-colors flex items-center justify-center gap-2"
+          className="flex-1 py-3 px-6 mb-3 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-xl text-gray-800 dark:text-white font-semibold text-lg transition-colors flex items-center justify-center gap-2"
         >
           <i className="ri-close-line"></i>
           Decline

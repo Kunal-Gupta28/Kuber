@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useRideContext } from "../context/RideContext";
+import axios from "axios"; 
+
+
 
 const RideDetails = ({ userType, ride }) => {
-  let confirmRideDetails, pickup, destination;
-
+  let confirmRideDetails, pickup, destination, distance, duration;
 
   if (userType === "captain") {
     confirmRideDetails = ride || {};
@@ -14,10 +16,15 @@ const RideDetails = ({ userType, ride }) => {
       confirmRideDetails: rideDetails,
       pickup: ridePickup,
       destination: rideDestination,
+      distance: rideDistance,
+      duration: rideDuration,
     } = useRideContext() || {};
+  
     confirmRideDetails = rideDetails;
     pickup = ridePickup;
     destination = rideDestination;
+    distance = rideDistance;
+    duration = rideDuration;
   }
   
 
@@ -89,15 +96,19 @@ const RideDetails = ({ userType, ride }) => {
   </div>
 
   {/* Trip Summary */}
-  <div className="px-4 py-0 xl:py-4  bg-gray-50 dark:bg-gray-800 rounded-xl">
-    <div className="flex justify-between items-center mb-0 xl:mb-2">
-      <span className="text-gray-600 dark:text-gray-300">Distance</span>
-      <span className="font-medium">~5.2 km</span>
-    </div>
-    <div className="flex justify-between items-center mb-0 xl:mb-2">
-      <span className="text-gray-600 dark:text-gray-300">Duration</span>
-      <span className="font-medium">~15 mins</span>
-    </div>
+  <div className="px-4 py-2 xl:py-4  bg-gray-50 dark:bg-gray-800 rounded-xl">
+    {/* Distance */}
+  <div className="flex justify-between items-center mb-0 xl:mb-2">
+    <span className="text-gray-600 dark:text-gray-300">Distance</span>
+    <span className="font-medium">{distance ? `~${distance}` : "Calculating..."}</span>
+  </div>
+
+   {/* Duration */}
+  <div className="flex justify-between items-center mb-0 xl:mb-2">
+    <span className="text-gray-600 dark:text-gray-300">Duration</span>
+    <span className="font-medium">{duration ? `~${duration} mins` : "Calculating..."}</span>
+  </div>
+
     {userType !== "captain" && (
   <div className="flex justify-between items-center">
     <span className="text-gray-600 dark:text-gray-300">Vehicle Type</span>
@@ -108,12 +119,12 @@ const RideDetails = ({ userType, ride }) => {
   </div>
 
   {/* Safety Info */}
-  <div className="flex items-center gap-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl text-sm">
+  {userType !== "captain" && (<div className="flex justify-center items-center gap-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl text-sm">
     <i className="ri-shield-check-line text-blue-600 dark:text-blue-400 text-xl"></i>
     <p className="text-gray-600 dark:text-gray-300">
       Your ride is covered by our safety measures and insurance
     </p>
-  </div>
+  </div>)}
 </div>
 
   );
