@@ -63,6 +63,8 @@ function App() {
             </CaptainProtectWrapper>
           }
         />
+
+        <Route path="*" element={<NotFoundPage/>}/>
       </Routes>
 
       <Toaster
