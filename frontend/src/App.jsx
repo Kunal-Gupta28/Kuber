@@ -16,6 +16,7 @@ import CaptainLogout from "./pages/CaptainLogout";
 import { Toaster } from "react-hot-toast";
 import UserProfile from "./components/UserProfile";
 import CaptainProfile from "./components/CaptainProfile";
+import NotFound from "./components/NotFound";
 
 function App() {
   return (
@@ -64,7 +65,7 @@ function App() {
           }
         />
 
-        <Route path="*" element={<NotFoundPage/>}/>
+        <Route path="*" element={<NotFound/>}/>
       </Routes>
 
       <Toaster
