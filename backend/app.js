@@ -11,10 +11,13 @@ connectedToDB();
 const cookie = require("cookie-parser");
 
 
-app.use(cors());
+app.use(cors({
+    origin: 'https://kuber-tau.vercel.app',
+    credentials: true
+  }));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-  
+app.use(cookie());
 
 
 app.use('/users',userRoutes);
