@@ -14,8 +14,19 @@ const cookie = require("cookie-parser");
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-app.use(cors({
-    origin: 'https://kuber-tau.vercel.app',
+const allowedOrigins = [
+    'https://kuber-tau.vercel.app',
+    'http://localhost:5173'
+  ];
+  
+  app.use(cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('CORS not allowed from this origin'));
+      }
+    },
     credentials: true
   }));
   
