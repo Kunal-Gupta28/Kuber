@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { useRideContext } from "../context/RideContext";
 
@@ -7,30 +7,39 @@ const LookingForDriver = ({ setVehicleFound, setConfirmRidePanel }) => {
   const containerRef = useRef(null);
   const dotsRef = useRef(null);
 
-  // Ensure refs are set before animating
-  useEffect(() => {
-    if (containerRef.current) {
-      gsap.from(containerRef.current, {
-        opacity: 0,
-        y: 20,
-        duration: 0.5,
-        ease: "power2.out",
-      });
-    }
+  // Animate container entrance
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      if (containerRef.current) {
+        gsap.from(containerRef.current, {
+          opacity: 0,
+          y: 20,
+          duration: 0.5,
+          ease: "power2.out",
+        });
+      }
+    }, containerRef);
+    return () => ctx.revert();
   }, []);
 
-  useEffect(() => {
-    const dots = dotsRef.current?.children;
-    if (dots) {
-      gsap.to(dots, {
-        opacity: 0.3,
-        duration: 0.5,
-        stagger: 0.2,
-        repeat: -1,
-        yoyo: true,
-        ease: "power1.inOut",
-      });
-    }
+  // Animate loading dots
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      const dots = dotsRef.current?.children;
+      if (dots && dots.length > 0) {
+        gsap.to(dots, {
+          y: -8,
+          scale: 1.3,
+          opacity: 0.6,
+          duration: 0.6,
+          stagger: 0.2,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        });
+      }
+    }, dotsRef);
+    return () => ctx.revert();
   }, []);
 
   if (!confirmRideDetails) {
@@ -60,7 +69,7 @@ const LookingForDriver = ({ setVehicleFound, setConfirmRidePanel }) => {
           <p className="text-gray-600 dark:text-gray-400">Please wait while we find the best match for you</p>
         </div>
 
-        {/* Loading Animation */}
+        {/* Animated Loading Dots */}
         <div ref={dotsRef} className="flex gap-2 mb-8">
           <div className="w-3 h-3 bg-blue-500 dark:bg-blue-400 rounded-full"></div>
           <div className="w-3 h-3 bg-blue-500 dark:bg-blue-400 rounded-full"></div>
@@ -92,7 +101,7 @@ const LookingForDriver = ({ setVehicleFound, setConfirmRidePanel }) => {
 
           <div className="flex items-center justify-center gap-2 p-4 bg-gray-50 dark:bg-gray-800 rounded-xl">
             <i className="ri-time-line text-blue-500 dark:text-blue-400"></i>
-            <span className="text-gray-600 dark:text-gray-300">Estimated arrival time: 2-5 minutes</span>
+            <span className="text-gray-600 dark:text-gray-300">Estimated arrival time: 2–5 minutes</span>
           </div>
         </div>
 

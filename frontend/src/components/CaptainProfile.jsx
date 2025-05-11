@@ -25,7 +25,6 @@ const CaptainProfile = () => {
     licenseNumber: captain?.licenseNumber || "",
   });
 
-
   // Dark mode effect handler
   useEffect(() => {
     if (isDarkMode) {
@@ -79,7 +78,7 @@ const CaptainProfile = () => {
       // Update captain context with new profile picture
       setCaptain(prev => ({
         ...prev,
-        image: response.data.image
+        image: response.data?.image
       }));
 
       // Update form data
@@ -90,28 +89,6 @@ const CaptainProfile = () => {
     } catch (error) {
       console.error('Error uploading image:', error);
       alert('Failed to upload image. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // Profile update handler
-  const handleSubmit = async (field) => {
-    setIsLoading(true);
-    try {
-      const response = await axios.put(
-        `${import.meta.env.VITE_BASE_URL}/captains/update-profile`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      setCaptain(response.data);
-      setEditingField(null);
-    } catch (error) {
-      console.error("Error updating profile:", error);
     } finally {
       setIsLoading(false);
     }
@@ -157,7 +134,7 @@ const CaptainProfile = () => {
                     <div className="w-full h-full flex items-center justify-center bg-gray-200 dark:bg-gray-700">
                       <i className="ri-user-line text-6xl sm:text-7xl text-gray-400"></i>
                     </div>
-                  )}
+                  )}    
                 </div>
                 {/* Edit Profile Picture Button */}
                 <button

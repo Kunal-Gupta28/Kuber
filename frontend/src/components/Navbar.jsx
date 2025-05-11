@@ -14,6 +14,7 @@ const NavBar = ({userType}) => {
   const { isDarkMode, toggleTheme } = useTheme();
   const { user } = useUserContext();
   const { captain } = useCaptainContext();
+  const profileImage = userType === "user" ? user?.image : captain?.image;
   useGSAP(() => {
     menuTl.current = gsap.timeline({ paused: true })
       .fromTo(
@@ -91,10 +92,9 @@ const NavBar = ({userType}) => {
               className="w-full flex items-center gap-3 p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all duration-200"
             >
               <div className="w-12 h-12 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center overflow-hidden ring-2 ring-blue-500 dark:ring-blue-400">
-                {(user?.image || captain?.image) ? (
+                {(profileImage) ? (
                   <img
-                    src={user?.image || captain?.image}
-                    alt="Profile"
+                    src={profileImage}
                     className="w-full h-full object-cover"
                   />
                 ) : (

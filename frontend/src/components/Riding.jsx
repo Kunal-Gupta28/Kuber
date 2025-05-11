@@ -101,7 +101,7 @@ const Riding = () => {
             <Payment />
             <button
               onClick={hideRideDetails}
-              className="w-48 p-3 bg-gradient-to-r from-gray-900 to-black dark:from-gray-800 dark:to-gray-900 hover:from-gray-800 hover:to-gray-900 dark:hover:from-gray-700 dark:hover:to-gray-800 text-white rounded-xl font-bold text-lg transition-all duration-300 hover:shadow-xl active:scale-95"
+              className="w-48 p-3 hover:from-gray-800 hover:to-gray-900 dark:hover:from-gray-700 dark:hover:to-gray-800 text-white rounded-xl font-bold text-lg transition-all duration-300 hover:shadow-xl active:scale-95"
             >
               Back
             </button>

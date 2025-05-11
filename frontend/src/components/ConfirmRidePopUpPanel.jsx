@@ -88,7 +88,7 @@ const ConfirmRidePopUpPanel = ({
           <div className="relative">
             <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gray-200 dark:bg-gray-600 overflow-hidden">
               <img
-                src={ride?.user?.profilePicture || "/default-avatar.png"}
+                src={ride?.user?.image || "/default-avatar.png"}
                 alt="User"
                 className="w-full h-full object-cover"
               />

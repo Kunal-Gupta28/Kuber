@@ -73,16 +73,17 @@ module.exports.loginCaptain = async (req, res, next) => {
 module.exports.uploadImage = async (req, res) => {
     const file = req.file;
     const captainId = req.captain._id;
+
     if (!file) {
         return res.status(400).json({ message: 'No image file provided' });
     }
-
+    
     try {
       const updatedCaptain = await captainService.updateProfileImage(captainId, file);
       if (!updatedCaptain) {
         return res.status(404).json({ message: 'Captain not found' });
       }
-      res.json({ profilePicture: updatedCaptain.image });
+      res.json({ image: updatedCaptain.image });
     } catch (error) {
       console.error('Error uploading profile image:', error);
       res.status(500).json({ message: 'Failed to upload profile image' });

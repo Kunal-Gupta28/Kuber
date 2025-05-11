@@ -77,13 +77,13 @@ const UserProfile = () => {
       // Update user context with new profile picture
       setUser(prev => ({
         ...prev,
-        image: response.data.image
+        image: response.data.url
       }));
 
       // Update form data
       setFormData(prev => ({
         ...prev,
-        image: response.data.image
+        image: response.data.url
       }));
     } catch (error) {
       console.error('Error uploading image:', error);
@@ -93,28 +93,6 @@ const UserProfile = () => {
     }
   };
 
-  // Profile update handler
-  const handleSubmit = async (field) => {
-    setIsLoading(true);
-    try {
-      const response = await axios.put(
-        `${import.meta.env.VITE_BASE_URL}/users/update-profile`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      setUser(response.data);
-      setEditingField(null);
-    } catch (error) {
-      console.error("Error updating profile:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-console.log(user)
   // Loading state
   if (isLoading) {
     return (

@@ -33,8 +33,8 @@ module.exports.updateProfileImage = async (captainId,file) => {
     throw new Error("File and captainId are required");
   }
   try {
-    const updatedCaptain = await captainModel.findByIdAndUpdate(captainId, { image: file.path }, { new: true, select: "-password" });
-    return updatedCaptain;
+    const updatedCaptainImage = await captainModel.findByIdAndUpdate(captainId, { image: file.path }, { new: true, select: "-password" });
+    return updatedCaptainImage;
   } catch (error) {
     throw new Error(`Error updating captain profile: ${error.message}`);
   }

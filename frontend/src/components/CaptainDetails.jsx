@@ -1,7 +1,6 @@
 import React from "react";
 
 const CaptainDetails = ({ captain }) => {
-  const profileImage = captain?.profilePicture || "/default-avatar.png";
   const firstName = captain?.fullname?.firstname || "Captain";
   const lastName = captain?.fullname?.lastname || "";
   const earnings = 254.2;
@@ -14,17 +13,23 @@ const CaptainDetails = ({ captain }) => {
     <div className="bg-white dark:bg-gray-800 rounded-t-3xl shadow-lg px-6 py-4 h-full">
       {/* Profile Header */}
       <div className="flex items-center space-x-4 mb-6">
-        <img
-          src={profileImage}
-          alt="Captain"
-          className="w-16 h-16 rounded-full object-cover border-2 border-gray-300"
-        />
+        {captain?.image ? (
+          <img
+            src={captain.image}
+            alt="Profile"
+            className="w-16 h-16 object-cover rounded-full border-2 border-gray-300"
+          />
+        ) : (
+          <div className="w-16 h-16 flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-full border-2 border-gray-300">
+            <i className="ri-user-line text-4xl text-gray-400"></i>
+          </div>
+        )}
         <div>
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
             {firstName} {lastName}
           </h2>
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            ID: {captain?.id || "N/A"}
+            ID: {captain?._id || "N/A"}
           </p>
         </div>
       </div>
