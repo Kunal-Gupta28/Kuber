@@ -91,9 +91,9 @@ const NavBar = ({userType}) => {
               className="w-full flex items-center gap-3 p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all duration-200"
             >
               <div className="w-12 h-12 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center overflow-hidden ring-2 ring-blue-500 dark:ring-blue-400">
-                {(user?.profilePicture || captain?.profilePicture) ? (
+                {(user?.image || captain?.image) ? (
                   <img
-                    src={user?.profilePicture || captain?.profilePicture}
+                    src={user?.image || captain?.image}
                     alt="Profile"
                     className="w-full h-full object-cover"
                   />
