@@ -21,8 +21,11 @@ const Start = () => {
 
   return (
     <section className={`w-full h-[100dvh] flex flex-col transition-colors duration-500 ${darkMode ? 'bg-black text-white' : 'bg-white text-black'}`}>
+      
       {/* Dark Mode Toggle */}
-      <DarkModeToggle />
+      <div className="absolute top-5 right-5 z-50">
+        <DarkModeToggle />
+      </div>
 
       {/* Background Image Section */}
       <div className="flex-1 relative">

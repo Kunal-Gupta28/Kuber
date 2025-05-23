@@ -82,12 +82,26 @@ const CaptainSignUp = () => {
   };
 
   return (
-    <section className="h-[100dvh] bg-gray-50 dark:bg-gray-900 text-black dark:text-white p-5 flex flex-col items-center justify-center">
-      <DarkModeToggle />
+    <section className="h-[100dvh] flex flex-col justify-center items-center px-4 py-10 bg-white dark:bg-black text-black dark:text-white transition-colors duration-500 relative">
+      <button
+        onClick={() => navigate("/captains/login")}
+        className="absolute top-5 left-5 p-2.5 rounded-xl bg-white/10 dark:bg-gray-800/10 backdrop-blur-sm hover:bg-white/20 dark:hover:bg-gray-800/20 transition-all duration-300 hover:scale-105 hover:shadow-lg border border-gray-200/20 dark:border-gray-700/20"
+        aria-label="Go back"
+      >
+        <i className="ri-arrow-left-line text-xl"></i>
+      </button>
 
-      <div className="w-full max-w-md bg-white dark:bg-gray-800 p-8 rounded-xl shadow-[0_15px_15px_rgba(0,0,0,0.4)] dark:shadow-[0_15px_15px_rgba(255,255,255,0.4)]">
-        <h1 className="text-3xl font-extrabold mb-6 text-center">Kuber Captain Sign Up</h1>
-        <form onSubmit={handleSubmit} className="space-y-5">
+      <div className="absolute top-5 right-5 z-50">
+        <DarkModeToggle />
+      </div>
+
+      <div className="w-full max-w-md bg-gray-50 dark:bg-gray-900 rounded-2xl p-8 shadow-[0_15px_15px_rgba(0,0,0,0.4)] dark:shadow-[0_15px_15px_rgba(255,255,255,0.4)]">
+        <header className="text-center mb-8">
+          <h1 className="text-4xl font-extrabold tracking-wide">Kuber</h1>
+          <p className="mt-2 text-gray-500 dark:text-gray-400">Create your Captain account</p>
+        </header>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div className="flex gap-4">
             {["firstName", "lastName"].map((field) => (
               <div key={field} className="w-1/2">
@@ -96,34 +110,38 @@ const CaptainSignUp = () => {
                   placeholder={field === "firstName" ? "First Name" : "Last Name"}
                   value={form[field]}
                   onChange={handleChange}
-                  className="w-full p-4 bg-gray-100 dark:bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-[0_10px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_5px_rgba(255,255,255,0.3)]"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-[0_10px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_5px_rgba(255,255,255,0.3)]"
                 />
                 {errors[field] && (
-                  <p className="text-red-500 text-sm mt-1">{errors[field]}</p>
+                  <p className="mt-1 text-sm text-red-500">{errors[field]}</p>
                 )}
               </div>
             ))}
           </div>
 
-          <input
-            name="email"
-            type="email"
-            placeholder="Email Address"
-            value={form.email}
-            onChange={handleChange}
-            className="w-full p-4 bg-gray-100 dark:bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-[0_10px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_5px_rgba(255,255,255,0.3)]"
-          />
-          {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+          <div>
+            <input
+              name="email"
+              type="email"
+              placeholder="Email Address"
+              value={form.email}
+              onChange={handleChange}
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-[0_10px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_5px_rgba(255,255,255,0.3)]"
+            />
+            {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
+          </div>
 
-          <input
-            name="password"
-            type="password"
-            placeholder="Password"
-            value={form.password}
-            onChange={handleChange}
-            className="w-full p-4 bg-gray-100 dark:bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-[0_10px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_5px_rgba(255,255,255,0.3)]"
-          />
-          {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
+          <div>
+            <input
+              name="password"
+              type="password"
+              placeholder="Password"
+              value={form.password}
+              onChange={handleChange}
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-[0_10px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_5px_rgba(255,255,255,0.3)]"
+            />
+            {errors.password && <p className="mt-1 text-sm text-red-500">{errors.password}</p>}
+          </div>
 
           <div className="flex gap-4">
             <div className="w-1/2">
@@ -131,15 +149,15 @@ const CaptainSignUp = () => {
                 name="vehicleColor"
                 value={form.vehicleColor}
                 onChange={handleChange}
-                className="w-full p-4 bg-gray-100 dark:bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-[0_10px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_5px_rgba(255,255,255,0.3)]"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-[0_10px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_5px_rgba(255,255,255,0.3)] appearance-none cursor-pointer"
               >
-                <option value="">Select Color</option>
+                <option value="" className="bg-white dark:bg-gray-800">Select Color</option>
                 {["Red", "Blue", "Black", "White", "Gray", "Silver", "Green"].map((color) => (
-                  <option key={color}>{color}</option>
+                  <option key={color} value={color} className="bg-white dark:bg-gray-800">{color}</option>
                 ))}
               </select>
               {errors.vehicleColor && (
-                <p className="text-red-500 text-sm mt-1">{errors.vehicleColor}</p>
+                <p className="mt-1 text-sm text-red-500">{errors.vehicleColor}</p>
               )}
             </div>
             <div className="w-1/2">
@@ -149,10 +167,10 @@ const CaptainSignUp = () => {
                 value={form.vehiclePlate}
                 onChange={handleChange}
                 maxLength={MAX_PLATE_LENGTH}
-                className="w-full p-4 bg-gray-100 dark:bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-[0_10px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_5px_rgba(255,255,255,0.3)]"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-[0_10px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_5px_rgba(255,255,255,0.3)]"
               />
               {errors.vehiclePlate && (
-                <p className="text-red-500 text-sm mt-1">{errors.vehiclePlate}</p>
+                <p className="mt-1 text-sm text-red-500">{errors.vehiclePlate}</p>
               )}
             </div>
           </div>
@@ -163,15 +181,15 @@ const CaptainSignUp = () => {
                 name="vehicleCapacity"
                 value={form.vehicleCapacity}
                 onChange={handleChange}
-                className="w-full p-4 bg-gray-100 dark:bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-[0_10px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_5px_rgba(255,255,255,0.3)]"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-[0_10px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_5px_rgba(255,255,255,0.3)] appearance-none cursor-pointer"
               >
-                <option value="">Select Capacity</option>
+                <option value="" className="bg-white dark:bg-gray-800">Select Capacity</option>
                 {[2, 3, 4, 5, 6].map((cap) => (
-                  <option key={cap}>{cap}</option>
+                  <option key={cap} value={cap} className="bg-white dark:bg-gray-800">{cap} Seats</option>
                 ))}
               </select>
               {errors.vehicleCapacity && (
-                <p className="text-red-500 text-sm mt-1">{errors.vehicleCapacity}</p>
+                <p className="mt-1 text-sm text-red-500">{errors.vehicleCapacity}</p>
               )}
             </div>
             <div className="w-1/2">
@@ -179,34 +197,40 @@ const CaptainSignUp = () => {
                 name="vehicleType"
                 value={form.vehicleType}
                 onChange={handleChange}
-                className="w-full p-4 bg-gray-100 dark:bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-[0_10px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_5px_rgba(255,255,255,0.3)]"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-[0_10px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_5px_rgba(255,255,255,0.3)] appearance-none cursor-pointer"
               >
-                <option value="">Select Type</option>
+                <option value="" className="bg-white dark:bg-gray-800">Select Type</option>
                 {["KUberAuto", "KUberGo", "Premier", "MOTO"].map((type) => (
-                  <option key={type}>{type}</option>
+                  <option key={type} value={type} className="bg-white dark:bg-gray-800">{type}</option>
                 ))}
               </select>
               {errors.vehicleType && (
-                <p className="text-red-500 text-sm mt-1">{errors.vehicleType}</p>
+                <p className="mt-1 text-sm text-red-500">{errors.vehicleType}</p>
               )}
             </div>
           </div>
 
           <button
             type="submit"
-            className="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-[0_5px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_20px_rgba(255,255,255,0.3)]"
+            className="w-full py-3 font-bold rounded-lg transition duration-300 bg-blue-600 hover:bg-blue-700 text-white shadow-[0_5px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_20px_rgba(255,255,255,0.3)]"
           >
             Create Captain Account
           </button>
         </form>
 
-        <p className="text-center mt-4 text-sm">
+        <p className="mt-6 text-center text-sm">
           Already have an account?{" "}
-          <Link to="/captains/login" className="text-blue-500 hover:underline">
+          <Link to="/captains/login" className="text-blue-500 font-semibold hover:underline">
             Log In
           </Link>
         </p>
       </div>
+
+      <p className="text-xs text-center mt-8 max-w-sm text-gray-500 dark:text-gray-400">
+        By proceeding, you consent to receive calls, WhatsApp, or SMS messages,
+        including via automated means, from Kuber and its affiliates to the
+        number provided.
+      </p>
     </section>
   );
 };

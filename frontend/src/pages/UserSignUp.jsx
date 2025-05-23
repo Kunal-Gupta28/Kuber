@@ -62,7 +62,17 @@ const UserSignUp = () => {
 
   return (
     <section className="h-[100dvh] flex flex-col justify-center items-center px-4 py-10 bg-white dark:bg-black text-black dark:text-white transition-colors duration-500 relative">
-      <div className="absolute top-5 right-5">
+
+      {/* back button */}
+      <button
+        onClick={() => navigate("/users/login")}
+        className="absolute top-5 left-5 p-2.5 rounded-xl bg-white/10 dark:bg-gray-800/10 backdrop-blur-sm hover:bg-white/20 dark:hover:bg-gray-800/20 transition-all duration-300 hover:scale-105 hover:shadow-lg border border-gray-200/20 dark:border-gray-700/20"
+        aria-label="Go back"
+      >
+        <i className="ri-arrow-left-line text-xl"></i>
+      </button>
+
+      <div className="absolute top-5 right-5 z-50">
         <DarkModeToggle />
       </div>
 

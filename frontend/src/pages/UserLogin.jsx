@@ -2,11 +2,10 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useUserContext } from "../context/UserContext";
-import { useTheme } from "../context/ThemeContext";
+import DarkModeToggle from "../components/DarkModeToggle";
 
 const UserLogin = () => {
   const { setUser } = useUserContext();
-  const { isDarkMode, toggleTheme } = useTheme();
 
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -76,10 +75,18 @@ const UserLogin = () => {
 
   return (
     <section className="h-[100dvh] flex flex-col justify-center items-center px-4 py-10 bg-white dark:bg-black text-black dark:text-white transition-colors duration-500 relative">
-      <div className="absolute top-5 right-5">
-        <button onClick={toggleTheme} className="p-2 rounded-full bg-gray-300 dark:bg-gray-700">
-          {isDarkMode ? "🌙" : "☀️"}
-        </button>
+
+      {/* back button */}
+      <button
+        onClick={() => navigate("/")}
+        className="absolute top-5 left-5 p-2.5 rounded-xl bg-white/10 dark:bg-gray-800/10 backdrop-blur-sm hover:bg-white/20 dark:hover:bg-gray-800/20 transition-all duration-300 hover:scale-105 hover:shadow-lg border border-gray-200/20 dark:border-gray-700/20"
+        aria-label="Go back"
+      >
+        <i className="ri-arrow-left-line text-xl"></i>
+      </button>
+
+      <div className="absolute top-5 right-5 z-50">
+        <DarkModeToggle />
       </div>
 
       <div className="w-full max-w-md bg-gray-50 dark:bg-gray-900 rounded-2xl p-8 shadow-[0_15px_15px_rgba(0,0,0,0.4)] dark:shadow-[0_15px_15px_rgba(255,255,255,0.4)] transition-all duration-500">

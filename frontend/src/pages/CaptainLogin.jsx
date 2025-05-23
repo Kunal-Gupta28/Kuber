@@ -10,9 +10,10 @@ const CaptainLogin = () => {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
-  const [setDarkMode] = useState(() =>
+  const [darkMode, setDarkMode] = useState(
     document.documentElement.classList.contains("dark")
   );
+  
   const { setCaptain } = useContext(CaptainDataContext);
 
   const handleEmail = (e) => setEmail(e.target.value);
@@ -89,8 +90,18 @@ const CaptainLogin = () => {
   }, []);
 
   return (
-    <section className="h-[100dvh] flex flex-col justify-center items-center px-4 py-8 bg-white dark:bg-black text-black dark:text-white transition-colors duration-500">
-      <div className="absolute top-5 right-5">
+    <section className="h-[100dvh] flex flex-col justify-center items-center px-4 py-8 bg-white dark:bg-black text-black dark:text-white transition-colors duration-500 relative">
+
+      {/* back button */}
+      <button
+        onClick={() => navigate("/users/login")}
+        className="absolute top-5 left-5 p-2.5 rounded-xl bg-white/10 dark:bg-gray-800/10 backdrop-blur-sm hover:bg-white/20 dark:hover:bg-gray-800/20 transition-all duration-300 hover:scale-105 hover:shadow-lg border border-gray-200/20 dark:border-gray-700/20"
+        aria-label="Go back"
+      >
+        <i className="ri-arrow-left-line text-xl"></i>
+      </button>
+
+      <div className="absolute top-5 right-5 z-50">
         <DarkModeToggle />
       </div>
 
