@@ -79,8 +79,6 @@ const CaptainRiding = () => {
     }
   };
 
-
-
   return (
     <main className="h-[100dvh] w-full flex flex-col overflow-hidden dark:bg-gray-900 text-black dark:text-white relative">
       {/* Header */}
@@ -91,12 +89,12 @@ const CaptainRiding = () => {
       </header>
 
       {/* Map Section */}
-      <section className="h-[75vh] sm:h-[80vh] mt-16">
+      <section className="h-[80%] 4k:h-[90%] mt-16">
         <LiveTracking coordinates={coordinates} />
       </section>
 
       {/* Control Panel */}
-      <footer className="h-[25vh] sm:h-[20vh] w-full bg-gradient-to-b from-yellow-400 to-yellow-500 dark:from-yellow-500 dark:to-yellow-600 p-4 sm:p-5 fixed bottom-0 flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 z-40 shadow-inner rounded-t-3xl border-t border-yellow-300 dark:border-yellow-600">
+      <footer className="h-[20%] 4k:h-[11%] w-full bg-gradient-to-b from-yellow-400 to-yellow-500 dark:from-yellow-500 dark:to-yellow-600 p-4 sm:p-5 fixed bottom-0 flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 z-40 shadow-inner rounded-t-3xl border-t border-yellow-300 dark:border-yellow-600">
         <div className="w-full sm:w-auto flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
           <div className="h-14 sm:h-16 w-full sm:w-48 bg-gradient-to-r from-green-600 to-green-700 dark:from-green-700 dark:to-green-800 rounded-xl text-lg sm:text-xl font-semibold text-white flex justify-center items-center shadow-lg hover:shadow-xl transition-all duration-300">
             <span className="flex items-center gap-2">

@@ -138,14 +138,14 @@ const CaptainHome = () => {
       <NavBar userType="captain" isCaptain={true} />
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col h-full">
+      <div className="flex-1 flex flex-col h-full relative">
         {/* Live Map Section */}
-        <div className="h-[72%] bg-gray-200 dark:bg-gray-800">
+        <div className="h-[80%] 4k:h-[90%] bg-gray-200 dark:bg-gray-800">
           <LiveTracking />
         </div>
 
         {/* Captain Info */}
-        <div className="h-[28%] overflow-hidden bg-white dark:bg-gray-800 shadow-inner">
+        <div className="w-full h-[25%] 4k:h-[12%] rounded-3xl overflow-hidden absolute bottom-0  bg-white dark:bg-gray-800 shadow-inner">
           <CaptainDetails captain={captain} />
         </div>
       </div>
@@ -165,7 +165,7 @@ const CaptainHome = () => {
       {/* Confirm Ride Panel */}
       <div
         ref={confirmRidePopUpPanelRef}
-        className="h-full w-full fixed bottom-0 left-0 z-30 bg-white dark:bg-gray-800 translate-y-full rounded-t-2xl shadow-xl transition-all duration-300"
+        className="h-full xl:h-[75%] 4k:h-[36%] w-full fixed bottom-0 left-0 z-30 bg-white dark:bg-gray-800 translate-y-full rounded-t-2xl shadow-xl transition-all duration-300"
       >
         <ConfirmRidePopUpPanel
           setRidePopUpPanel={setRidePopUpPanel}

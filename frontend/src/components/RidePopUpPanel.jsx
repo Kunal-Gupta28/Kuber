@@ -60,7 +60,7 @@ const RidePopUpPanel = ({
       </div>
 
       {/* Action Buttons */}
-      <div className="flex flex-col sm:flex-row gap-4">
+      <div className="flex flex-col sm:flex-row gap-4 mb-4">
         <button
           onClick={() => {
             setConfirmRidePopUpPanel(true);

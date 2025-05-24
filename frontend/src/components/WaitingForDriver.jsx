@@ -48,10 +48,10 @@ const WaitingForDriver = () => {
 
         {/* Driver and Vehicle Info */}
         <div className=" flex-1 p-6 sm:p-6">
-          <div className="flex xl:flex-col flex-row gap-4 sm:gap-6 py-3">
+          <div className="flex flex-row gap-4 sm:gap-6 py-3">
             {/* Driver and Vehicle Images */}
             <div className="flex items-center gap-3 sm:gap-4">
-              <div className="h-16 w-16 sm:h-20 sm:w-20 rounded-full bg-gray-300 dark:bg-gray-700 overflow-hidden flex items-center justify-center">
+              <div className="h-20 w-20 4k:h-32 4k:w-32 z-10 rounded-full bg-gray-300 dark:bg-gray-700 overflow-hidden flex items-center justify-center">
               {ride?.captain?.image ? (
                   <img
                     src={ride.captain.image}
@@ -62,11 +62,11 @@ const WaitingForDriver = () => {
                     <i className="ri-user-line text-2xl sm:text-3xl text-white" />
                   )}
               </div>
-              <div className="h-16 w-16 sm:h-20 sm:w-20 rounded-full overflow-hidden flex justify-center items-center bg-gray-200 dark:bg-gray-600">
+              <div className="h-20 w-20 4k:h-32 4k:w-32 -ms-12 rounded-full overflow-hidden flex justify-center items-center bg-gray-200 dark:bg-gray-600">
                 {vehicleInfo.image ? (
                   <img
                     src={vehicleInfo.image}
-                    className="h-12 w-12 sm:h-16 sm:w-16 object-contain"
+                    className="h-20 w-20 4k:h-32 4k:w-32 object-contain"
                     alt="Vehicle"
                     onError={(e) => {
                       e.target.onerror = null;

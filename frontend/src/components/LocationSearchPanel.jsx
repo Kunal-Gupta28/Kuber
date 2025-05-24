@@ -6,7 +6,6 @@ const LocationSearchPanel = ({
   suggestion = [],
   isPickupSelected,
   handleUseMyLocation,
-  setPanelOpen,
   setSuggestion,
 }) => {
   const {setPickup,setDestination} = useRideContext()
@@ -77,7 +76,7 @@ const LocationSearchPanel = ({
       {/* Suggestions */}
       {suggestion.length > 0 && (
   <div className="mt-4 pb-1">
-    <h3 className="text-gray-600 dark:text-gray-400 text-sm px-5 pt-3">Suggestions</h3>
+    <h3 className="text-gray-600 dark:text-gray-400 text-sm px-5 py-3">Suggestions</h3>
     {suggestion.map((element, index) => (
       <div
         key={index}
