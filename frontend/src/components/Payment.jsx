@@ -2,15 +2,18 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRideContext } from "../context/RideContext";
 import { useUserContext } from "../context/UserContext";
+import { useTheme  } from "../context/ThemeContext";
 import { toast } from "react-hot-toast";
 
-const Payment = () => {
-  const { fare } = useRideContext();
+const Payment = ({hideRideDetails, setShowHomeButton }) => {
+  const { fare , ride  } = useRideContext();
   const { user } = useUserContext();
   const { fullname, email } = user;
+  const { isDarkMode } = useTheme();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  // loading razorpay script
   useEffect(() => {
     const loadScript = () => {
       return new Promise((resolve) => {
@@ -35,6 +38,7 @@ const Payment = () => {
         throw new Error("Invalid fare amount");
       }
 
+      // request for create order
       const res = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/payment/create-order`,
         {
@@ -59,18 +63,24 @@ const Payment = () => {
         image: "/logo.png",
         handler: async function (response) {
           try {
+
+            // verify payment
             const verifyRes = await axios.post(
               `${import.meta.env.VITE_BASE_URL}/payment/verify`,
               {
                 orderId: id,
                 paymentId: response.razorpay_payment_id,
-                signature: response.razorpay_signature
+                signature: response.razorpay_signature,
+                socketId: ride?.captain?.socketId
               }
             );
             
       
             if (verifyRes.data.success) {
               toast.success("Payment successful!");
+              setShowHomeButton(true)
+              hideRideDetails()
+
             } else {
               throw new Error("Payment verification failed");
             }
@@ -84,7 +94,9 @@ const Payment = () => {
           email: email,
           contact: user.phone || "9876543210",
         },
-        theme: { color: "#3399cc" },
+        theme: {
+          color: isDarkMode ? "#0f172a" : "#3399cc" 
+        },
         modal: {
           ondismiss: function() {
             toast.error("Payment cancelled");

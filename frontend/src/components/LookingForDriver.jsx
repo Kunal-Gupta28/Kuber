@@ -3,7 +3,7 @@ import gsap from "gsap";
 import { useRideContext } from "../context/RideContext";
 
 const LookingForDriver = ({ setVehicleFound, setConfirmRidePanel }) => {
-  const { confirmRideDetails } = useRideContext();
+  const { vehicleInfo } = useRideContext();
   const containerRef = useRef(null);
   const dotsRef = useRef(null);
 
@@ -42,7 +42,7 @@ const LookingForDriver = ({ setVehicleFound, setConfirmRidePanel }) => {
     return () => ctx.revert();
   }, []);
 
-  if (!confirmRideDetails) {
+  if (!vehicleInfo) {
     return (
       <div className="h-[50vh] w-full bg-white dark:bg-gray-900 text-black dark:text-white flex items-center justify-center">
         <p className="text-gray-500 dark:text-gray-400">Loading ride details...</p>
@@ -57,8 +57,8 @@ const LookingForDriver = ({ setVehicleFound, setConfirmRidePanel }) => {
         <div className="relative w-40 h-40 mb-8">
           <div className="absolute inset-0 bg-blue-100 dark:bg-blue-900/20 rounded-full animate-pulse"></div>
           <img
-            src={confirmRideDetails.image || "/fallback.png"}
-            alt={confirmRideDetails.vehicleType || "Vehicle"}
+            src={vehicleInfo.image || "/fallback.png"}
+            alt={vehicleInfo.vehicleType || "Vehicle"}
             className="relative w-full h-full object-contain"
           />
         </div>
@@ -82,20 +82,20 @@ const LookingForDriver = ({ setVehicleFound, setConfirmRidePanel }) => {
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 flex-shrink-0">
                 <img
-                  src={confirmRideDetails.image || "/fallback.png"}
-                  alt={confirmRideDetails.vehicleType || "Vehicle"}
+                  src={vehicleInfo.image || "/fallback.png"}
+                  alt={vehicleInfo.vehicleType || "Vehicle"}
                   className="w-full h-full object-contain"
                 />
               </div>
               <div>
-                <h3 className="font-semibold">{confirmRideDetails.vehicleType}</h3>
+                <h3 className="font-semibold">{vehicleInfo.vehicleType}</h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  {confirmRideDetails.capacity} seats
+                  {vehicleInfo.capacity} seats
                 </p>
               </div>
             </div>
             <div className="text-right">
-              <p className="font-bold text-blue-600 dark:text-blue-400">₹{confirmRideDetails.fare || "--"}</p>
+              <p className="font-bold text-blue-600 dark:text-blue-400">₹{vehicleInfo.fare || "--"}</p>
             </div>
           </div>
 

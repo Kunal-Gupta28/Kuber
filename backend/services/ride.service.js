@@ -3,9 +3,7 @@ const crypto = require("crypto");
 const mapService = require("./map.service");
 const rideModel = require("../models/ride.model");
 
-/**
- * Get fare estimates based on pickup and destination
- */
+// Get fare estimates based on pickup and destination
 module.exports.getFare = async (pickupPoint, destination) => {
   if (!pickupPoint || !destination) {
     throw new Error("Pickup point and destination are required");
@@ -41,27 +39,19 @@ module.exports.getFare = async (pickupPoint, destination) => {
   }
 };
 
-/**
- * Generate numeric OTP
- */
+// Generate numeric OTP
 module.exports.generateOTP = (num) => {
   return crypto.randomInt(Math.pow(10, num - 1), Math.pow(10, num));
 };
 
-/**
- * Create a new ride and store in database
- */
-module.exports.createRideModel = async (user, pickupPoint, destination, vehicleType) => {
+//  Create a new ride and store in database
+module.exports.createRideModel = async (user, pickupPoint, destination, fare, distance, duration) => {
   try {
-    if (!user || !pickupPoint || !destination || !vehicleType) {
+    if (!user || !pickupPoint || !destination || !fare || !distance || !duration ) {
       throw new Error("All fields are required");
     }
 
     const userId = new mongoose.Types.ObjectId(user);
-    const { fares } = await module.exports.getFare(pickupPoint, destination);
-
-    const selectedFare = fares.find((f) => f.vehicleType === vehicleType);
-    const finalFare = selectedFare ? selectedFare.fare : 0;
 
     const otp = module.exports.generateOTP(6);
 
@@ -69,9 +59,10 @@ module.exports.createRideModel = async (user, pickupPoint, destination, vehicleT
       user: userId,
       pickup: pickupPoint,
       destination,
-      vehicleType,
+      distance,
+      duration,
+      fare,
       otp,
-      fare: finalFare,
     });
 
     return ride;
@@ -81,9 +72,7 @@ module.exports.createRideModel = async (user, pickupPoint, destination, vehicleT
   }
 };
 
-/**
- * Accept ride (Captain confirms)
- */
+// Accept ride (Captain confirms)
 module.exports.confirmRide = async ({ rideId, captain }) => {
   if (!rideId || !captain) {
     throw new Error("Ride ID and captain are required");
@@ -102,9 +91,7 @@ module.exports.confirmRide = async ({ rideId, captain }) => {
   return updated;
 };
 
-/**
- * Start ride after OTP confirmation
- */
+//  Start ride after OTP confirmation
 module.exports.startRide = async ({ rideId, otp, captain }) => {
   if (!rideId || !otp || !captain) {
     throw new Error("Ride ID, OTP, and captain are required");
@@ -125,9 +112,7 @@ module.exports.startRide = async ({ rideId, otp, captain }) => {
   return ride;
 };
 
-/**
- * Complete the ride
- */
+// Complete the ride
 module.exports.endRide = async ({ rideId, captain }) => {
   if (!rideId || !captain) {
     throw new Error("Ride ID and captain are required");

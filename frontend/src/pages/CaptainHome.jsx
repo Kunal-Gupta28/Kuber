@@ -13,6 +13,7 @@ import ConfirmRidePopUpPanel from "../components/ConfirmRidePopUpPanel";
 // context
 import { useCaptainContext } from "../context/CaptainContext";
 import { SocketContext } from "../context/socketContext";
+import { useRideContext } from "../context/RideContext";
 
 const CaptainHome = () => {
   const ridePopUpPanelRef = useRef(null);
@@ -24,7 +25,9 @@ const CaptainHome = () => {
   const [isMenuOpen] = useState(false);
 
   const { socket } = useContext(SocketContext);
-  const { captain, ride ,setRide } = useCaptainContext();
+  // const { captain, ride ,setRide } = useCaptainContext();
+  const { captain } = useCaptainContext();
+  const { ride, setRide } = useRideContext()
 
   const navigate = useNavigate();
   const [setActiveRide] = useState(null);
@@ -49,7 +52,7 @@ const CaptainHome = () => {
       }
     };
 
-    const intervalId = setInterval(updateLocation, 10000);
+    const intervalId = setInterval(updateLocation, 100000000);
     updateLocation();
 
     socket.on("new-ride", (data) => {

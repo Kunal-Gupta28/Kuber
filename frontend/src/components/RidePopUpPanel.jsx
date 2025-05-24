@@ -1,4 +1,4 @@
-import { useCaptainContext } from "../context/CaptainContext";
+import { useRideContext } from "../context/RideContext";
 import RideDetails from "./RideDetails";
 import { motion } from "framer-motion";
 
@@ -7,7 +7,7 @@ const RidePopUpPanel = ({
   setConfirmRidePopUpPanel,
   confirmRide,
 }) => {
-  const { ride } = useCaptainContext();
+  const { ride } = useRideContext();
 
   if (!ride) return null;
 
@@ -38,7 +38,7 @@ const RidePopUpPanel = ({
           <div className="relative">
             <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gray-200 dark:bg-gray-600 overflow-hidden">
               <img
-                src={ride?.user?.profilePicture || "/default-avatar.png"}
+                src={ride?.user?.image || "/default-avatar.png"}
                 alt="User"
                 className="w-full h-full object-cover"
               />
@@ -56,7 +56,7 @@ const RidePopUpPanel = ({
 
       {/* Ride Details */}
       <div className="mb-6">
-        <RideDetails userType="captain" ride={ride} />
+        <RideDetails userType="captain" />
       </div>
 
       {/* Action Buttons */}
@@ -74,7 +74,7 @@ const RidePopUpPanel = ({
         </button>
         <button
           onClick={() => setRidePopUpPanel(false)}
-          className="flex-1 py-3 px-6 mb-3 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-xl text-gray-800 dark:text-white font-semibold text-lg transition-colors flex items-center justify-center gap-2"
+          className="flex-1 py-3 px-6  mb-3 xl:mb-0 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-xl text-gray-800 dark:text-white font-semibold text-lg transition-colors flex items-center justify-center gap-2"
         >
           <i className="ri-close-line"></i>
           Decline

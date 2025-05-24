@@ -1,15 +1,18 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { SocketContext } from "../context/socketContext";
-import LiveTracking from "./LiveTracking";
-import RideDetails from "./RideDetails";
-import Payment from "./Payment";
+import { useRideContext } from "../context/RideContext";
+import LiveTracking from "../components/LiveTracking";
+import RideDetails from "../components/RideDetails";
+import Payment from "../components/Payment";
 import gsap from "gsap";
 
 const Riding = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { socket } = useContext(SocketContext);
+  const {setPickup , setDestination} = useRideContext()
+  const [showHomeButton,setShowHomeButton] = useState(false)
 
   const state = location.state || {};
   const ride = state.ride || null;
@@ -18,9 +21,13 @@ const Riding = () => {
 
   const rideDetailsRef = useRef(null);
 
+
+  // listing for ride end 
   useEffect(() => {
     const handleRideEnded = (ride) => {
       if (ride?.captain && ride?.user) {
+        setDestination('')
+        setPickup('')
         navigate("/home");
       }
     };
@@ -29,6 +36,7 @@ const Riding = () => {
     return () => socket?.off("ride-ended", handleRideEnded);
   }, [socket, navigate]);
 
+  //  animation for show ride details
   const showRideDetails = () => {
     gsap.to(rideDetailsRef.current, {
       y: 0,
@@ -37,6 +45,7 @@ const Riding = () => {
     });
   };
 
+  // aniamiton for hide ride details
   const hideRideDetails = () => {
     gsap.to(rideDetailsRef.current, {
       y: "100%",
@@ -62,22 +71,37 @@ const Riding = () => {
       {/* Control Panel */}
       <div className="xl:h-[25%] h-[20%] w-full bg-gradient-to-b from-yellow-400 to-yellow-500 dark:from-yellow-500 dark:to-yellow-600 p-4 sm:p-5 fixed bottom-0 flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 z-40 shadow-inner rounded-t-3xl border-t border-yellow-300 dark:border-yellow-600">
         <div className="w-full sm:w-auto flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
-          <div className="h-14 sm:h-16 w-full sm:w-48 bg-gradient-to-r from-green-600 to-green-700 dark:from-green-700 dark:to-green-800 rounded-xl text-lg sm:text-xl font-semibold text-white flex justify-center items-center shadow-lg hover:shadow-xl transition-all duration-300">
-            <span className="flex items-center gap-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                viewBox="0 0 20 20"
-                fill="currentColor"
+        <div className="h-14 sm:h-16 w-full sm:w-48">
+            {showHomeButton ? (
+              <button
+                onClick={() => {
+                  navigate('/home');
+                  setPickup('');
+                  setDestination('');
+                }}
+                className="w-full h-full bg-gradient-to-r from-green-600 to-green-700 dark:from-green-700 dark:to-green-800 rounded-xl text-lg sm:text-xl font-semibold text-white flex justify-center items-center shadow-lg hover:shadow-xl transition-all duration-300"
               >
-                <path
-                  fillRule="evenodd"
-                  d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              4 Km away
-            </span>
+                Home
+              </button>
+            ) : (
+              <div className="w-full h-full bg-gradient-to-r from-green-600 to-green-700 dark:from-green-700 dark:to-green-800 rounded-xl text-lg sm:text-xl font-semibold text-white flex justify-center items-center shadow-lg hover:shadow-xl transition-all duration-300">
+                <span className="flex items-center gap-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  4 Km away
+                </span>
+              </div>
+            )}
           </div>
           <button
             onClick={showRideDetails}
@@ -98,10 +122,10 @@ const Riding = () => {
           <RideDetails ride={ride} />
 
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-6">
-            <Payment />
+            <Payment hideRideDetails={hideRideDetails} setShowHomeButton={setShowHomeButton} />
             <button
               onClick={hideRideDetails}
-              className="w-48 p-3 hover:from-gray-800 hover:to-gray-900 dark:hover:from-gray-700 dark:hover:to-gray-800 text-white rounded-xl font-bold text-lg transition-all duration-300 hover:shadow-xl active:scale-95"
+              className="w-48 p-3 rounded-xl font-bold text-lg transition-colors bg-black dark:bg-gray-900 hover:bg-gray-800 dark:hover:bg-gray-700 text-white"
             >
               Back
             </button>

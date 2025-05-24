@@ -9,7 +9,7 @@ import CaptainLogin from "./pages/CaptainLogin";
 import CaptainSignUp from "./pages/CaptainSignUp";
 import UserProtectorWrapper from "./pages/UserProtectWrapper";
 import CaptainProtectWrapper from "./pages/captainProtectWrapper";
-import Riding from "./components/Riding";
+import Riding from "./pages/Riding";
 import CaptainHome from "./pages/CaptainHome";
 import CaptainRiding from "./pages/CaptainRiding";
 import CaptainLogout from "./pages/CaptainLogout";

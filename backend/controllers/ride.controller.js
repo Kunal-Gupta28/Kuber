@@ -27,14 +27,16 @@ module.exports.createRide = async (req, res) => {
     return res.status(400).json({ error: error.array() });
   }
 
-  const { pickupPoint, destination, vehicleType } = req.body;
+  const { pickupPoint, destination, fare, distance, duration  } = req.body;
 
   try {
     const ride = await rideService.createRideModel(
       req.user._id,
       pickupPoint,
       destination,
-      vehicleType
+      fare,
+      distance, 
+      duration
     );
     res.status(201).json(ride);
 
@@ -117,7 +119,7 @@ module.exports.startRide = async (req,res)=>{
   } catch (error) {
     return res.status(500).json({message:error.message})
   }
-} 
+};
 
 module.exports.endRide = async (req, res) => {
   const error = validationResult(req);

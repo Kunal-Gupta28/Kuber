@@ -1,5 +1,5 @@
-// src/context/rideContext.js
 import { createContext, useContext, useState, useEffect } from "react";
+
 // Create the context
 export const RideContext = createContext();
 
@@ -11,21 +11,25 @@ const splitAddress = (address) => {
 };
 
 export const RideContextProvider = ({ children }) => {
+
+  const [ isUserTypeIsCaptain, setIsUserTypeIsCaptain] = useState(false)
+
   const [pickup, setPickup] = useState("");
   const [destination, setDestination] = useState("");
+  const [ride, setRide] = useState(null);
+  const [fare, setFare] = useState('')
+  const [vehicleInfo, setVehicleInfo] = useState();  
 
-  const [confirmRideDetails, setConfirmRideDetails] = useState();
-  const fare = confirmRideDetails?.fare;
-  
+  // pickup and destination in mian and details forms
   const [pickupMain, setPickupMain] = useState("");
   const [pickupDetails, setPickupDetails] = useState("");
   const [destinationMain, setDestinationMain] = useState("");
   const [destinationDetails, setDestinationDetails] = useState("");
 
+  // distance and duration
   const [distance, setDistance] = useState("");
   const [duration, setDuration] = useState("");
   
-  const [ride, setRide] = useState(null);
   
   useEffect(() => {
     const [main, details] = splitAddress(pickup);
@@ -39,9 +43,26 @@ export const RideContextProvider = ({ children }) => {
     setDestinationDetails(details);
   }, [destination]);
 
+    // When ride updates, update fare
+    useEffect(() => {
+      if (isUserTypeIsCaptain) {
+        setPickup(ride?.pickup || "");   
+        setDestination(ride?.destination || ""); 
+        setDistance(ride?.distance || "");
+        setDuration(ride?.duration || "");
+        setFare(ride?.fare || "");
+      } else {
+        setFare(vehicleInfo?.fare || "");
+      }
+    }, [vehicleInfo, ride, isUserTypeIsCaptain]);
+
+
+
+
   return (
     <RideContext.Provider
       value={{
+        setIsUserTypeIsCaptain,
         ride,
         setRide,
         pickup,
@@ -52,9 +73,10 @@ export const RideContextProvider = ({ children }) => {
         pickupDetails,
         destinationMain,
         destinationDetails,
-        confirmRideDetails,
-        setConfirmRideDetails,
+        vehicleInfo,
+        setVehicleInfo,
         fare,
+        setFare,
         distance, 
         setDistance,
         duration,

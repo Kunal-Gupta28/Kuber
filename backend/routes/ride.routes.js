@@ -15,10 +15,15 @@ router.post(
     .isString()
     .isLength({ min: 3 })
     .withMessage("Invalid destination"),
-  body("vehicleType")
+  body('fare')
+    .isNumeric()
+    .withMessage('fare is a required'),
+  body('distance')
     .isString()
-    .isIn(["KUberAuto", "KUberGo", "Premier", "MOTO"])
-    .withMessage("Invalid vehicleType"),
+    .withMessage("distacne is required"),
+  body('duration')
+    .isString()
+    .withMessage("duration is required"),
   rideController.createRide
 );
 

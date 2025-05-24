@@ -7,7 +7,7 @@ const ConfirmRide = ({
   setConfirmRidePanel,
   setPanelOpen,
 }) => {
-  const { pickup, destination, setPickup, setDestination, confirmRideDetails } =
+  const { pickup, destination, setPickup, setDestination, fare ,distance, duration } =
     useRideContext();
 
   const handleRideConfirmation = async () => {
@@ -20,7 +20,9 @@ const ConfirmRide = ({
         {
           pickupPoint: pickup,
           destination,
-          vehicleType: confirmRideDetails.vehicleType,
+          fare,
+          distance,
+          duration
         },
         {
           headers: {
@@ -71,7 +73,7 @@ const ConfirmRide = ({
               setPickup("");
               setDestination("");
             }}
-            className="flex-1 sm:flex-none px-8 py-3 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 
+            className="flex-1 sm:flex-none px-8 :px-16 py-3 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 
                      text-gray-800 dark:text-gray-200 font-semibold rounded-xl transition-all duration-300 
                      transform hover:scale-[1.02] active:scale-[0.98]"
           >

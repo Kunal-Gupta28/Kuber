@@ -5,7 +5,8 @@ const paymentController = require('../controllers/payment.controller');
 
 
 // Create order with validation
-router.post("/create-order", body('amount')
+router.post("/create-order", 
+body('amount')
 .isNumeric()
 .withMessage('Amount must be a number')
 .isFloat({ min: 1 })
@@ -23,7 +24,8 @@ body('receipt')
 body('notes')
 .optional()
 .isObject()
-.withMessage('Notes must be an object'), paymentController.createOrder);
+.withMessage('Notes must be an object'), 
+paymentController.createOrder);
 
 // Verify payment with validation
 router.post("/verify", body('orderId')
@@ -40,6 +42,11 @@ body('signature')
 .isString()
 .withMessage('Signature must be a string')
 .notEmpty()
-.withMessage('Signature is required'), paymentController.verifyPayment);
+.withMessage('Signature is required'), 
+body("socketId")
+.isString()
+.notEmpty()
+.withMessage("Captain socket is id missing"),
+paymentController.verifyPayment);
 
 module.exports = router;

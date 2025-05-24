@@ -1,12 +1,15 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import LiveTracking from "../components/LiveTracking";
 import axios from "axios";
 import gsap from "gsap";
+import {SocketContext} from '../context/socketContext'
+import {toast} from "react-hot-toast";
 
 const CaptainRiding = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const {socket} = useContext(SocketContext);
 
   const state = location.state || {};
   const ride = state.ride || null;
@@ -15,6 +18,19 @@ const CaptainRiding = () => {
 
   const [finishRidePanel, setFinishRidePanel] = useState(false);
   const finishRideRef = useRef(null);
+
+// listning for payment successful
+  useEffect(() => {
+    const handlePaymentSuccess = (data) => {
+      toast.success(data.message);
+    };
+  
+    socket.on("PAYMENT_SUCCESS", handlePaymentSuccess);
+  
+    return () => {
+      socket.off("PAYMENT_SUCCESS", handlePaymentSuccess);
+    };
+  }, []);
 
   // Animate panel on open
   useEffect(() => {

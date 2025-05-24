@@ -6,10 +6,10 @@ const WaitingForDriver = () => {
     ride,
     pickupMain,
     pickupDetails,
-    confirmRideDetails,
+    vehicleInfo,
   } = useRideContext();
 
-  if (!confirmRideDetails || !ride) {
+  if (!vehicleInfo || !ride) {
     return (
       <div className="w-full bg-white dark:bg-gray-900 text-black dark:text-white flex items-center justify-center">
         <p className="text-gray-500 dark:text-gray-400">Loading ride details...</p>
@@ -52,12 +52,20 @@ const WaitingForDriver = () => {
             {/* Driver and Vehicle Images */}
             <div className="flex items-center gap-3 sm:gap-4">
               <div className="h-16 w-16 sm:h-20 sm:w-20 rounded-full bg-gray-300 dark:bg-gray-700 overflow-hidden flex items-center justify-center">
-                <i className="ri-user-line text-2xl sm:text-3xl text-white" />
+              {ride?.captain?.image ? (
+                  <img
+                    src={ride.captain.image}
+                    alt="Captain"
+                    className="w-full h-full rounded-full object-cover"
+                  />
+                  ) : (
+                    <i className="ri-user-line text-2xl sm:text-3xl text-white" />
+                  )}
               </div>
               <div className="h-16 w-16 sm:h-20 sm:w-20 rounded-full overflow-hidden flex justify-center items-center bg-gray-200 dark:bg-gray-600">
-                {confirmRideDetails.image ? (
+                {vehicleInfo.image ? (
                   <img
-                    src={confirmRideDetails.image}
+                    src={vehicleInfo.image}
                     className="h-12 w-12 sm:h-16 sm:w-16 object-contain"
                     alt="Vehicle"
                     onError={(e) => {

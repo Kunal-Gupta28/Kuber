@@ -4,26 +4,26 @@ export const CaptainDataContext = createContext();
 
 const CaptainContext = ({ children }) => {
   const [captain, setCaptain] = useState(null);
-  const [ride, setRide] = useState(null);
-  const [fare, setFare] = useState(null);
+  // const [ride, setRide] = useState(null);
+  // const [fare, setFare] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
   // When ride updates, update fare
-  useEffect(() => {
-    if (ride?.fare) {
-      setFare(ride.fare);
-    }
-  }, [ride]);
+  // useEffect(() => {
+  //   if (ride?.fare) {
+  //     setFare(ride.fare);
+  //   }
+  // }, [ride]);
 
-  const splitAddress = (address) => {
-    if (!address) return ["Unknown", ""];
-    const parts = address.split(", ");
-    return [parts[0], parts.slice(1).join(", ")];
-  };
+  // const splitAddress = (address) => {
+  //   if (!address) return ["Unknown", ""];
+  //   const parts = address.split(", ");
+  //   return [parts[0], parts.slice(1).join(", ")];
+  // };
 
-  const [pickupMain, pickupDetails] = splitAddress(ride?.pickup);
-  const [destinationMain, destinationDetails] = splitAddress(ride?.destination);
+  // const [pickupMain, pickupDetails] = splitAddress(ride?.pickup);
+  // const [destinationMain, destinationDetails] = splitAddress(ride?.destination);
 
   return (
     <CaptainDataContext.Provider
@@ -34,14 +34,11 @@ const CaptainContext = ({ children }) => {
         setIsLoading,
         error,
         setError,
-        ride,
-        setRide,
-        fare,
-        setFare,
-        pickupMain,
-        pickupDetails,
-        destinationMain,
-        destinationDetails,
+
+        // pickupMain,
+        // pickupDetails,
+        // destinationMain,
+        // destinationDetails,
       }}
     >
       {children}

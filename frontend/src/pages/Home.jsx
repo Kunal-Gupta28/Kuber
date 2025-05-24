@@ -92,7 +92,7 @@ const Home = () => {
   )}
   
   
-
+// sockets functions
   useEffect(() => {
     socket.emit("join", { userType: "user", userId: user._id });
 
@@ -115,6 +115,7 @@ const Home = () => {
     };
   }, [user]);
 
+  // fetching cordinaties
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
@@ -267,7 +268,6 @@ const Home = () => {
               id="line"
               className="line absolute bg-gray-900 dark:bg-gray-100 h-20 w-1 rounded-full z-10"
             ></div>
-
             {/* pickup input field */}
             <div ref={pickupInputRef} className="px-4">
               <input
@@ -411,7 +411,7 @@ const Home = () => {
         >
           <LookingForDriver
             setVehicleFound={setVehicleFound}
-            setPanelOpen={setPanelOpen}
+            setConfirmRidePanel={setConfirmRidePanel}
           />
         </div>
 

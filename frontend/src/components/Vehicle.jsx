@@ -9,8 +9,9 @@ const Vehicle = ({
 }) => {
   const [fares, setFares] = useState({});
   const [selectedVehicle, setSelectedVehicle] = useState(null);
-  const { pickup, destination, setConfirmRideDetails ,setDistance ,setDuration } = useRideContext();
+  const { pickup, destination, setVehicleInfo, setDistance, setDuration } = useRideContext();
 
+  // vehicle options
   const vehicleOptions = [
     {
       image: "/images/UberSelect-White.webp",
@@ -42,6 +43,7 @@ const Vehicle = ({
     },
   ];
 
+  // get fare
   useEffect(() => {
     const fetchFares = async () => {
       if (!pickup || !destination) return;
@@ -83,7 +85,7 @@ const Vehicle = ({
             <div
               key={vehicle.vehicleType}
               onClick={() => {
-                setConfirmRideDetails({
+                setVehicleInfo({
                   ...vehicle,
                   fare,
                 });
@@ -95,7 +97,7 @@ const Vehicle = ({
                 relative flex flex-col md:flex-row items-center p-6 rounded-2xl cursor-pointer
                 transition-all duration-300 ease-in-out
                 ${isSelected 
-                  ? "bg-blue-50 dark:bg-blue-900/20 shadow-lg border-2 border-blue-500 dark:border-blue-400" 
+                  ? "bg-blue-50 dark:bg-blue-900/20 shadow-lg border-2 border-blue-500 dark:border-blue-400"
                   : "bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700/50 border border-gray-200 dark:border-gray-700"
                 }
               `}

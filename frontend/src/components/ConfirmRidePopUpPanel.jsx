@@ -1,10 +1,10 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useCaptainContext } from "../context/CaptainContext";
 import RideDetails from "../components/RideDetails";
 import { motion } from "framer-motion";
 import { toast } from "react-hot-toast";
+import { useRideContext } from "../context/RideContext";
 
 const ConfirmRidePopUpPanel = ({
   setRidePopUpPanel,
@@ -16,7 +16,7 @@ const ConfirmRidePopUpPanel = ({
     destinationMain,
     destinationDetails,
     ride,
-  } = useCaptainContext();
+  } = useRideContext();
   const [OTP, setOTP] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
