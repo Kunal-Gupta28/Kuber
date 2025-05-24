@@ -7,6 +7,7 @@ const mapRoutes = require('./routes/map.routes')
 const rideRoutes = require('./routes/ride.routes')
 const paymentRoutes = require('./routes/payment.routes')
 const connectedToDB = require("./config/database.config");
+const pageNotFound = require('./routes/pageNotFound')
 connectedToDB();
 const cookie = require("cookie-parser");
 
