@@ -16,7 +16,7 @@ import CaptainLogout from "./pages/CaptainLogout";
 import { Toaster } from "react-hot-toast";
 import UserProfile from "./components/UserProfile";
 import CaptainProfile from "./components/CaptainProfile";
-import NotFound from "./components/NotFound";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
