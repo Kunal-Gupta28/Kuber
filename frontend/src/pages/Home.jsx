@@ -144,19 +144,30 @@ const Home = () => {
     }
   };
 
-    // navbar animation
-    useGSAP(() => {
-      if (navbarRef.current) {
-        gsap.to(navbarRef.current, {
-          y: panelOpen ? -100 : 0,
-          opacity: panelOpen ? 0 : 1,
-          duration: 0.5,
-          ease: "power2.inOut",
-          force3D: true
-        });
-      }
-    }, [panelOpen]);
+  // navbar animation
+  useGSAP(() => {
+    if (navbarRef.current) {
+      gsap.to(navbarRef.current, {
+        y: panelOpen || confirmRidePanel ? -100 : 0,
+        opacity: panelOpen || confirmRidePanel ? 0 : 1,
+        duration: 0.5,
+        ease: "power2.inOut",
+        force3D: true,
+      });
+    }
+  }, [panelOpen, confirmRidePanel]);
 
+  // menu animation
+  useGSAP(() => {
+    if (menuRef.current) {
+      gsap.to(menuRef.current, {
+        opacity: isMenuOpen ? 1 : 0,
+        y: isMenuOpen ? 0 : -100,
+        duration: 0.3,
+        ease: "power2.out",
+      });
+    }
+  }, [isMenuOpen]);
 
   // Position line relative to pickup input
   useLayoutEffect(() => {
@@ -231,6 +242,7 @@ const Home = () => {
     }
   }, [confirmRidePanel]);
 
+  // looking for driver panel animation
   useGSAP(() => {
     if (vehicleFoundRef.current) {
       gsap.to(vehicleFoundRef.current, {
@@ -240,6 +252,7 @@ const Home = () => {
     }
   }, [vehicleFound]);
 
+  // waiting for driver panel animation
   useGSAP(() => {
     if (waitingForDriverRef.current) {
       gsap.to(waitingForDriverRef.current, {
@@ -250,16 +263,7 @@ const Home = () => {
     }
   }, [waitingForDriver]);
 
-  useGSAP(() => {
-    if (menuRef.current) {
-      gsap.to(menuRef.current, {
-        opacity: isMenuOpen ? 1 : 0,
-        y: isMenuOpen ? 0 : -100,
-        duration: 0.3,
-        ease: "power2.out",
-      });
-    }
-  }, [isMenuOpen]);
+ 
 
   return (
     <div className="h-[100dvh] w-full bg-white dark:bg-gray-900 text-black dark:text-white overflow-clip">
@@ -430,7 +434,7 @@ const Home = () => {
         {/* confirm your ride panel */}
         <div
           ref={confirmRidePanelRef}
-          className="w-full z-10 fixed bottom-0 translate-y-full rounded-3xl overflow-hidden bg-white dark:bg-gray-800 rounded-t-3xl shadow-lg"
+          className="w-full z-10 fixed bottom-0 translate-y-full  rounded-t-3xl overflow-hidden bg-white dark:bg-gray-800 shadow-lg"
         >
           <ConfirmRide
             setConfirmRidePanel={setConfirmRidePanel}
@@ -442,7 +446,7 @@ const Home = () => {
         {/* looking for driver */}
         <div
           ref={vehicleFoundRef}
-          className="h-[72.5dvh] xl:h-[62dvh] 4k:h-[30%] w-full rounded-3xl overflow-hidden z-10 fixed translate-y-full bg-white dark:bg-gray-800 rounded-t-3xl shadow-lg"
+          className="h-[72.5dvh] xl:h-[64dvh] 4k:h-[29%] w-full  rounded-t-3xl overflow-hidden z-10 fixed translate-y-full bg-white dark:bg-gray-800 shadow-lg"
         >
           <LookingForDriver
             setVehicleFound={setVehicleFound}
@@ -453,7 +457,7 @@ const Home = () => {
         {/* waiting for driver */}
         <div
           ref={waitingForDriverRef}
-          className="w-full z-10 fixed translate-y-full rounded-3xl overflow-hidden bg-white dark:bg-gray-800 rounded-t-3xl overflow-hidde shadow-lg"
+          className=" w-full z-10 fixed translate-y-full rounded-t-3xl  overflow-hidden bg-white dark:bg-gray-800 shadow-lg"
         >
           <WaitingForDriver />
         </div>

@@ -25,7 +25,7 @@ if (isDataMissing) {
 }
 
   return (
-    <div className="space-y-7">
+    <div className="space-y-4 xl:space-y-7">
   {/* Vehicle Details (Hide for captain) */}
   {userType !== "captain" && (
     <div className="flex items-center gap-4 p-4 bg-white dark:bg-gray-700 rounded-xl shadow-sm">
@@ -82,8 +82,8 @@ if (isDataMissing) {
     </div>
   </div>
 
-  {/* Trip Summary */}
-  <div className="px-4 py-2 xl:py-4  bg-gray-50 dark:bg-gray-800 rounded-xl">
+  {/* distance and time */}
+  <div className="px-4 xl:py-4 bg-gray-50 dark:bg-gray-800 rounded-xl">
     {/* Distance */}
   <div className="flex justify-between items-center mb-0 xl:mb-2">
     <span className="text-gray-600 dark:text-gray-300">Distance</span>

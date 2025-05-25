@@ -39,7 +39,7 @@ const ConfirmRide = ({
     <div className="w-screen bg-white dark:bg-gray-900 text-black dark:text-white">
       <div className="max-w-2xl mx-auto px-4 py-6">
         {/* Header */}
-        <div className="text-center mb-6">
+        <div className="text-center mb-4 xl:mb-6">
           <h2 className="text-2xl font-bold mb-2">Confirm Your Ride</h2>
           <p className="text-gray-600 dark:text-gray-400">
             Review your trip details before confirming

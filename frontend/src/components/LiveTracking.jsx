@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import Loader from "./Loader";
+import { MapLoader } from "./Loader";
 
 import {
   GoogleMap,
@@ -122,8 +122,8 @@ const MyMap = (props) => {
     }
   };
 
-  if (!isLoaded) return <div className="h-full w-full flex justify-center items-center"><Loader message="Loading Map API... "/></div>;
-  if (!currentPosition) return <div className="h-full w-full flex justify-center items-center"><Loader message="Getting your location... "/></div>;
+  if (!isLoaded) return <div className="h-full w-full relative"><MapLoader message="Loading Map API... "/></div>;
+  if (!currentPosition) return <div className="h-full w-full relative"><MapLoader message="Getting your location... "/></div>;
 
   return (
     <div style={containerStyle}>
@@ -150,12 +150,11 @@ const MyMap = (props) => {
       </GoogleMap>
 
       <button
-  onClick={recenterMap}
-  className="h-[50px] w-[50px] absolute bottom-[60px] xl:bottom-[80px] xl:right-[40px] right-[20px] bg-white border-none rounded-full p-3 shadow-md cursor-pointer"
->
-  <i className="ri-focus-3-line text-[20px] text-black"></i>
-</button>
-
+        onClick={recenterMap}
+        className="h-[50px] w-[50px] absolute bottom-[60px] xl:bottom-[80px] xl:right-[40px] right-[20px] bg-white border-none rounded-full p-3 shadow-md cursor-pointer"
+      >
+        <i className="ri-focus-3-line text-[20px] text-black"></i>
+      </button>
     </div>
   );
 };

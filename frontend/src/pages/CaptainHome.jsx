@@ -153,7 +153,7 @@ const CaptainHome = () => {
       {/* Incoming Ride Panel */}
       <div
         ref={ridePopUpPanelRef}
-        className="fixed bottom-0 left-0 w-full z-30 bg-white dark:bg-gray-800 translate-y-full rounded-t-2xl shadow-xl transition-all duration-300"
+        className="fixed bottom-0 left-0 w-full z-30 bg-white dark:bg-gray-800 translate-y-full rounded-t-3xl shadow-xl transition-all duration-300"
       >
         <RidePopUpPanel
           confirmRide={confirmRide}
@@ -165,7 +165,7 @@ const CaptainHome = () => {
       {/* Confirm Ride Panel */}
       <div
         ref={confirmRidePopUpPanelRef}
-        className="h-full xl:h-[75%] 4k:h-[36%] w-full fixed bottom-0 left-0 z-30 bg-white dark:bg-gray-800 translate-y-full rounded-t-2xl shadow-xl transition-all duration-300"
+        className="h-full xl:h-[75%] 4k:h-[36%] w-full fixed bottom-0 left-0 z-30 bg-white dark:bg-gray-800 translate-y-full rounded-t-3xl shadow-xl transition-all duration-300"
       >
         <ConfirmRidePopUpPanel
           setRidePopUpPanel={setRidePopUpPanel}

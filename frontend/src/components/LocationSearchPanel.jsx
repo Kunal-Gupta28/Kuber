@@ -75,7 +75,7 @@ const LocationSearchPanel = ({
 
       {/* Suggestions */}
       {suggestion.length > 0 && (
-  <div className="mt-4 pb-1">
+  <div className="mt-0 xl:mt-4 pb-1">
     <h3 className="text-gray-600 dark:text-gray-400 text-sm px-5 py-3">Suggestions</h3>
     {suggestion.map((element, index) => (
       <div
@@ -98,8 +98,8 @@ const LocationSearchPanel = ({
 
     {/* Recent Searches */}
 {recentSearches.length > 0 && suggestion.length === 0 && (
-  <div className="mt-4 pb-1">
-    <h3 className="text-gray-600 dark:text-gray-400 text-sm px-5 pt-5">Recent Searches</h3>
+  <div className="mt-0 xl:mt-4 pb-1">
+    <h3 className="text-gray-600 dark:text-gray-400 text-sm px-5 xl:pt-5">Recent Searches</h3>
     {recentSearches.map((item, index) => (
       <div
         key={index}

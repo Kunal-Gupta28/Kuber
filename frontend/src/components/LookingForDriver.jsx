@@ -27,15 +27,39 @@ const LookingForDriver = ({ setVehicleFound, setConfirmRidePanel }) => {
     const ctx = gsap.context(() => {
       const dots = dotsRef.current?.children;
       if (dots && dots.length > 0) {
-        gsap.to(dots, {
-          y: -8,
-          scale: 1.3,
-          opacity: 0.6,
-          duration: 0.6,
-          stagger: 0.2,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
+        // Create a timeline for better control
+        const tl = gsap.timeline({ repeat: -1 });
+        
+        // Animate each dot with a slight delay
+        dots.forEach((dot, index) => {
+          // Initial state
+          gsap.set(dot, { 
+            y: 0,
+            scale: 1,
+            opacity: 0.6
+          });
+
+          // Upward animation
+          tl.to(dot, {
+            y: -12,
+            scale: 1.3,
+            opacity: 1,
+            duration: 0.4,
+            ease: "back.out(1.2)",
+          }, index * 0.2)
+          // Hold at top
+          .to(dot, {
+            duration: 0.1,
+            ease: "none"
+          })
+          // Downward animation
+          .to(dot, {
+            y: 0,
+            scale: 1,
+            opacity: 0.6,
+            duration: 0.4,
+            ease: "power2.in",
+          }, ">-0.1");
         });
       }
     }, dotsRef);
@@ -70,10 +94,10 @@ const LookingForDriver = ({ setVehicleFound, setConfirmRidePanel }) => {
         </div>
 
         {/* Animated Loading Dots */}
-        <div ref={dotsRef} className="flex gap-2 mb-8">
-          <div className="w-3 h-3 bg-blue-500 dark:bg-blue-400 rounded-full"></div>
-          <div className="w-3 h-3 bg-blue-500 dark:bg-blue-400 rounded-full"></div>
-          <div className="w-3 h-3 bg-blue-500 dark:bg-blue-400 rounded-full"></div>
+        <div ref={dotsRef} className="flex gap-4 mb-8">
+          <div className="w-3 h-3 bg-blue-500 dark:bg-blue-400 rounded-full transform-gpu shadow-lg"></div>
+          <div className="w-3 h-3 bg-blue-500 dark:bg-blue-400 rounded-full transform-gpu shadow-lg"></div>
+          <div className="w-3 h-3 bg-blue-500 dark:bg-blue-400 rounded-full transform-gpu shadow-lg"></div>
         </div>
 
         {/* Ride Details */}
