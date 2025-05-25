@@ -28,7 +28,8 @@ body('notes')
 paymentController.createOrder);
 
 // Verify payment with validation
-router.post("/verify", body('orderId')
+router.post("/verify", 
+body('orderId')
 .isString()
 .withMessage('Order ID must be a string')
 .notEmpty()

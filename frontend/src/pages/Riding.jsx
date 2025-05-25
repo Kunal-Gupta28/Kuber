@@ -11,16 +11,23 @@ const Riding = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { socket } = useContext(SocketContext);
-  const {setPickup , setDestination} = useRideContext()
-  const [showHomeButton,setShowHomeButton] = useState(false)
+  const { setPickup, setDestination, setRide, ride } = useRideContext();
+  const [showHomeButton, setShowHomeButton] = useState(false);
 
   const state = location.state || {};
-  const ride = state.ride || null;
-  const coordinates =
-    state.coordinates || JSON.parse(localStorage.getItem("coordinates"));
+  const rideData = state.ride || null;
+  const coordinates = state.coordinates || JSON.parse(localStorage.getItem("coordinates"));
 
   const rideDetailsRef = useRef(null);
 
+  // Set ride data in context when component mounts
+  useEffect(() => {
+    if (rideData) {
+      setRide(rideData);
+      setPickup(rideData.pickup);
+      setDestination(rideData.destination);
+    }
+  }, [rideData, setRide, setPickup, setDestination]);
 
   // listing for ride end 
   useEffect(() => {
@@ -38,8 +45,9 @@ const Riding = () => {
       // Clean up any remaining state
       setDestination('');
       setPickup('');
+      setRide(null);
     };
-  }, [socket, navigate]);
+  }, [socket, navigate, setDestination, setPickup, setRide]);
 
   // Add cleanup effect for component unmount
   useEffect(() => {
@@ -47,13 +55,15 @@ const Riding = () => {
       // Clean up any remaining state when component unmounts
       setDestination('');
       setPickup('');
+      setRide(null);
     };
-  }, []);
+  }, [setDestination, setPickup, setRide]);
 
   // Update the home button click handler
   const handleHomeClick = () => {
     setDestination('');
     setPickup('');
+    setRide(null);
     navigate('/home', { replace: true });
   };
 
@@ -85,14 +95,14 @@ const Riding = () => {
       </div>
 
       {/* Map Section */}
-      <section className="  h-[85%] xl:h-[85%] 4k:h-[90%]">
+      <section className="h-[85%] xl:h-[85%] 4k:h-[90%]">
         <LiveTracking coordinates={coordinates}/>
       </section>
 
       {/* Control Panel */}
       <div className="h-[20%] xl:h-[17%] 4k:h-[11%] w-full bg-gradient-to-b from-yellow-400 to-yellow-500 dark:from-yellow-500 dark:to-yellow-600 p-4 sm:p-5 fixed bottom-0 flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 z-40 shadow-inner rounded-t-3xl border-t border-yellow-300 dark:border-yellow-600">
         <div className="w-full sm:w-auto flex flex-col sm:flex-row items-center gap-4 4k:gap-48 sm:gap-6">
-        <div className="h-14 sm:h-16 w-full sm:w-48">
+          <div className="h-14 sm:h-16 w-full sm:w-48">
             {showHomeButton ? (
               <button
                 onClick={handleHomeClick}

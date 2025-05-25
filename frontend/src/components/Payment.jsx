@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRideContext } from "../context/RideContext";
 import { useUserContext } from "../context/UserContext";
-import { useTheme  } from "../context/ThemeContext";
+import { useTheme } from "../context/ThemeContext";
 import { toast } from "react-hot-toast";
 
-const Payment = ({hideRideDetails, setShowHomeButton }) => {
-  const { fare , ride  } = useRideContext();
+const Payment = ({ hideRideDetails, setShowHomeButton }) => {
+  const { fare, ride } = useRideContext();
   const { user } = useUserContext();
   const { fullname, email } = user;
   const { isDarkMode } = useTheme();
@@ -35,7 +35,19 @@ const Payment = ({hideRideDetails, setShowHomeButton }) => {
 
       // Validate fare before proceeding
       if (!fare || isNaN(fare) || fare <= 0) {
-        throw new Error("Invalid fare amount");
+        toast.error("Invalid fare amount");
+        return;
+      }
+
+      // Validate ride and captain data with more specific checks
+      if (!ride) {
+        toast.error("Ride information is missing. Please try booking again.");
+        return;
+      }
+
+      if (!ride.captain) {
+        toast.error("Captain information is missing. Please try booking again.");
+        return;
       }
 
       // request for create order
@@ -46,7 +58,7 @@ const Payment = ({hideRideDetails, setShowHomeButton }) => {
           currency: "INR",
           receipt: `receipt_${Date.now()}`,
           notes: {
-            rideId: localStorage.getItem("currentRideId"),
+            rideId: ride._id,
             userId: user._id,
           },
         }
@@ -57,13 +69,12 @@ const Payment = ({hideRideDetails, setShowHomeButton }) => {
         key: import.meta.env.VITE_RAZORPAY_API_KEY,
         amount: Math.round(fare * 100),
         currency,
-        order_id: id, 
+        order_id: id,
         name: "Kuber",
         description: "Ride Payment",
         image: "/logo.png",
         handler: async function (response) {
           try {
-
             // verify payment
             const verifyRes = await axios.post(
               `${import.meta.env.VITE_BASE_URL}/payment/verify`,
@@ -71,22 +82,21 @@ const Payment = ({hideRideDetails, setShowHomeButton }) => {
                 orderId: id,
                 paymentId: response.razorpay_payment_id,
                 signature: response.razorpay_signature,
-                socketId: ride?.captain?.socketId
+                socketId: ride?.captain?.socketId || null,
+                rideId: ride._id
               }
             );
             
-      
             if (verifyRes.data.success) {
               toast.success("Payment successful!");
-              setShowHomeButton(true)
-              hideRideDetails()
-
+              setShowHomeButton(true);
+              hideRideDetails();
             } else {
-              throw new Error("Payment verification failed");
+              throw new Error(verifyRes.data.message || "Payment verification failed");
             }
           } catch (err) {
             console.error("Payment verification failed:", err);
-            toast.error("Payment verification failed. Please contact support.");
+            toast.error(err.response?.data?.message || "Payment verification failed. Please contact support.");
           }
         },
         prefill: {
@@ -104,13 +114,11 @@ const Payment = ({hideRideDetails, setShowHomeButton }) => {
         }
       };
       
-
       const rzp = new window.Razorpay(options);
       rzp.open();
     } catch (err) {
       console.error("Payment failed:", err);
-      setError(err.response?.data?.errors || err.message);
-      toast.error(err.response?.data?.errors?.[0]?.msg || "Payment failed. Please try again.");
+      toast.error(err.response?.data?.message || "Payment failed. Please try again.");
     } finally {
       setIsLoading(false);
     }
