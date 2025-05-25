@@ -62,7 +62,7 @@ const WaitingForDriver = () => {
                     <i className="ri-user-line text-2xl sm:text-3xl text-white" />
                   )}
               </div>
-              <div className="h-20 w-20 4k:h-32 4k:w-32 -ms-12 rounded-full overflow-hidden flex justify-center items-center bg-gray-200 dark:bg-gray-600">
+              <div className="h-20 w-20 4k:h-32 4k:w-32 -ms-8 xl:-ms-12 rounded-full overflow-hidden flex justify-center items-center bg-gray-200 dark:bg-gray-600">
                 {vehicleInfo.image ? (
                   <img
                     src={vehicleInfo.image}
