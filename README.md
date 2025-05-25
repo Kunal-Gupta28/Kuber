@@ -1,221 +1,165 @@
-# 🚗 Kuber - Ride Sharing Application
+# Kuber – Ride Booking Application
 
-Kuber is a modern ride-sharing application built with React, featuring real-time tracking, smooth animations, and a user-friendly interface. The application connects riders with drivers, providing a seamless experience from booking to arrival.
+**Kuber** is a modern ride-booking platform that allows users to book rides with verified drivers (captains) for convenient and reliable transportation. Built with **React** and **Node.js**, it offers real-time tracking, secure payments, and a seamless booking experience.
 
-## 📋 Detailed Features
+## 🚀 Features
 
-### 1. 🗺️ Location & Navigation
-- **Smart Location Search**
-  - Google Maps integration
-  - Location suggestions
-  - Current location detection
-  - Address validation
-  - Route optimization
+### 👤 For Users
+- Easy ride booking with location search and autocomplete
+- Real-time ride tracking with live driver location
+- Multiple vehicle categories
+- Fare estimation before booking
+- Secure online payment via Razorpay
+- Ride history and digital receipts
+- User profile management
 
-- **Real-time Tracking**
-  - Live location updates
-  - Route visualization
-  - ETA calculation
-  - Distance tracking
-  - Turn-by-turn navigation
+### 🚗 For Drivers (Captains)
+- Real-time ride request notifications
+- Navigation assistance with Google Maps
+- Ride management dashboard
+- Earnings tracking and history
+- Profile and vehicle management
+- Location sharing with users
+- Ride status updates
+- Payment collection system
 
-### 2. 🚘 Vehicle Management
-- **Multiple Vehicle Options**
-  - KUberGo (Standard)
-  - MOTO (Motorcycle)
-  - Premier (Premium)
-  - KUberAuto (Auto-rickshaw)
-
-- **Vehicle Details**
-  - Capacity information
-  - Fare calculation
-  - Vehicle images
-  - Driver details
-  - ETA information
-
-### 3. 💳 Payment System
-- **Secure Payments**
-  - Razorpay integration
-  - Multiple payment methods
-  - Fare calculation
-  - Payment verification
-  - Transaction history
-
-### 4. 👥 User Management
-- **Rider Features**
-  - User registration/login
-  - Profile management
-  - Ride history
-  - Favorite locations
-  - Rating system
-
-- **Driver Features**
-  - Driver registration/login
-  - Vehicle management
-  - Earnings tracking
-  - Ride acceptance
-  - Navigation support
-
-### 5. 🔄 Real-time Features
-- **Live Updates**
-  - Socket.io integration
-  - Real-time ride status
-  - Driver location tracking
-  - Ride matching
-  - Instant notifications
-
-### 6. 🌗 UI/UX Features
-- **Responsive Design**
-  - Mobile-first approach
-  - Dark/Light mode
-  - Smooth animations
-  - Intuitive interface
-  - Loading states
-
-### 7. 🔐 Security
-- **Authentication**
-  - JWT implementation
-  - Secure routes
-  - Role-based access
-  - Session management
-  - Data encryption
-
-## 🛠️ Tech Stack
+## 🛠 Tech Stack
 
 ### Frontend
-- React.js
-- GSAP for animations
-- Tailwind CSS
-- Socket.io client
-- Google Maps API
-- Axios
-- React Router
+- React.js with Vite
+- React Router (navigation)
+- Tailwind CSS (responsive design)
+- GSAP (animations)
+- Socket.io (real-time communication)
+- Google Maps API (location services)
+- Razorpay (secure payment integration)
 
 ### Backend
-- Node.js
-- Express.js
-- MongoDB
-- Socket.io
-- JWT
-- Razorpay API
+- Node.js with Express
+- MongoDB (database)
+- Socket.io (real-time communication)
+- JWT (authentication)
+- Google Maps API (geolocation)
+- Razorpay API (payment processing)
 
-## 🏗️ Project Structure
+## ⚙️ Prerequisites
+
+Before starting, ensure you have:
+- Node.js (v14 or higher)
+- MongoDB
+- Google Maps API key
+- Razorpay API keys
+
+## 📦 Installation
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/yourusername/kuber.git
+cd kuber
+```
+
+### 2. Install dependencies
+```bash
+# Backend
+cd backend
+npm install
+
+# Frontend
+cd ../frontend
+npm install
+```
+
+### 3. Environment variables
+
+#### Backend `.env`
+```env
+PORT=5000
+MONGODB_URI=your_mongodb_uri
+JWT_SECRET=your_jwt_secret
+GOOGLE_MAPS_API_KEY=your_google_maps_api_key
+RAZORPAY_KEY_ID=your_razorpay_key_id
+RAZORPAY_KEY_SECRET=your_razorpay_key_secret
+```
+
+#### Frontend `.env`
+```env
+VITE_BASE_URL=http://localhost:5000
+VITE_RAZORPAY_API_KEY=your_razorpay_api_key
+VITE_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
+```
+
+## 🧪 Running the Application
+
+### Start backend server
+```bash
+cd backend
+npm run dev
+```
+
+### Start frontend development server
+```bash
+cd frontend
+npm run dev
+```
+
+Visit: [http://localhost:5173](http://localhost:5173)
+
+## 📁 Project Structure
 
 ```
 kuber/
 ├── frontend/
 │   ├── src/
-│   │   ├── components/     # Reusable components
-│   │   ├── context/       # React context providers
-│   │   ├── pages/         # Page components
-│   │   └── utils/         # Utility functions
-│   └── public/            # Static assets
-└── backend/
-    ├── controllers/       # Route controllers
-    ├── models/           # Database models
-    ├── routes/           # API routes
-
+│   │   ├── components/        # Reusable components
+│   │   ├── context/           # React context providers
+│   │   ├── pages/             # Page components
+│   │   ├── utils/             # Utility functions
+│   │   └── App.jsx            # Main app entry
+│   └── package.json
+├── backend/
+│   ├── controllers/           # Business logic
+│   ├── models/                # Mongoose schemas
+│   ├── routes/                # API routes
+│   ├── middleware/            # Custom middlewares
+│   ├── utils/                 # Helper functions
+│   └── server.js              # Server entry point
+└── README.md
 ```
 
-## 🚀 Getting Started
+## 🚕 Ride Booking Flow
 
-### Prerequisites
-- Node.js
-- MongoDB
-- Google Maps API key
-- Razorpay account
+1. User enters pickup and destination
+2. Vehicle options with fare estimates are shown
+3. User selects a vehicle and confirms booking
+4. System finds nearby drivers
+5. A driver accepts the ride
+6. Real-time tracking begins
+7. Payment is processed securely upon ride completion
 
-### Installation
-```bash
-# 1. Clone the repository
-git clone https://github.com/yourusername/kuber.git
-cd kuber
+## 🔁 Real-time Features
 
-# 2. Install dependencies
-cd frontend
-npm install
+- Live user-driver location tracking
+- Ride status updates
+- Chat between user and driver
+- Payment status notifications
 
-cd ../backend
-npm install
+## 🤝 Contributing
 
-# 3. Set up environment variables
-# Frontend (.env)
-VITE_BASE_URL=http://localhost:5000
-VITE_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
-VITE_RAZORPAY_API_KEY=your_razorpay_api_key
-
-# Backend (.env)
-PORT=5000
-MONGODB_URI=your_mongodb_uri
-JWT_SECRET=your_jwt_secret
-```
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ## 🙏 Acknowledgments
 
-- Google Maps API
-- Razorpay
-- Socket.io
-- GSAP
-- React.js community
+- **Google Maps API** – Navigation and geolocation
+- **Razorpay** – Payment gateway
+- **Socket.io** – Real-time communication
+- All contributors and open-source libraries that made this project possible
 
----
+## 📬 Contact
 
-## 🔗 Demo
-
-[🔗 Live Demo](https://your-kuber-clone-url.com)
-
-![Dashboard Screenshot](./screenshots/dashboard.png)
-
----
-
-## 🛠️ Tech Stack
-
-**Frontend:**
-- React
-- Tailwind CSS or Material UI
-- Chart.js / Recharts
-- Context API / Redux (for state)
-
-**Backend:**
-- Node.js + Express
-- MongoDB + Mongoose
-- JWT for authentication
-
-**Deployment:**
-- Frontend: Vercel / Netlify
-- Backend: Render / Railway / Heroku
-
----
-
-## 🧑‍💻 Installation
-
-### Prerequisites
-
-- Node.js
-- MongoDB (local or Atlas)
-- npm or yarn
-
-### Steps
-
-```bash
-# 1. Clone the repository
-git clone https://github.com/yourusername/kuber-clone.git
-cd kuber-clone
-
-# 2. Install backend dependencies
-npm install
-
-# 3. Set up environment variables
-touch .env
-```
-
-### Environment Variables
-```env
-PORT=5000
-MONGODB_URI=your_mongodb_uri
-JWT_SECRET=your_jwt_secret
-NODE_ENV=development
+**Kunal Gupta**  
+📧 kunal.gupta.91165@gmail.com  
+🔗 Project: [GitHub - Kuber](https://github.com/Kunal-Gupta28/kuber)

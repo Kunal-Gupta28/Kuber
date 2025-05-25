@@ -25,6 +25,7 @@ function App() {
         <Route path="/" element={<Start />} />
         <Route path="/users/register" element={<UserSignUp />} />
         <Route path="/users/login" element={<UserLogin />} />
+        
         <Route
           path="/home"
           element={
@@ -33,8 +34,22 @@ function App() {
             </UserProtectorWrapper>
           }
         />
-        <Route path="/users/profile" element={<UserProfile />} />
-        <Route path="/users/riding" element={<Riding />} />
+        <Route
+          path="/users/profile"
+          element={
+            <UserProtectorWrapper>
+              <UserProfile />
+            </UserProtectorWrapper>
+          }
+        />
+        <Route
+          path="/users/riding"
+          element={
+            <UserProtectorWrapper>
+              <Riding />
+            </UserProtectorWrapper>
+          }
+        />
         <Route
           path="/users/logout"
           element={
@@ -46,6 +61,7 @@ function App() {
 
         <Route path="/captains/login" element={<CaptainLogin />} />
         <Route path="/captains/register" element={<CaptainSignUp />} />
+        
         <Route
           path="/captains/home"
           element={
@@ -54,10 +70,24 @@ function App() {
             </CaptainProtectWrapper>
           }
         />
-        <Route path="/captains/profile" element={<CaptainProfile />} />
-        <Route path="/captains/riding" element={<CaptainRiding />} />
         <Route
-          path="/captain/logout"
+          path="/captains/profile"
+          element={
+            <CaptainProtectWrapper>
+              <CaptainProfile />
+            </CaptainProtectWrapper>
+          }
+        />
+        <Route
+          path="/captains/riding"
+          element={
+            <CaptainProtectWrapper>
+              <CaptainRiding />
+            </CaptainProtectWrapper>
+          }
+        />
+        <Route
+          path="/captains/logout"
           element={
             <CaptainProtectWrapper>
               <CaptainLogout />
@@ -65,25 +95,23 @@ function App() {
           }
         />
 
-        <Route path="*" element={<NotFound/>}/>
+        <Route path="*" element={<NotFound />} />
       </Routes>
 
       <Toaster
         position="top-right"
         toastOptions={{
-          duration: 10000,
+          duration: 3000, // Reduced duration for better UX
           style: {
             background: "#333",
             color: "#fff",
           },
           success: {
-            duration: 10000,
             theme: {
               primary: "#4aed88",
             },
           },
           error: {
-            duration: 10000,
             theme: {
               primary: "#ff4b4b",
             },

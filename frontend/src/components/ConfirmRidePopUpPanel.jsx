@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import RideDetails from "../components/RideDetails";
 import { motion } from "framer-motion";

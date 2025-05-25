@@ -26,15 +26,36 @@ const Riding = () => {
   useEffect(() => {
     const handleRideEnded = (ride) => {
       if (ride?.captain && ride?.user) {
-        setDestination('')
-        setPickup('')
-        navigate("/home");
+        setDestination('');
+        setPickup('');
+        navigate("/home", { replace: true });
       }
     };
 
     socket?.on("ride-ended", handleRideEnded);
-    return () => socket?.off("ride-ended", handleRideEnded);
+    return () => {
+      socket?.off("ride-ended", handleRideEnded);
+      // Clean up any remaining state
+      setDestination('');
+      setPickup('');
+    };
   }, [socket, navigate]);
+
+  // Add cleanup effect for component unmount
+  useEffect(() => {
+    return () => {
+      // Clean up any remaining state when component unmounts
+      setDestination('');
+      setPickup('');
+    };
+  }, []);
+
+  // Update the home button click handler
+  const handleHomeClick = () => {
+    setDestination('');
+    setPickup('');
+    navigate('/home', { replace: true });
+  };
 
   //  animation for show ride details
   const showRideDetails = () => {
@@ -74,11 +95,7 @@ const Riding = () => {
         <div className="h-14 sm:h-16 w-full sm:w-48">
             {showHomeButton ? (
               <button
-                onClick={() => {
-                  navigate('/home');
-                  setPickup('');
-                  setDestination('');
-                }}
+                onClick={handleHomeClick}
                 className="w-full h-full bg-gradient-to-r from-green-600 to-green-700 dark:from-green-700 dark:to-green-800 rounded-xl text-lg sm:text-xl font-semibold text-white flex justify-center items-center shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 Home

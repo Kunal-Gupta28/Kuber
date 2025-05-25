@@ -14,7 +14,7 @@ const NotFound = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen text-center px-4">
+    <div className="flex flex-col items-center justify-center h-[100dvh] text-center px-4">
       <h1 className="text-4xl font-bold">404 - Page Not Found</h1>
       <p className="mt-2 text-lg text-gray-600 dark:text-gray-300">
         Oops! The path <code className="text-red-500">{location.pathname}</code> doesn’t exist.

@@ -100,6 +100,22 @@ const Home = () => {
   
 // sockets functions
   useEffect(() => {
+    // Reset any stale state when component mounts
+    setPickup('');
+    setDestination('');
+    setRide(null);
+    
+    return () => {
+      // Clean up when component unmounts
+      setPickup('');
+      setDestination('');
+      setRide(null);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!user?._id) return;
+
     socket.emit("join", { userType: "user", userId: user._id });
 
     socket.on("ride-confirmed", (ride) => {
@@ -112,12 +128,17 @@ const Home = () => {
       setWaitingForDriver(false);
       navigate("/users/riding", {
         state: { ride },
+        replace: true
       });
     });
 
     return () => {
       socket.off("ride-confirmed");
       socket.off("ride-start");
+      // Clean up any remaining state
+      setVehicleFound(false);
+      setWaitingForDriver(false);
+      setRide(null);
     };
   }, [user]);
 
