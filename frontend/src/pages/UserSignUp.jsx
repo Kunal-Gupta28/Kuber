@@ -57,6 +57,11 @@ const UserSignUp = () => {
       }
     } catch (error) {
       console.error("Registration error:", error.response?.data || error);
+      if (error.response?.data?.message === "User already exists") {
+        setErrors({ email: "An account with this email already exists." });
+      } else {
+        setErrors({ general: "Registration failed. Please try again later." });
+      }
     }
   };
 

@@ -127,8 +127,7 @@ const Home = () => {
     socket.on("ride-start", (ride) => {
       setWaitingForDriver(false);
       navigate("/users/riding", {
-        state: { ride },
-        replace: true
+        state: { ride }
       });
     });
 

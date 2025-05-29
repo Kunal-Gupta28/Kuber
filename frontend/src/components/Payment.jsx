@@ -50,6 +50,11 @@ const Payment = ({ hideRideDetails, setShowHomeButton }) => {
         return;
       }
 
+      if (!user?._id) {
+        toast.error("User session expired. Please login again.");
+        return;
+      }
+
       // request for create order
       const res = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/payment/create-order`,
@@ -63,6 +68,10 @@ const Payment = ({ hideRideDetails, setShowHomeButton }) => {
           },
         }
       );
+
+      if (!res.data?.data?.id) {
+        throw new Error("Invalid response from payment server");
+      }
 
       const { id, currency } = res.data.data;
       const options = {

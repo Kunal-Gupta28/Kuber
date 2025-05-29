@@ -35,7 +35,7 @@ const Riding = () => {
       if (ride?.captain && ride?.user) {
         setDestination('');
         setPickup('');
-        navigate("/home", { replace: true });
+        navigate("/home");
       }
     };
 
@@ -64,7 +64,7 @@ const Riding = () => {
     setDestination('');
     setPickup('');
     setRide(null);
-    navigate('/home', { replace: true });
+    navigate('/home');
   };
 
   //  animation for show ride details

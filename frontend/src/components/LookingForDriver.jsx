@@ -26,42 +26,42 @@ const LookingForDriver = ({ setVehicleFound, setConfirmRidePanel }) => {
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       const dots = dotsRef.current?.children;
-      if (dots && dots.length > 0) {
-        // Create a timeline for better control
-        const tl = gsap.timeline({ repeat: -1 });
-        
-        // Animate each dot with a slight delay
-        dots.forEach((dot, index) => {
-          // Initial state
-          gsap.set(dot, { 
-            y: 0,
-            scale: 1,
-            opacity: 0.6
-          });
+      if (!dots || !Array.isArray(dots)) return;
 
-          // Upward animation
-          tl.to(dot, {
-            y: -12,
-            scale: 1.3,
-            opacity: 1,
-            duration: 0.4,
-            ease: "back.out(1.2)",
-          }, index * 0.2)
-          // Hold at top
-          .to(dot, {
-            duration: 0.1,
-            ease: "none"
-          })
-          // Downward animation
-          .to(dot, {
-            y: 0,
-            scale: 1,
-            opacity: 0.6,
-            duration: 0.4,
-            ease: "power2.in",
-          }, ">-0.1");
+      // Create a timeline for better control
+      const tl = gsap.timeline({ repeat: -1 });
+      
+      // Animate each dot with a slight delay
+      Array.from(dots).forEach((dot, index) => {
+        // Initial state
+        gsap.set(dot, { 
+          y: 0,
+          scale: 1,
+          opacity: 0.6
         });
-      }
+
+        // Upward animation
+        tl.to(dot, {
+          y: -12,
+          scale: 1.3,
+          opacity: 1,
+          duration: 0.4,
+          ease: "back.out(1.2)",
+        }, index * 0.2)
+        // Hold at top
+        .to(dot, {
+          duration: 0.1,
+          ease: "none"
+        })
+        // Downward animation
+        .to(dot, {
+          y: 0,
+          scale: 1,
+          opacity: 0.6,
+          duration: 0.4,
+          ease: "power2.in",
+        }, ">-0.1");
+      });
     }, dotsRef);
     return () => ctx.revert();
   }, []);

@@ -29,7 +29,7 @@ module.exports.getFare = async (pickupPoint, destination) => {
 
     const fares = Object.keys(baseFare).map((vehicleType) => ({
       vehicleType,
-      fare: baseFare[vehicleType] + distanceInKm * distanceFactor,
+      fare: Math.round(baseFare[vehicleType] + distanceInKm * distanceFactor),
     }));
 
     return { distanceTime, fares };
