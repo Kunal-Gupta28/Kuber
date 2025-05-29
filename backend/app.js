@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require("express");
 const app = express();
 const cors = require("cors");
@@ -11,11 +12,11 @@ const pageNotFound = require('./routes/pageNotFound')
 connectedToDB();
 const cookie = require("cookie-parser");
 
-
-app.use(cors({
-  origin: 'https://kuber-tau.vercel.app',
-  credentials: true
-}));
+app.use(cors())
+// app.use(cors({
+//   origin: 'https://kuber-tau.vercel.app',
+//   credentials: true
+// }));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cookie());
@@ -32,4 +33,4 @@ app.use('*',pageNotFound)
 module.exports = app;    
 
 
- 
+  
