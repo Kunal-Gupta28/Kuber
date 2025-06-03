@@ -104,12 +104,50 @@ const Home = () => {
     setPickup('');
     setDestination('');
     setRide(null);
+    setVehiclePanelOpen(false);
+    setConfirmRidePanel(false);
+    setVehicleFound(false);
+    setWaitingForDriver(false);
+    
+    // Hide all panels initially using GSAP
+    if (vehiclePanelOpenRef.current) {
+      gsap.set(vehiclePanelOpenRef.current, { 
+        display: 'none',
+        y: '100%',
+        opacity: 0 
+      });
+    }
+    if (confirmRidePanelRef.current) {
+      gsap.set(confirmRidePanelRef.current, { 
+        display: 'none',
+        y: '100%',
+        opacity: 0 
+      });
+    }
+    if (vehicleFoundRef.current) {
+      gsap.set(vehicleFoundRef.current, { 
+        display: 'none',
+        y: '100%',
+        opacity: 0 
+      });
+    }
+    if (waitingForDriverRef.current) {
+      gsap.set(waitingForDriverRef.current, { 
+        display: 'none',
+        y: '100%',
+        opacity: 0 
+      });
+    }
     
     return () => {
       // Clean up when component unmounts
       setPickup('');
       setDestination('');
       setRide(null);
+      setVehiclePanelOpen(false);
+      setConfirmRidePanel(false);
+      setVehicleFound(false);
+      setWaitingForDriver(false);
     };
   }, []);
 
@@ -238,13 +276,32 @@ const Home = () => {
   //  vehicle panel animation
   useGSAP(() => {
     if (vehiclePanelOpenRef.current && vehiclePanelCloseRef.current) {
-      gsap.to(vehiclePanelOpenRef.current, {
-        transform: vehiclePanelOpen ? "translateY(0%)" : "translateY(100%)",
-        duration: 0.8,
-        ease: "power2.inOut",
-        force3D: true,
-        willChange: "transform"
-      });
+      if (vehiclePanelOpen) {
+        // Show panel
+        gsap.set(vehiclePanelOpenRef.current, { display: 'block' });
+        gsap.to(vehiclePanelOpenRef.current, {
+          y: '0%',
+          opacity: 1,
+          duration: 0.8,
+          ease: "power2.inOut",
+          force3D: true,
+          willChange: "transform"
+        });
+      } else {
+        // Hide panel
+        gsap.to(vehiclePanelOpenRef.current, {
+          y: '100%',
+          opacity: 0,
+          duration: 0.8,
+          ease: "power2.inOut",
+          force3D: true,
+          willChange: "transform",
+          onComplete: () => {
+            gsap.set(vehiclePanelOpenRef.current, { display: 'none' });
+          }
+        });
+      }
+      
       gsap.to(vehiclePanelCloseRef.current, {
         opacity: vehiclePanelOpen ? 1 : 0,
         duration: 0.5,
@@ -255,31 +312,93 @@ const Home = () => {
   // confirm your ride panel animation
   useGSAP(() => {
     if (confirmRidePanelRef.current) {
-      gsap.to(confirmRidePanelRef.current, {
-        transform: confirmRidePanel ? "translateY(0%)" : "translateY(100%)",
-        duration: 1,
-      });
+      if (confirmRidePanel) {
+        // Show panel
+        gsap.set(confirmRidePanelRef.current, { display: 'block' });
+        gsap.to(confirmRidePanelRef.current, {
+          y: '0%',
+          opacity: 1,
+          duration: 1,
+          ease: "power2.inOut",
+          force3D: true,
+          willChange: "transform"
+        });
+      } else {
+        // Hide panel
+        gsap.to(confirmRidePanelRef.current, {
+          y: '100%',
+          opacity: 0,
+          duration: 1,
+          ease: "power2.inOut",
+          force3D: true,
+          willChange: "transform",
+          onComplete: () => {
+            gsap.set(confirmRidePanelRef.current, { display: 'none' });
+          }
+        });
+      }
     }
   }, [confirmRidePanel]);
 
   // looking for driver panel animation
   useGSAP(() => {
     if (vehicleFoundRef.current) {
-      gsap.to(vehicleFoundRef.current, {
-        transform: vehicleFound ? "translateY(0%)" : "translateY(100%)",
-        duration: 0.5,
-      });
+      if (vehicleFound) {
+        // Show panel
+        gsap.set(vehicleFoundRef.current, { display: 'block' });
+        gsap.to(vehicleFoundRef.current, {
+          y: '0%',
+          opacity: 1,
+          duration: 0.5,
+          ease: "power2.inOut",
+          force3D: true,
+          willChange: "transform"
+        });
+      } else {
+        // Hide panel
+        gsap.to(vehicleFoundRef.current, {
+          y: '100%',
+          opacity: 0,
+          duration: 0.5,
+          ease: "power2.inOut",
+          force3D: true,
+          willChange: "transform",
+          onComplete: () => {
+            gsap.set(vehicleFoundRef.current, { display: 'none' });
+          }
+        });
+      }
     }
   }, [vehicleFound]);
 
   // waiting for driver panel animation
   useGSAP(() => {
     if (waitingForDriverRef.current) {
-      gsap.to(waitingForDriverRef.current, {
-        y: waitingForDriver ? 0 : "100%",
-        duration: 0.5,
-        ease: waitingForDriver ? "power2.out" : "power2.in",
-      });
+      if (waitingForDriver) {
+        // Show panel
+        gsap.set(waitingForDriverRef.current, { display: 'block' });
+        gsap.to(waitingForDriverRef.current, {
+          y: '0%',
+          opacity: 1,
+          duration: 0.5,
+          ease: "power2.out",
+          force3D: true,
+          willChange: "transform"
+        });
+      } else {
+        // Hide panel
+        gsap.to(waitingForDriverRef.current, {
+          y: '100%',
+          opacity: 0,
+          duration: 0.5,
+          ease: "power2.in",
+          force3D: true,
+          willChange: "transform",
+          onComplete: () => {
+            gsap.set(waitingForDriverRef.current, { display: 'none' });
+          }
+        });
+      }
     }
   }, [waitingForDriver]);
 
@@ -289,7 +408,7 @@ const Home = () => {
     <div className="h-[100dvh] w-full bg-white dark:bg-gray-900 text-black dark:text-white overflow-clip">
       
       {/* nav bar */}
-      <div ref={navbarRef} className="absolute top-0 left-0 right-0 z-50">
+      <div ref={navbarRef} className="absolute top-0 left-0 right-0 z-50 backdrop-blur-sm bg-white/80 dark:bg-gray-900/80 shadow-sm">
         <NavBar userType="user"/>
       </div>
 
@@ -306,10 +425,10 @@ const Home = () => {
       <div className="h-[29%] xl:h-[24%]  4k:h-[10%] w-full flex flex-col justify-end relative">
 
           {/* find a trip panel and suggests */}
-        <div className="bg-white dark:bg-gray-800 w-full pt-4 rounded-t-3xl shadow-lg absolute">
+        <div className="bg-white dark:bg-gray-800 w-full pt-[clamp(1rem,2vw,1.5rem)] rounded-t-3xl shadow-lg absolute">
         
-          <div className="px-6 flex justify-between items-center">
-            <h4 className="text-2xl font-semibold text-black dark:text-white">Find a trip</h4>
+          <div className="px-[clamp(1.25rem,3vw,2rem)] flex justify-between items-center">
+            <h4 className="text-[clamp(1.25rem,2vw,1.75rem)] font-semibold text-black dark:text-white">Find a trip</h4>
             <i
               onClick={() => {
                 setPanelOpen(false);
@@ -317,22 +436,22 @@ const Home = () => {
                 setDestination("");
               }}
               ref={panelCloseRef}
-              className="ri-arrow-down-wide-fill text-2xl text-gray-500 dark:text-gray-400 cursor-pointer opacity-0 transition-all duration-300 hover:text-gray-700 dark:hover:text-gray-300"
+              className="ri-arrow-down-wide-fill text-[clamp(1.25rem,2vw,1.5rem)] text-gray-500 dark:text-gray-400 cursor-pointer opacity-0 transition-all duration-300 hover:text-gray-700 dark:hover:text-gray-300"
             ></i>
           </div>
 
-          <form onSubmit={submitHandler}>
+          <form onSubmit={submitHandler} className="mt-[clamp(0.5rem,1.5vw,1rem)]">
           {/* vertical line */}
             <div
               ref={lineRef}
               id="line"
-              className="line absolute bg-gray-900 dark:bg-gray-100 h-20 w-1 rounded-full z-10"
+              className="line absolute bg-gray-900 dark:bg-gray-100 h-[clamp(2.5rem,4vw,3.5rem)] w-1 rounded-full z-10"
             ></div>
 
             {/* pickup input field */}
-            <div ref={pickupInputRef} className="px-4">
+            <div ref={pickupInputRef} className="px-[clamp(1rem,2vw,1.5rem)]">
               <input
-                className="bg-gray-100 dark:bg-gray-700 px-12 py-4 text-base rounded-xl w-full mt-5 relative focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 text-black dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 transition-all duration-200"
+                className="bg-gray-100 dark:bg-gray-700 px-[clamp(2.5rem,4vw,3.5rem)] py-[clamp(0.875rem,1.5vw,1.25rem)] text-[clamp(0.875rem,1.25vw,1.125rem)] rounded-xl w-full mt-[clamp(0.75rem,1.5vw,1.25rem)] relative focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 text-black dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 transition-all duration-200 shadow-sm"
                 type="text"
                 onClick={() => {
                   setPanelOpen(true);
@@ -363,9 +482,9 @@ const Home = () => {
             </div>
 
             {/* destination input field */}
-            <div className="px-4">
+            <div className="px-[clamp(1rem,2vw,1.5rem)]">
             <input
-              className="bg-gray-100 dark:bg-gray-700 px-12 py-4 text-base rounded-lg w-full mt-3 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 text-black dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+              className="bg-gray-100 dark:bg-gray-700 px-[clamp(2.5rem,4vw,3.5rem)] py-[clamp(0.875rem,1.5vw,1.25rem)] text-[clamp(0.875rem,1.25vw,1.125rem)] rounded-xl w-full mt-[clamp(0.5rem,1vw,0.75rem)] focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 text-black dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 transition-all duration-200 shadow-sm"
               type="text"
               onClick={() => {
                 setPanelOpen(true);
@@ -395,12 +514,15 @@ const Home = () => {
             />
             </div>
 
-            <div className="flex justify-between px-8 4k:px-20 pb-4">
-              <button className="w-28 4k:w-48  mt-5 p-2 bg-blue-500 dark:bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-600 dark:hover:bg-blue-700 transition-colors">
+            <div className="flex justify-between px-[clamp(1.5rem,3vw,2rem)] 4k:px-[clamp(3rem,5vw,4rem)] pb-[clamp(0.75rem,1.5vw,1.25rem)] mt-[clamp(0.75rem,1.5vw,1.25rem)]">
+              <button 
+                className="w-[clamp(7rem,15vw,12rem)] py-[clamp(0.75rem,1.25vw,1rem)] bg-blue-500 dark:bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-600 dark:hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg active:shadow-sm text-[clamp(0.875rem,1.25vw,1.125rem)]"
+                onClick={() => handleUseMyLocation()}
+              >
                 Leave Now
               </button>
               <button
-                className="w-28 4k:w-48  mt-5 p-2 bg-blue-500 dark:bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-600 dark:hover:bg-blue-700 transition-colors"
+                className="w-[clamp(7rem,15vw,12rem)] py-[clamp(0.75rem,1.25vw,1rem)] bg-blue-500 dark:bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-600 dark:hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg active:shadow-sm text-[clamp(0.875rem,1.25vw,1.125rem)]"
                 onClick={() => {
                   if (pickup && destination) {
                     setPanelOpen(false);
@@ -432,10 +554,10 @@ const Home = () => {
         {/* vehicle panel */}
         <div
           ref={vehiclePanelOpenRef}
-          className="px-5 w-full absolute bottom-0 translate-y-[100%] bg-white dark:bg-gray-800 rounded-t-3xl shadow-lg z-10"
+          className="px-[clamp(1.25rem,3vw,2rem)] w-full absolute bottom-0 bg-white dark:bg-gray-800 rounded-t-3xl shadow-lg z-10"
         >
-          <div className="flex justify-between mt-4">
-            <h3 className="text-2xl font-semibold text-black dark:text-white">Choose a Vehicle</h3>
+          <div className="flex justify-between mt-[clamp(1rem,2vw,1.5rem)]">
+            <h3 className="text-[clamp(1.25rem,2vw,1.75rem)] font-semibold text-black dark:text-white">Choose a Vehicle</h3>
             <i
               onClick={() => {
                 setPanelOpen(true);
@@ -444,7 +566,7 @@ const Home = () => {
                 setDestination("");
               }}
               ref={vehiclePanelCloseRef}
-              className="ri-arrow-down-wide-fill text-2xl text-gray-500 dark:text-gray-400 cursor-pointer opacity-0 transition-all duration-300 hover:text-gray-700 dark:hover:text-gray-300"
+              className="ri-arrow-down-wide-fill text-[clamp(1.25rem,2vw,1.5rem)] text-gray-500 dark:text-gray-400 cursor-pointer opacity-0 transition-all duration-300 hover:text-gray-700 dark:hover:text-gray-300"
             ></i>
           </div>
 
@@ -458,7 +580,7 @@ const Home = () => {
         {/* confirm your ride panel */}
         <div
           ref={confirmRidePanelRef}
-          className="w-full  z-10 fixed bottom-0 translate-y-full  rounded-t-3xl overflow-hidden bg-white dark:bg-gray-800 shadow-lg"
+          className="w-full z-10 fixed bottom-0 rounded-t-3xl overflow-hidden bg-white dark:bg-gray-800 shadow-lg"
         >
           <ConfirmRide
             setConfirmRidePanel={setConfirmRidePanel}
@@ -470,7 +592,7 @@ const Home = () => {
         {/* looking for driver */}
         <div
           ref={vehicleFoundRef}
-          className="h-[70dvh] xl:h-[65.5dvh] 4k:h-[30.5%] w-full  rounded-t-3xl overflow-hidden z-10 fixed translate-y-full bg-white dark:bg-gray-800 shadow-lg"
+          className="h-[75dvh] xl:h-[64dvh] 4k:h-[30%] w-full rounded-t-3xl overflow-hidden z-10 fixed bg-white dark:bg-gray-800 shadow-lg"
         >
           <LookingForDriver
             setVehicleFound={setVehicleFound}
@@ -481,7 +603,7 @@ const Home = () => {
         {/* waiting for driver */}
         <div
           ref={waitingForDriverRef}
-          className=" w-full z-10 fixed translate-y-full rounded-t-3xl  overflow-hidden bg-white dark:bg-gray-800 shadow-lg"
+          className="w-full z-10 fixed rounded-t-3xl overflow-hidden bg-white dark:bg-gray-800 shadow-lg"
         >
           <WaitingForDriver />
         </div>
