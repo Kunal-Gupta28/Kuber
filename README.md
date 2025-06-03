@@ -1,6 +1,6 @@
-# Kuber – Ride Booking Application
+# Kubik – Ride Booking Application
 
-**Kuber** is a modern ride-booking platform that allows users to book rides with verified drivers (captains) for convenient and reliable transportation. Built with **React** and **Node.js**, it offers real-time tracking, secure payments, and a seamless booking experience.
+**Kubik** is a modern ride-booking platform that allows users to book rides with verified drivers (captains) for convenient and reliable transportation. Built with **React** and **Node.js**, it offers real-time tracking, secure payments, and a seamless booking experience.
 
 ## 🚀 Features
 
@@ -54,8 +54,8 @@ Before starting, ensure you have:
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/kuber.git
-cd kuber
+git clone https://github.com/yourusername/kubik.git
+cd kubik
 ```
 
 ### 2. Install dependencies
@@ -107,7 +107,7 @@ Visit: [http://localhost:5173](http://localhost:5173)
 ## 📁 Project Structure
 
 ```
-kuber/
+kubik/
 ├── frontend/
 │   ├── src/
 │   │   ├── components/        # Reusable components
@@ -162,4 +162,4 @@ kuber/
 
 **Kunal Gupta**  
 📧 kunal.gupta.91165@gmail.com  
-🔗 Project: [GitHub - Kuber](https://github.com/Kunal-Gupta28/kuber)
+�� Project: [GitHub - Kubik](https://github.com/Kunal-Gupta28/kubik)

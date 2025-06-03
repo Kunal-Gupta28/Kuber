@@ -68,7 +68,7 @@ const NavBar = ({userType}) => {
   return (
     <nav className="w-full px-6 py-3 flex justify-between items-center text-xl z-50 fixed top-0 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
       <div className="flex items-center space-x-2">
-        <h2 className="font-bold text-gray-900 dark:text-white text-2xl">Kuber</h2>
+        <h2 className="font-bold text-gray-900 dark:text-white text-2xl">Kubik</h2>
       </div>
       
       <div className="relative">

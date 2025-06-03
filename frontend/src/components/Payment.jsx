@@ -79,7 +79,7 @@ const Payment = ({ hideRideDetails, setShowHomeButton }) => {
         amount: Math.round(fare * 100),
         currency,
         order_id: id,
-        name: "Kuber",
+        name: "Kubik",
         description: "Ride Payment",
         image: "/logo.png",
         handler: async function (response) {

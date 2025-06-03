@@ -90,7 +90,7 @@ const Riding = () => {
       {/* Header */}
       <div className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center p-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm shadow-sm">
         <h1 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white bg-gradient-to-r from-yellow-400 to-yellow-500 dark:from-yellow-500 dark:to-yellow-600 rounded-xl p-2 px-4 transition-all duration-300 hover:scale-105 hover:shadow-lg">
-          Kuber
+          Kubik
         </h1>
       </div>
 

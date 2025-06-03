@@ -11,7 +11,7 @@ export default {
         'spin-slow': 'spin 3s linear infinite',
       },
       screens: {
-        '4k': '2560px', // or use '3840px' for true 4K UHD
+        '4k': '2560px',
       },
     },
   },

@@ -74,30 +74,32 @@ const UserLogin = () => {
   };
 
   return (
-    <section className="h-[100dvh] flex flex-col justify-center items-center px-4 py-10 bg-white dark:bg-black text-black dark:text-white transition-colors duration-500 relative">
+    <section className="h-[100dvh] flex flex-col justify-center items-center px-[clamp(1rem,3vw,2rem)] py-[clamp(2rem,4vw,4rem)] bg-white dark:bg-black text-black dark:text-white transition-colors duration-500 relative">
 
       {/* back button */}
       <button
         onClick={() => navigate("/")}
-        className="absolute top-5 left-5 p-2.5 rounded-xl bg-white/10 dark:bg-gray-800/10 backdrop-blur-sm hover:bg-white/20 dark:hover:bg-gray-800/20 transition-all duration-300 hover:scale-105 hover:shadow-lg border border-gray-200/20 dark:border-gray-700/20"
+        className="absolute top-[clamp(1rem,2vw,1.5rem)] left-[clamp(1rem,2vw,1.5rem)] p-[clamp(0.5rem,1vw,0.75rem)] rounded-xl bg-white/10 dark:bg-gray-800/10 backdrop-blur-sm hover:bg-white/20 dark:hover:bg-gray-800/20 transition-all duration-300 hover:scale-105 hover:shadow-lg border border-gray-200/20 dark:border-gray-700/20"
         aria-label="Go back"
       >
-        <i className="ri-arrow-left-line text-xl"></i>
+        <i className="ri-arrow-left-line text-[clamp(1.25rem,1.5vw,1.5rem)]"></i>
       </button>
 
-      <div className="absolute top-5 right-5 z-50">
+      <div className="absolute top-[clamp(1rem,2vw,1.5rem)] right-[clamp(1rem,2vw,1.5rem)] z-50">
         <DarkModeToggle />
       </div>
 
-      <div className="w-full max-w-md bg-gray-50 dark:bg-gray-900 rounded-2xl p-8 shadow-[0_15px_15px_rgba(0,0,0,0.4)] dark:shadow-[0_15px_15px_rgba(255,255,255,0.4)] transition-all duration-500">
-        <header className="text-center mb-8">
-          <h1 className="text-4xl font-extrabold tracking-wide">Kuber</h1>
-          <p className="mt-2 text-gray-500 dark:text-gray-400">Welcome! Please login</p>
+      <div className="w-full max-w-[clamp(20rem,90vw,28rem)] bg-gray-50 dark:bg-gray-900 shadow-[0_15px_15px_rgba(0,0,0,0.4)] dark:shadow-[0_15px_15px_rgba(255,255,255,0.4)] rounded-2xl p-[clamp(1.5rem,3vw,2.5rem)]">
+        <header className="text-center mb-[clamp(1.5rem,3vw,2.5rem)]">
+          <h1 className="text-[clamp(2rem,4vw,3rem)] font-extrabold tracking-wide">Kubik</h1>
+          <p className="mt-[clamp(0.5rem,1vw,1rem)] text-[clamp(0.875rem,1.25vw,1.125rem)] text-gray-500 dark:text-gray-400">
+            Welcome back! Please login to your account
+          </p>
         </header>
 
-        <form onSubmit={formHandler} className="space-y-6">
+        <form onSubmit={formHandler} className="space-y-[clamp(1rem,2vw,1.5rem)]">
           <div>
-            <label htmlFor="email" className="block mb-2 font-medium text-lg">
+            <label htmlFor="email" className="block mb-[clamp(0.5rem,1vw,0.75rem)] font-medium text-[clamp(0.875rem,1.25vw,1.125rem)]">
               Enter Email
             </label>
             <input
@@ -107,15 +109,19 @@ const UserLogin = () => {
               onChange={handleEmail}
               placeholder="you@example.com"
               aria-label="Email"
-              className={`w-full px-4 py-3 rounded-lg border ${
-                errors.email ? "border-red-500" : "border-gray-300 dark:border-gray-700"
-              } bg-white dark:bg-gray-800 text-black dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-[0_10px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_5px_rgba(255,255,255,0.3)]`}
+              className={`w-full px-[clamp(1rem,2vw,1.5rem)] py-[clamp(0.75rem,1.5vw,1rem)] rounded-lg border ${
+                errors.email
+                  ? "border-red-500"
+                  : "border-gray-300 dark:border-gray-700"
+              } bg-white dark:bg-gray-800 text-black dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-[0_10px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_5px_rgba(255,255,255,0.3)] text-[clamp(0.875rem,1.25vw,1.125rem)]`}
             />
-            {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
+            {errors.email && (
+              <p className="mt-[clamp(0.25rem,0.5vw,0.5rem)] text-[clamp(0.75rem,1vw,0.875rem)] text-red-500">{errors.email}</p>
+            )}
           </div>
 
           <div>
-            <label htmlFor="password" className="block mb-2 font-medium text-lg">
+            <label htmlFor="password" className="block mb-[clamp(0.5rem,1vw,0.75rem)] font-medium text-[clamp(0.875rem,1.25vw,1.125rem)]">
               Enter Password
             </label>
             <input
@@ -125,30 +131,34 @@ const UserLogin = () => {
               onChange={handlePassword}
               placeholder="••••••••"
               aria-label="Password"
-              className={`w-full px-4 py-3 rounded-lg border ${
-                errors.password ? "border-red-500" : "border-gray-300 dark:border-gray-700"
-              } bg-white dark:bg-gray-800 text-black dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-[0_10px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_5px_rgba(255,255,255,0.3)]`}
+              className={`w-full px-[clamp(1rem,2vw,1.5rem)] py-[clamp(0.75rem,1.5vw,1rem)] rounded-lg border ${
+                errors.password
+                  ? "border-red-500"
+                  : "border-gray-300 dark:border-gray-700"
+              } bg-white dark:bg-gray-800 text-black dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-[0_10px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_5px_rgba(255,255,255,0.3)] text-[clamp(0.875rem,1.25vw,1.125rem)]`}
             />
-            {errors.password && <p className="mt-1 text-sm text-red-500">{errors.password}</p>}
+            {errors.password && (
+              <p className="mt-[clamp(0.25rem,0.5vw,0.5rem)] text-[clamp(0.75rem,1vw,0.875rem)] text-red-500">{errors.password}</p>
+            )}
           </div>
 
           {errors.general && (
-            <p className="mt-2 text-sm text-red-500 text-center">{errors.general}</p>
+            <p className="mt-[clamp(0.5rem,1vw,0.75rem)] text-[clamp(0.75rem,1vw,0.875rem)] text-red-500">{errors.general}</p>
           )}
 
           <button
             type="submit"
             disabled={loading}
-            className={`w-full py-3 font-bold rounded-lg transition duration-300 ${
+            className={`w-full py-[clamp(0.75rem,1.5vw,1rem)] font-bold rounded-lg transition duration-300 text-[clamp(0.875rem,1.25vw,1.125rem)] ${
               loading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"
-            } text-white shadow-[0_5px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_20px_rgba(255,255,255,0.3)] `}
+            } text-white shadow-[0_5px_20px_rgba(0,0,0,0.3)] dark:shadow-[0_5px_20px_rgba(255,255,255,0.3)]`}
           >
             {loading ? "Logging In..." : "Log In"}
           </button>
         </form>
 
-        <p className="mt-6 text-center text-sm">
-          New to Kuber?{" "}
+        <p className="mt-[clamp(1.5rem,2vw,2rem)] text-center text-[clamp(0.75rem,1vw,0.875rem)]">
+          New to Kubik?{" "}
           <Link to="/users/register" className="text-blue-500 font-semibold hover:underline">
             Register as New User
           </Link>
@@ -157,13 +167,13 @@ const UserLogin = () => {
 
       <Link
         to="/captains/login"
-        className="mt-12 w-full max-w-md py-3 bg-green-600 text-white text-center font-bold text-lg rounded-lg hover:bg-green-700 transition duration-300 shadow-[0_5px_15px_rgba(0,0,0,0.4)] dark:shadow-[0_5px_15px_rgba(255,255,255,0.4)]"
+        className="mt-[clamp(2rem,4vw,3rem)] w-full max-w-[clamp(20rem,90vw,28rem)] py-[clamp(0.75rem,1.5vw,1rem)] bg-green-600 text-white text-center font-bold text-[clamp(0.875rem,1.25vw,1.125rem)] rounded-lg hover:bg-green-700 transition duration-300 shadow-[0_5px_15px_rgba(0,0,0,0.4)] dark:shadow-[0_5px_15px_rgba(255,255,255,0.4)]"
       >
         Sign in as Captain
       </Link>
 
-      <p className="text-xs text-center mt-8 max-w-sm text-gray-500 dark:text-gray-400">
-        By proceeding, you consent to receive calls, WhatsApp, or SMS messages, including via automated means, from Kuber and its affiliates to the number provided.
+      <p className="text-[clamp(0.75rem,1vw,0.875rem)] text-center mt-[clamp(1.5rem,2vw,2rem)] max-w-[clamp(16rem,80vw,24rem)] text-gray-500 dark:text-gray-400">
+        By proceeding, you consent to receive calls, WhatsApp, or SMS messages, including via automated means, from Kubik and its affiliates to the number provided.
       </p>
     </section>
   );

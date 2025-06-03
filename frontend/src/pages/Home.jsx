@@ -208,7 +208,7 @@ const Home = () => {
     if (panelOpenRef.current && panelCloseRef.current) {
       const screenWidth = window.innerWidth;
   
-      let targetHeight = "68dvh"; 
+      let targetHeight = "60dvh"; 
       if (screenWidth >= 2560) {
         targetHeight = "28dvh"; 
       } else if (screenWidth >= 1280) {
@@ -295,7 +295,11 @@ const Home = () => {
 
       {/* map */}
       <div className="h-[71%]  xl:h-[76%] 4k:h-[90%] w-full bg-gray-100 dark:bg-gray-800">
-        <LiveTracking pickup={pickup} destination={destination} />
+        <LiveTracking
+          pickup={pickup}
+          destination={destination}
+          userType="user"
+        />
       </div>
 
       {/* panels container */}

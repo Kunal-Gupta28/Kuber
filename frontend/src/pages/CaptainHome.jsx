@@ -20,12 +20,12 @@ const CaptainHome = () => {
   const confirmRidePopUpPanelRef = useRef(null);
   const menuRef = useRef(null);
 
+  const [coordinates, setCoordinates] = useState(null);
   const [ridePopUpPanel, setRidePopUpPanel] = useState(false);
   const [confirmRidePopUpPanel, setConfirmRidePopUpPanel] = useState(false);
   const [isMenuOpen] = useState(false);
 
   const { socket } = useContext(SocketContext);
-  // const { captain, ride ,setRide } = useCaptainContext();
   const { captain } = useCaptainContext();
   const { ride, setRide } = useRideContext()
 
@@ -141,7 +141,10 @@ const CaptainHome = () => {
       <div className="flex-1 flex flex-col h-full relative">
         {/* Live Map Section */}
         <div className="h-[80%] 4k:h-[90%] bg-gray-200 dark:bg-gray-800">
-          <LiveTracking />
+          <LiveTracking
+            coordinates={coordinates}
+            userType="captain"
+          />
         </div>
 
         {/* Captain Info */}
