@@ -458,7 +458,7 @@ const Home = () => {
         {/* confirm your ride panel */}
         <div
           ref={confirmRidePanelRef}
-          className="w-full z-10 fixed bottom-0 translate-y-full  rounded-t-3xl overflow-hidden bg-white dark:bg-gray-800 shadow-lg"
+          className="w-full  z-10 fixed bottom-0 translate-y-full  rounded-t-3xl overflow-hidden bg-white dark:bg-gray-800 shadow-lg"
         >
           <ConfirmRide
             setConfirmRidePanel={setConfirmRidePanel}
@@ -470,7 +470,7 @@ const Home = () => {
         {/* looking for driver */}
         <div
           ref={vehicleFoundRef}
-          className="h-[72.5dvh] xl:h-[64dvh] 4k:h-[29%] w-full  rounded-t-3xl overflow-hidden z-10 fixed translate-y-full bg-white dark:bg-gray-800 shadow-lg"
+          className="h-[65dvh] xl:h-[65.5dvh] 4k:h-[30.5%] w-full  rounded-t-3xl overflow-hidden z-10 fixed translate-y-full bg-white dark:bg-gray-800 shadow-lg"
         >
           <LookingForDriver
             setVehicleFound={setVehicleFound}

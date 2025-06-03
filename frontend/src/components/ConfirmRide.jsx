@@ -2,13 +2,16 @@ import axios from "axios";
 import RideDetails from "./RideDetails";
 import { useRideContext } from "../context/RideContext";
 
-const ConfirmRide = ({
-  setVehicleFound,
-  setConfirmRidePanel,
-  setPanelOpen,
-}) => {
-  const { pickup, destination, setPickup, setDestination, fare ,distance, duration } =
-    useRideContext();
+const ConfirmRide = ({ setVehicleFound, setConfirmRidePanel, setPanelOpen }) => {
+  const {
+    pickup,
+    destination,
+    setPickup,
+    setDestination,
+    fare,
+    distance,
+    duration,
+  } = useRideContext();
 
   const handleRideConfirmation = async () => {
     setConfirmRidePanel(false);
@@ -22,7 +25,7 @@ const ConfirmRide = ({
           destination,
           fare,
           distance,
-          duration
+          duration,
         },
         {
           headers: {
@@ -36,36 +39,34 @@ const ConfirmRide = ({
   };
 
   return (
-    <div className="w-screen bg-white dark:bg-gray-900 text-black dark:text-white">
-      <div className="max-w-2xl mx-auto px-4 py-6">
+    <div className="w-full  bg-white dark:bg-gray-900 text-black dark:text-white">
+      <div className="max-w-2xl mx-auto px-4 xl:py-6 py-4 sm:px-6 sm:py-8">
         {/* Header */}
         <div className="text-center mb-4 xl:mb-6">
-          <h2 className="text-2xl font-bold mb-2">Confirm Your Ride</h2>
-          <p className="text-gray-600 dark:text-gray-400">
+          <h2 className="text-[clamp(1.25rem,4vw,2rem)] font-bold mb-1 xl:mb-2">
+            Confirm Your Ride
+          </h2>
+          <p className="text-[clamp(0.875rem,2.5vw,1rem)] text-gray-600 dark:text-gray-400">
             Review your trip details before confirming
           </p>
         </div>
 
         {/* Ride Details */}
-        <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 mb-6 shadow-sm">
-          <RideDetails
-            setConfirmRidePanel={setConfirmRidePanel}
-            setVehicleFound={setVehicleFound}
-            setPanelOpen={setPanelOpen}
-          />
+        <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-4 sm:p-6 mb-6 shadow-sm">
+          <RideDetails userType="user" />
         </div>
 
         {/* Action Buttons */}
-        <div className="flex  gap-4 xl:gap-28 justify-center">
+        <div className="flex gap-4 sm:gap-8 justify-center items-center">
           <button
             onClick={handleRideConfirmation}
-            className="flex-1 sm:flex-none px-8 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 
-                     text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-[1.02] 
-                     active:scale-[0.98] shadow-md hover:shadow-lg"
+            className="w-full sm:w-auto px-8 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 
+              text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-[1.02] 
+              active:scale-[0.98] shadow-md hover:shadow-lg text-[clamp(0.875rem,2.5vw,1rem)]"
           >
-            <i className="ri-check-line mr-2"></i>
             Confirm Ride
           </button>
+
           <button
             onClick={() => {
               setConfirmRidePanel(false);
@@ -73,15 +74,13 @@ const ConfirmRide = ({
               setPickup("");
               setDestination("");
             }}
-            className="flex-1 sm:flex-none px-8 :px-16 py-3 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 
-                     text-gray-800 dark:text-gray-200 font-semibold rounded-xl transition-all duration-300 
-                     transform hover:scale-[1.02] active:scale-[0.98]"
+            className="w-full sm:w-auto px-8 py-3 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 
+              text-gray-800 dark:text-gray-200 font-semibold rounded-xl transition-all duration-300 
+              transform hover:scale-[1.02] active:scale-[0.98] text-[clamp(0.875rem,2.5vw,1rem)]"
           >
-            <i className="ri-close-line mr-2"></i>
             Cancel
           </button>
         </div>
-
       </div>
     </div>
   );

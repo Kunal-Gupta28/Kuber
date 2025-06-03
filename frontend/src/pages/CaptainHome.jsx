@@ -148,7 +148,7 @@ const CaptainHome = () => {
         </div>
 
         {/* Captain Info */}
-        <div className="w-full h-[24%] xl:h-[27%] 4k:h-[12%] rounded-3xl overflow-hidden absolute bottom-0  bg-white dark:bg-gray-800 shadow-inner">
+        <div className="w-full h-[27%] xl:h-[27%] 4k:h-[15%] rounded-t-3xl overflow-hidden absolute bottom-0  bg-white dark:bg-gray-800 shadow-inner">
           <CaptainDetails captain={captain} />
         </div>
       </div>
@@ -168,7 +168,7 @@ const CaptainHome = () => {
       {/* Confirm Ride Panel */}
       <div
         ref={confirmRidePopUpPanelRef}
-        className="h-[90%] xl:h-[77%] 4k:h-[36%] w-full fixed bottom-0 left-0 z-30 bg-white dark:bg-gray-800 translate-y-full rounded-t-3xl shadow-xl transition-all duration-300"
+        className="h-[85%] xl:h-[77%] 4k:h-[36%] w-full fixed bottom-0 left-0 z-30 bg-white dark:bg-gray-800 translate-y-full rounded-t-3xl shadow-xl transition-all duration-300"
       >
         <ConfirmRidePopUpPanel
           setRidePopUpPanel={setRidePopUpPanel}

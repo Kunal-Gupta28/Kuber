@@ -12,15 +12,15 @@ const Riding = () => {
   const navigate = useNavigate();
   const { socket } = useContext(SocketContext);
   const { setPickup, setDestination, setRide, ride } = useRideContext();
+
   const [showHomeButton, setShowHomeButton] = useState(false);
+  const rideDetailsRef = useRef(null);
 
   const state = location.state || {};
   const rideData = state.ride || null;
   const coordinates = state.coordinates || JSON.parse(localStorage.getItem("coordinates"));
 
-  const rideDetailsRef = useRef(null);
-
-  // Set ride data in context when component mounts
+  // Set ride data on mount
   useEffect(() => {
     if (rideData) {
       setRide(rideData);
@@ -29,45 +29,35 @@ const Riding = () => {
     }
   }, [rideData, setRide, setPickup, setDestination]);
 
-  // listing for ride end 
+  // Listen for ride end event
   useEffect(() => {
     const handleRideEnded = (ride) => {
       if (ride?.captain && ride?.user) {
-        setDestination('');
-        setPickup('');
+        resetRideState();
         navigate("/home");
       }
     };
 
     socket?.on("ride-ended", handleRideEnded);
+
     return () => {
       socket?.off("ride-ended", handleRideEnded);
-      // Clean up any remaining state
-      setDestination('');
-      setPickup('');
-      setRide(null);
+      resetRideState();
     };
-  }, [socket, navigate, setDestination, setPickup, setRide]);
+  }, [socket, navigate]);
 
-  // Add cleanup effect for component unmount
-  useEffect(() => {
-    return () => {
-      // Clean up any remaining state when component unmounts
-      setDestination('');
-      setPickup('');
-      setRide(null);
-    };
-  }, [setDestination, setPickup, setRide]);
-
-  // Update the home button click handler
-  const handleHomeClick = () => {
-    setDestination('');
-    setPickup('');
+  // Reset ride state on unmount or end
+  const resetRideState = () => {
+    setDestination("");
+    setPickup("");
     setRide(null);
-    navigate('/home');
   };
 
-  //  animation for show ride details
+  const handleHomeClick = () => {
+    resetRideState();
+    navigate("/home");
+  };
+
   const showRideDetails = () => {
     gsap.to(rideDetailsRef.current, {
       y: 0,
@@ -76,7 +66,6 @@ const Riding = () => {
     });
   };
 
-  // aniamiton for hide ride details
   const hideRideDetails = () => {
     gsap.to(rideDetailsRef.current, {
       y: "100%",
@@ -89,29 +78,32 @@ const Riding = () => {
     <main className="h-[100dvh] w-full flex flex-col overflow-hidden bg-white dark:bg-gray-900 text-black dark:text-white relative">
       {/* Header */}
       <div className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center p-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm shadow-sm">
-        <h1 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white bg-gradient-to-r from-yellow-400 to-yellow-500 dark:from-yellow-500 dark:to-yellow-600 rounded-xl p-2 px-4 transition-all duration-300 hover:scale-105 hover:shadow-lg">
+        <h1
+          className="font-bold text-gray-800 dark:text-white bg-gradient-to-r from-yellow-400 to-yellow-500 dark:from-yellow-500 dark:to-yellow-600 rounded-xl p-2 px-4 transition duration-300 hover:scale-105 hover:shadow-lg"
+          style={{ fontSize: "clamp(1.25rem, 4vw, 2rem)" }}
+        >
           Kubik
         </h1>
       </div>
 
       {/* Map Section */}
       <section className="h-[85%] xl:h-[85%] 4k:h-[90%]">
-        <LiveTracking coordinates={coordinates}/>
+        <LiveTracking coordinates={coordinates} />
       </section>
 
       {/* Control Panel */}
       <div className="h-[20%] xl:h-[17%] 4k:h-[11%] w-full bg-gradient-to-b from-yellow-400 to-yellow-500 dark:from-yellow-500 dark:to-yellow-600 p-4 sm:p-5 fixed bottom-0 flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 z-40 shadow-inner rounded-t-3xl border-t border-yellow-300 dark:border-yellow-600">
-        <div className="w-full sm:w-auto flex flex-col sm:flex-row items-center gap-4 4k:gap-48 sm:gap-6">
+        <div className="w-full flex justify-evenly gap-4 4k:gap-48 sm:gap-6">
           <div className="h-14 sm:h-16 w-full sm:w-48">
             {showHomeButton ? (
               <button
                 onClick={handleHomeClick}
-                className="w-full h-full bg-gradient-to-r from-green-600 to-green-700 dark:from-green-700 dark:to-green-800 rounded-xl text-lg sm:text-xl font-semibold text-white flex justify-center items-center shadow-lg hover:shadow-xl transition-all duration-300"
+                className="w-full h-full bg-gradient-to-r from-green-600 to-green-700 dark:from-green-700 dark:to-green-800 rounded-xl font-semibold text-white text-lg sm:text-xl flex justify-center items-center shadow-lg hover:shadow-xl transition duration-300"
               >
                 Home
               </button>
             ) : (
-              <div className="w-full h-full bg-gradient-to-r from-green-600 to-green-700 dark:from-green-700 dark:to-green-800 rounded-xl text-lg sm:text-xl font-semibold text-white flex justify-center items-center shadow-lg hover:shadow-xl transition-all duration-300">
+              <div className="w-full h-full bg-gradient-to-r from-green-600 to-green-700 dark:from-green-700 dark:to-green-800 rounded-xl font-semibold text-white text-lg sm:text-xl flex justify-center items-center shadow-lg transition duration-300">
                 <span className="flex items-center gap-2">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -130,9 +122,10 @@ const Riding = () => {
               </div>
             )}
           </div>
+
           <button
             onClick={showRideDetails}
-            className="h-14 sm:h-16 w-full sm:w-48 bg-gradient-to-r from-green-600 to-green-700 dark:from-green-700 dark:to-green-800 rounded-xl text-lg sm:text-xl font-semibold text-white shadow-lg hover:bg-green-700 dark:hover:bg-green-800 transition-all duration-300 hover:shadow-xl active:scale-95"
+            className="h-14 sm:h-16 w-full sm:w-48 bg-gradient-to-r from-green-600 to-green-700 dark:from-green-700 dark:to-green-800 rounded-xl font-semibold text-white text-lg sm:text-xl shadow-lg hover:bg-green-700 dark:hover:bg-green-800 transition duration-300 hover:shadow-xl active:scale-95"
           >
             Make Payment
           </button>
@@ -146,7 +139,7 @@ const Riding = () => {
         style={{ transform: "translateY(100%)" }}
       >
         <div className="p-6 sm:p-8">
-          <RideDetails ride={ride} />
+          {ride && <RideDetails ride={ride} />}
 
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-6">
             <Payment hideRideDetails={hideRideDetails} setShowHomeButton={setShowHomeButton} />
