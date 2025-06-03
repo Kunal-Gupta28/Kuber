@@ -470,7 +470,7 @@ const Home = () => {
         {/* looking for driver */}
         <div
           ref={vehicleFoundRef}
-          className="h-[65dvh] xl:h-[65.5dvh] 4k:h-[30.5%] w-full  rounded-t-3xl overflow-hidden z-10 fixed translate-y-full bg-white dark:bg-gray-800 shadow-lg"
+          className="h-[70dvh] xl:h-[65.5dvh] 4k:h-[30.5%] w-full  rounded-t-3xl overflow-hidden z-10 fixed translate-y-full bg-white dark:bg-gray-800 shadow-lg"
         >
           <LookingForDriver
             setVehicleFound={setVehicleFound}
